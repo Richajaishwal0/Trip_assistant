@@ -13,7 +13,7 @@ import Footer from "./components/footer";
 import Dashboard from "./pages/Admin/admin";
 import "./i18n"; // Import i18next configuration
 import "./responsive.css";
-
+import HelpCentre from "./pages/helpcenter";
 function AppContent() {
   const location = useLocation(); // Get the current route
 
@@ -32,6 +32,7 @@ function AppContent() {
         <Route path="/auth" element={<Auth />} />
 
         <Route path="/admin" element={<Dashboard />} />
+        <Route path="/help" element={<HelpCentre/>}/>
       </Routes>
       {location.pathname !== "/auth" &&
         location.pathname !== "/admin" &&

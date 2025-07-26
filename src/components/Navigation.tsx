@@ -189,7 +189,7 @@ function Navbar() {
                 </li>
                 <hr />
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <a className="dropdown-item" href="/help">
                     Help Centre
                   </a>
                 </li>
