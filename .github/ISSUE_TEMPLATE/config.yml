@@ -15,7 +15,15 @@ contact_links:
     about: "Check our documentation for guides and tutorials"
   
   - name: "🆘 Support"
-    url: "https://github.com/{owner}/{repo}/discussions/categories/q-a"
+    url: "https://github.com/octocat/hello-world/discussions"
+    about: "Ask questions, share ideas, and discuss with the community"
+  
+  - name: "📚 Documentation"
+    url: "https://github.com/octocat/hello-world/wiki"
+    about: "Check our documentation for guides and tutorials"
+  
+  - name: "🆘 Support"
+    url: "https://github.com/octocat/hello-world/discussions/categories/q-a"
     about: "Get help from the community or maintainers"
 
 # Default settings for blank issues
