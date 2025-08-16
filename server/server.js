@@ -15,6 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("static"));
 
 // DB Connection check-point
 mongoose
@@ -26,11 +27,13 @@ mongoose
 const userRoutes = require("./routes/userRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
 const placeRoutes = require("./routes/placeRoutes");
+const userActivityRoutes=require("./routes/user-activity-check")
 
 // API routes
 app.use("/api/users", userRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/more-places", placeRoutes);
+app.use("/api/user/activity",userActivityRoutes)
 
 // Start server
 app.listen(5000, () => {

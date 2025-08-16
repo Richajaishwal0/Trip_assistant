@@ -1,4 +1,5 @@
-import React from "react";
+import * as React from "react";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { FaMapMarkerAlt, FaStar, FaComments } from "react-icons/fa";
 import "./Places.css";
@@ -50,6 +51,16 @@ const Places: React.FC = () => {
       attributeFilter: ["class"],
     });
     return () => observer.disconnect();
+  }, []);
+
+  //updating user's activity by calling backend api for places activity
+  useEffect(() => {
+    const userId = localStorage.getItem("user_id");
+    if (!userId) return; // No user logged in
+
+    axios.post("http://localhost:5000/api/user/activity", { userId })
+      .then(res => console.log("Activity updated:", res.data))
+      .catch(err => console.error("Error updating activity", err));
   }, []);
 
   return (
