@@ -57,7 +57,12 @@ const login = async (req, res) => {
 
 // Register controller
 const register = async (req, res) => {
-  const { user_name, email, password, mobile_no } = req.body;
+  const {
+    userName: user_name,
+    email,
+    password,
+    mobileNo: mobile_no,
+  } = req.body;
 
   if (!user_name || !email || !password || !mobile_no) {
     return res.status(400).json({
