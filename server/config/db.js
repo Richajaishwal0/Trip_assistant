@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGO_DB_URI || "mongodb://localhost:27017/tripPlannerDB";
+    const mongoURI = process.env.MONGO_DB_URI || "mongodb+srv://sedipi7327:qd9Meq7MtBIjmy10@cluster0.aacdl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
     
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
