@@ -28,7 +28,7 @@ const userRoutes = require("./routes/userRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
 const placeRoutes = require("./routes/placeRoutes");
 const userActivityRoutes = require("./routes/user-activity-check");
-const tripRoutes = require("./routes/tripRoutes"); // Add this line
+const chatRoutes = require("./routes/chatRoutes");
 
 // API routes
 app.use("/entry-point", entryRoutes);
@@ -36,7 +36,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/more-places", placeRoutes);
 app.use("/api/user/activity", userActivityRoutes);
-app.use("/api/trip", tripRoutes);
+app.use("/api", chatRoutes);
 
 // Start server
 app.listen(5000, () => {
