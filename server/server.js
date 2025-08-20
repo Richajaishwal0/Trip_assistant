@@ -10,6 +10,7 @@ const {
   logError,
   sendSuccess,
 } = require("./utils/errorHandler");
+
 const app = express();
 
 // Middleware
@@ -26,14 +27,16 @@ const entryRoutes = require("./routes/entry-point");
 const userRoutes = require("./routes/userRoutes");
 const propertyRoutes = require("./routes/propertyRoutes");
 const placeRoutes = require("./routes/placeRoutes");
-const userActivityRoutes=require("./routes/user-activity-check")
+const userActivityRoutes = require("./routes/user-activity-check");
+const tripRoutes = require("./routes/tripRoutes"); // Add this line
 
 // API routes
 app.use("/entry-point", entryRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/properties", propertyRoutes);
 app.use("/api/more-places", placeRoutes);
-app.use("/api/user/activity",userActivityRoutes)
+app.use("/api/user/activity", userActivityRoutes);
+app.use("/api/trip", tripRoutes);
 
 // Start server
 app.listen(5000, () => {
