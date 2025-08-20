@@ -59,14 +59,53 @@
     bottom: 20px;
     right: 20px;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+    border: none;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
   }
 
+  .chatbot-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(0, 123, 255, 0.4);
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  }
+
+  .chatbot-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Dark mode chatbot button */
+  body.dark-mode .chatbot-btn {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+    color: #333;
+  }
+
+  body.dark-mode .chatbot-btn:hover {
+    box-shadow: 0 6px 25px rgba(255, 215, 0, 0.4);
+    background: linear-gradient(135deg, #ffed4e 0%, #ffd700 100%);
+  }
+
+  /* Robot emoji styling in floating button */
+  .chatbot-btn span {
+    font-size: 24px;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  /* Ensure proper spacing between emoji and icon */
+  .chatbot-btn .me-1 {
+    margin-right: 4px;
+  }
+  
   .chatbot-container {
     position: fixed;
     bottom: 80px;
@@ -77,6 +116,14 @@
     border-radius: 10px;
     overflow: hidden;
     z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+  /* Dark Mode Container */
+  body.dark-mode .chatbot-container {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   }
 
   .chatbot-header {
@@ -89,12 +136,27 @@
     height: 250px;
     overflow-y: auto;
     padding: 10px;
+    background: #fff;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Dark Mode Body */
+  body.dark-mode .chatbot-body {
+    background: #1e1e1e;
+    color: #e0e0e0;
   }
 
   .chatbot-footer {
     display: flex;
     gap: 5px;
     align-items: stretch;
+    background: #fff;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Dark Mode Footer */
+  body.dark-mode .chatbot-footer {
+    background: #1e1e1e;
   }
 
   /* Fix for Send button text wrapping */
@@ -113,6 +175,21 @@
   .chatbot-footer .form-control {
     flex: 1;
     min-width: 0;
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+  }
+
+  /* Dark Mode Input */
+  body.dark-mode .chatbot-footer .form-control {
+    background: #2d2d2d;
+    color: #e0e0e0;
+    border: 1px solid #444;
+  }
+
+  body.dark-mode .chatbot-footer .form-control::placeholder {
+    color: #999;
   }
 
   /* Spinner styles for loading state */
@@ -136,6 +213,7 @@
     border-radius: 12px;
     word-wrap: break-word;
     line-height: 1.4;
+    transition: all 0.3s ease;
   }
   
   /* User messages - right side, blue */
@@ -154,6 +232,13 @@
     border-bottom-left-radius: 4px;
     border: 1px solid #e1e5e9;
   }
+
+  /* Dark Mode Bot Messages */
+  body.dark-mode .bot-message {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    border: 1px solid #444;
+  }
   
   /* Error messages - left side, red tint */
   .bot-message.error-message {
@@ -161,11 +246,84 @@
     border-left: 3px solid #f44336;
     color: #c62828;
   }
+
+  /* Dark Mode Error Messages */
+  body.dark-mode .bot-message.error-message {
+    background-color: #3d1f1f;
+    border-left: 3px solid #f44336;
+    color: #ff6b6b;
+  }
   
   /* Loading messages - left side, blue tint */
   .bot-message.loading-message {
     background-color: #e3f2fd;
     border-left: 3px solid #2196f3;
     color: #1565c0;
+  }
+
+  /* Dark Mode Loading Messages */
+  body.dark-mode .bot-message.loading-message {
+    background-color: #1a2a3a;
+    border-left: 3px solid #2196f3;
+    color: #64b5f6;
+  }
+
+  /* Welcome message styling */
+  .chatbot-body .text-muted {
+    color: #6c757d !important;
+    transition: color 0.3s ease;
+  }
+
+  /* Dark Mode Welcome Message */
+  body.dark-mode .chatbot-body .text-muted {
+    color: #adb5bd !important;
+  }
+
+  /* Welcome message container */
+  .welcome-message {
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+  }
+
+  /* Dark mode welcome message */
+  body.dark-mode .welcome-message {
+    background: #2d2d2d;
+    border: 1px solid #444;
+  }
+
+  /* Chatbot logo/branding styles */
+  .chatbot-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Dark mode logo */
+  body.dark-mode .chatbot-logo {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #333;
   }
   

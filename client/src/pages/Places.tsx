@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { FaMapMarkerAlt, FaStar, FaComments } from "react-icons/fa";
+import { FaMapMarkerAlt, FaStar, FaComments, FaRobot } from "react-icons/fa";
 import PlaceCard from "../components/placeCard";
 import "./Places.css";
 import SearchBar from "../components/searchbar";
@@ -198,10 +198,12 @@ const Places: React.FC = () => {
 
       {/* Floating Chatbot Button */}
       <button
-        className="chatbot-btn btn btn-primary"
+        className="chatbot-btn btn btn-primary d-flex align-items-center justify-content-center"
         onClick={() => setIsChatOpen(true)}
+        aria-label="Open AI Travel Assistant"
+        title="🤖 Chat with AI Travel Assistant"
       >
-        <FaComments size={20} />
+        <span>🤖</span>
       </button>
 
       {/* Show Chatbot when button is clicked */}

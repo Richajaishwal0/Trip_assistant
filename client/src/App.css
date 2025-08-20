@@ -3,6 +3,32 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Enhanced theme transition styles */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: all 0.3s ease !important;
+}
+
+/* Ensure smooth transitions for all theme-related properties */
+body,
+body *,
+body *::before,
+body *::after {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease, 
+              box-shadow 0.3s ease;
+}
+
+/* Dark Mode Support */
+body.dark-mode {
+  background-color: #121212;
+  color: white;
+}
+
+/* Dark mode text color overrides */
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
@@ -15,22 +41,22 @@ body.dark-mode a {
   color: #f7fafc !important;
 }
 
-/* 🌐 Navbar Hover Links (Light Mode Default) */
-.nav-link {
+/* 🌐 Navbar Hover Links (Light Mode Default) - Only for non-navigation components */
+.nav-link:not(.navbar-nav .nav-link) {
   color: white;
   transition: color 0.3s ease-in-out;
 }
 
-.nav-link:hover {
+.nav-link:not(.navbar-nav .nav-link):hover {
   color: #fad700 !important;
 }
 
-/* 🌙 Navbar Hover Links in Dark Mode */
-body.dark-mode .nav-link {
+/* 🌙 Navbar Hover Links in Dark Mode - Only for non-navigation components */
+body.dark-mode .nav-link:not(.navbar-nav .nav-link) {
   color: #f7fafc !important;
 }
 
-body.dark-mode .nav-link:hover {
+body.dark-mode .nav-link:not(.navbar-nav .nav-link):hover {
   color: #ffd700 !important;
 }
 .nav-link.active-link {
@@ -54,12 +80,6 @@ body.dark-mode .nav-link:hover {
   .searchbar-margin-fix {
     margin-top: 70px !important;
   }
-}
-
-/* Dark Mode Support */
-body.dark-mode {
-  background-color: #121212;
-  color: white;
 }
 
 /* Navigation link underline on hover */
@@ -86,19 +106,62 @@ body.dark-mode {
 
 /* Optional: Smooth transition */
 body,
-.nav-link {
+.nav-link:not(.navbar-nav .nav-link) {
   transition: all 0.3s ease-in-out;
 }
 
-.dropdown-menu, .dropdown-item, .dropdown-item-white {
+/* Guest Filter Dropdown Fix - Light Mode */
+.dropdown-menu {
+  background: #fff !important;
+  color: #333 !important;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  background: #fff !important;
+  color: #333 !important;
+  padding: 8px 16px;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover, 
+.dropdown-item:focus {
+  background: #f8f9fa !important;
+  color: #333 !important;
+}
+
+.dropdown-item:active {
+  background: #e9ecef !important;
+  color: #333 !important;
+}
+
+/* Dark Mode Dropdown Override */
+body.dark-mode .dropdown-menu {
+  background: #1a237e !important;
+  color: #fff !important;
+  border: 1px solid #3949ab;
+}
+
+body.dark-mode .dropdown-item {
   background: #1a237e !important;
   color: #fff !important;
 }
-.dropdown-item-white {
+
+body.dark-mode .dropdown-item:hover, 
+body.dark-mode .dropdown-item:focus {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
   color: #fff !important;
 }
-.dropdown-item:hover, .dropdown-item:focus {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+
+body.dark-mode .dropdown-item:active {
+  background: #3949ab !important;
+  color: #fff !important;
+}
+
+/* Legacy dropdown styles for backward compatibility */
+.dropdown-item-white {
   color: #fff !important;
 }
 

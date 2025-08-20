@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaRobot, FaComments } from "react-icons/fa";
 import "./chatbot.css";
 import { handleError } from "../utils/errorHandlerToast";
 
@@ -25,6 +25,20 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Listen for theme changes
+  useEffect(() => {
+    const handleThemeChange = (event: CustomEvent) => {
+      // Force re-render when theme changes
+      // The CSS will handle the visual changes automatically
+    };
+
+    window.addEventListener("themeChanged", handleThemeChange as EventListener);
+    
+    return () => {
+      window.removeEventListener("themeChanged", handleThemeChange as EventListener);
+    };
+  }, []);
 
   const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -111,9 +125,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       aria-live="polite"
     >
       <header className="chatbot-header bg-primary text-white p-2 d-flex justify-content-between align-items-center">
-        <h2 id="chatbot-title" className="m-0 h6">Travel Assistant</h2>
+        <div className="d-flex align-items-center">
+          <h2 id="chatbot-title" className="m-0 h6">
+            🤖 Travel Assistant
+          </h2>
+        </div>
         <button 
-          className="btn btn-sm btn-light" 
+          className="btn btn-sm text-white border-0 bg-transparent" 
           onClick={onClose}
           aria-label="Close chat assistant"
           type="button"
@@ -131,9 +149,17 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         aria-atomic="false"
       >
         {messages.length === 0 ? (
-          <p className="text-muted" role="status">
-            Hello! How can I assist you with your travel plans?
-          </p>
+          <div className="welcome-message text-center p-3">
+            <div className="chatbot-logo mx-auto mb-2">
+              <FaComments size={16} />
+            </div>
+            <p className="text-muted mb-1" role="status">
+              🤖 Hello! I'm your AI Travel Assistant
+            </p>
+            <p className="text-muted small" role="status">
+              Ask me about destinations, travel tips, or booking help!
+            </p>
+          </div>
         ) : (
           messages.map((msg: Message, index: number) => (
             <div
@@ -182,7 +208,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           type="text"
           name="message"
           className="form-control"
-          placeholder="Type a message..."
+          placeholder="Ask about travel destinations, tips, or help..."
           aria-describedby="chat-help"
           required
         />
