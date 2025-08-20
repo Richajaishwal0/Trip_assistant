@@ -28,18 +28,163 @@ img, picture, video, canvas, svg {
 .navbar {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+  /* Ensure navbar is always visible */
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 1030 !important;
+  /* Smooth theme transitions */
+  transition: background 0.3s ease, box-shadow 0.3s ease !important;
 }
+
+/* Smooth transitions for all navbar elements */
+.navbar,
+.navbar-nav .nav-link,
+.theme-toggle-btn,
+.dropdown-menu,
+.navbar-collapse {
+  transition: all 0.3s ease !important;
+}
+
+/* Light mode navbar */
+body:not(.dark-mode) .navbar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  box-shadow: 0 2px 20px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* Dark mode navbar */
+body.dark-mode .navbar {
+  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%) !important;
+  box-shadow: 0 2px 20px rgba(26, 35, 126, 0.4) !important;
+}
+
 .navbar-brand {
   font-size: 1.5rem;
 }
+
 @media (max-width: 991.98px) {
-  .navbar-collapse {
-    background: #45526e;
-    padding: 1rem 0;
+  /* Light mode mobile menu */
+  body:not(.dark-mode) .navbar-collapse {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
   }
+  
+  /* Dark mode mobile menu */
+  body.dark-mode .navbar-collapse {
+    background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  .navbar-collapse {
+    padding: 1rem 0;
+    /* Ensure mobile menu is properly positioned */
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1020 !important;
+  }
+  
   .navbar-nav .nav-link {
     padding: 0.75rem 1rem;
     font-size: 1.1rem;
+    /* Ensure links are clickable */
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    position: relative;
+  }
+  
+  /* Mobile nav text - hidden by default, show on hover */
+  .navbar-nav .nav-link .nav-text {
+    position: absolute;
+    bottom: -45px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(0,0,0,0.9);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    pointer-events: none;
+    display: block !important;
+  }
+  
+  .navbar-nav .nav-link .nav-text::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid rgba(0,0,0,0.9);
+  }
+  
+  .navbar-nav .nav-link:hover .nav-text {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Desktop navigation styles */
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+    background: transparent !important;
+    position: static !important;
+  }
+  
+  .navbar-nav {
+    flex-direction: row !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  .navbar-nav .nav-link {
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+  
+  /* Light mode desktop nav links */
+  body:not(.dark-mode) .navbar-nav .nav-link {
+    color: #fff !important;
+  }
+  
+  body:not(.dark-mode) .navbar-nav .nav-link:hover,
+  body:not(.dark-mode) .navbar-nav .nav-link:focus,
+  body:not(.dark-mode) .navbar-nav .nav-link.active {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+    color: #1a202c !important;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4) !important;
+  }
+  
+  /* Dark mode desktop nav links */
+  body.dark-mode .navbar-nav .nav-link {
+    color: #f7fafc !important;
+  }
+  
+  body.dark-mode .navbar-nav .nav-link:hover,
+  body.dark-mode .navbar-nav .nav-link:focus,
+  body.dark-mode .navbar-nav .nav-link.active {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+    color: #1a202c !important;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4) !important;
+  }
+  
+  /* Hide mobile toggle on desktop */
+  .navbar-toggler {
+    display: none !important;
   }
 }
 
