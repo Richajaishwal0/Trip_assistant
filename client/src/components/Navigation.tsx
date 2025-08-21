@@ -7,6 +7,7 @@ import {
   Star,
   Calculator,
   DollarSign,
+  Wallet,
   Menu,
   User,
   Sun,
@@ -411,6 +412,18 @@ function Navbar() {
                     aria-hidden="true"
                   />
                   <span className="nav-text">Budget</span>
+                </Link>
+              </li>
+              <li className="nav-item" role="none">
+                <Link
+                  className="nav-link"
+                  to="/budget-planner"
+                  onClick={closeMobileNav}
+                  role="menuitem"
+                  aria-label="Travel Budget Planner"
+                >
+                  <Wallet className="nav-icon" size={20} aria-hidden="true" />
+                  <span className="nav-text">Planner</span>
                 </Link>
               </li>
               <li className="nav-item" role="none">

@@ -19,6 +19,7 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/places/:placeName': () => import('../pages/PlaceDetails'),
   '/help': () => import('../pages/HelpCentre'),
   '/trip-budget': () => import('../components/TripBudgetEstimator'),
+  '/budget-planner': () => import('../pages/BudgetPlannerPage'),
   '/about': () => import('../components/AboutUsPage'),
 };
 
@@ -62,6 +63,10 @@ export const routes: RouteConfig[] = [
   {
     path: '/trip-budget',
     component: lazyLoad(componentPaths['/trip-budget']),
+  },
+  {
+    path: '/budget-planner',
+    component: lazyLoad(componentPaths['/budget-planner']),
   },
   {
     path: '/about',
