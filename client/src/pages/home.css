@@ -67,7 +67,7 @@ body {
   text-align: center;
   color: white;
   max-width: 800px;
-  padding: 2rem;
+  padding: 1.5rem;
   animation: fadeInUp 1.5s ease-out;
 }
 
@@ -125,7 +125,7 @@ body {
 
 .hero-subtitle {
   font-size: clamp(1.1rem, 2vw, 1.4rem);
-  margin-bottom: 2.5rem;
+  margin-bottom: 0.5rem;
   opacity: 0.95;
   line-height: 1.6;
 }
@@ -151,7 +151,21 @@ body {
   cursor: pointer;
   border: none;
 }
-
+.chatbot-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  background: linear-gradient(135deg, #fad700, #ffc107);
+  color: #1a237e;
+  box-shadow: 0 8px 25px rgba(250, 215, 0, 0.3);
+}
 .btn-primary {
   background: linear-gradient(135deg, #fad700, #ffc107);
   color: #1a237e;

@@ -55,7 +55,7 @@ function Navbar() {
   return (
     <>
       <nav
-        className="navbar navbar-expand-lg fixed-top"
+        className=" navbar navbar-expand-lg fixed-top"
         style={{
           backgroundColor: "#1a237e",
           backdropFilter: "none",

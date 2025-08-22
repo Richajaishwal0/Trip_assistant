@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./home.css";
+import Chatbot from "../components/chatbot";
+
 import {
+  FaComments,
   FaCompass,
   FaArrowRight,
   FaStar,
@@ -14,6 +17,7 @@ const Home: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // Hero images array with high-quality travel photos
   const heroImages = [
@@ -227,6 +231,15 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
+        <button
+          className="chatbot-btn btn "
+          onClick={() => setIsChatOpen(true)}
+        >
+          <FaComments size={20} />
+        </button>
+
+        {/* Show Chatbot when button is clicked */}
+        {isChatOpen && <Chatbot onClose={() => setIsChatOpen(false)} />}
       </section>
     </div>
   );

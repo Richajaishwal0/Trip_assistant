@@ -29,6 +29,7 @@
   transition: transform 0.3s ease-in-out, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   align-items: stretch;
   justify-content: flex-start;
   max-width: 350px;
@@ -37,7 +38,6 @@
 /* Professional card layout styles */
 .card-image-wrapper {
   position: relative;
-  width: 100%;
   height: 140px;
   overflow: hidden;
   border-top-left-radius: 10px;
@@ -137,6 +137,10 @@
 
 .place-info {
   padding: 2px 6px 2px 6px;
+  display: flex;
+  flex-direction: column;
+  gap:4px;
+  margin-top: 20px;
   min-height: 0;
 }
 
@@ -164,6 +168,9 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  background: linear-gradient(135deg, #fad700, #ffc107);
+  color: #1a237e;
+  box-shadow: 0 8px 25px rgba(250, 215, 0, 0.3);
 }
 
 body.dark-mode {

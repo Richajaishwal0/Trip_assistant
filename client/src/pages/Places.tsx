@@ -2,10 +2,12 @@ import * as React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { FaMapMarkerAlt, FaStar, FaComments } from "react-icons/fa";
+import { FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import PlaceCard from "../components/placeCard";
 import "./Places.css";
 import SearchBar from "../components/searchbar";
 import Chatbot from "../components/chatbot";
+import "../components/chatbot.css";
 
 const places = [
   {
@@ -132,14 +134,40 @@ const Places: React.FC = () => {
       .then((res) => console.log("Activity updated:", res.data))
       .catch((err) => console.error("Error updating activity", err));
   }, []);
+  interface RatingStarsProps {
+    rating: number; 
+  }
 
-  // Auto-scroll carousel
   useEffect(() => {
     const interval = setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % totalPlaces);
     }, 2000);
     return () => clearInterval(interval);
   }, [totalPlaces]);
+  function RatingStars({ rating }: RatingStarsProps) {
+    const stars = [];
+    const totalStars = 5;
+
+    // 1. Render full stars
+    const fullStars = Math.floor(rating);
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} className="text-warning" />);
+    }
+
+    // 2. Render half star if applicable
+    const hasHalfStar = rating - fullStars >= 0.5;
+    if (hasHalfStar) {
+      stars.push(<FaStarHalfAlt key="half" className="text-warning" />);
+    }
+
+    // 3. Render empty stars
+    const emptyStars = totalStars - stars.length;
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} className="text-muted" />);
+    }
+
+    return <div className="flex flex-row gap-1">{stars}</div>;
+  }
 
   return (
     <>
@@ -164,9 +192,9 @@ const Places: React.FC = () => {
             {places.concat(places).map((place, idx) => (
               <div
                 key={idx + "-" + place.id}
-                className={darkMode ? "place-card dark-mode" : "place-card"}
+                className={darkMode ? "place-card dark-mode" : "place-card "}
               >
-                <div className="card-image-wrapper">
+                <div className="card-image-wrapper ">
                   <img
                     src={place.image}
                     alt={place.location}
@@ -177,10 +205,13 @@ const Places: React.FC = () => {
                 <div className="place-info">
                   <div className="place-header">
                     <h3 className="place-title">{place.location}</h3>
-                    <span className="place-rating">
-                      <FaStar /> {place.rating}
-                    </span>
                   </div>
+                  <div className="place-rating ">
+                    {/* Call the new component with the rating */}
+                    <RatingStars rating={place.rating} />
+                    <span>{place.rating}</span>
+                  </div>
+
                   <div className="place-meta">
                     <span>
                       {place.distance} {place.date}
@@ -197,10 +228,7 @@ const Places: React.FC = () => {
       </div>
 
       {/* Floating Chatbot Button */}
-      <button
-        className="chatbot-btn btn btn-primary"
-        onClick={() => setIsChatOpen(true)}
-      >
+      <button className="chatbot-btn btn" onClick={() => setIsChatOpen(true)}>
         <FaComments size={20} />
       </button>
 

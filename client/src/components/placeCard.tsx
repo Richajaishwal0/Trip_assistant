@@ -3,13 +3,40 @@ import "./placeCard.css";
 import { useState } from "react";
 import WeatherCard from "./WeatherCard";
 import { FaMapMarkerAlt, FaStar, FaCloudSun } from "react-icons/fa"; // added icon
-
+import { FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 const PlaceCard: React.FC = () => {
+  const [darkMode] = useState(
+    () => localStorage.getItem("darkMode") === "true"
+  );
+  const [selectedPlaceId, setSelectedPlaceId] = useState<number | null>(null);
+  interface RatingStarsProps {
+    rating: number;
+  }
+  function RatingStars({ rating }: RatingStarsProps) {
+    const stars = [];
+    const totalStars = 5;
 
-    const [darkMode] = useState(() => localStorage.getItem("darkMode") === "true");
-    const [selectedPlaceId, setSelectedPlaceId] = useState<number | null>(null);
+    // 1. Render full stars
+    const fullStars = Math.floor(rating);
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} className="text-warning" />);
+    }
 
+    // 2. Render half star if applicable
+    const hasHalfStar = rating - fullStars >= 0.5;
+    if (hasHalfStar) {
+      stars.push(<FaStarHalfAlt key="half" className="text-warning" />);
+    }
+
+    // 3. Render empty stars
+    const emptyStars = totalStars - stars.length;
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} className="text-muted" />);
+    }
+
+    return <div className="flex flex-row gap-1">{stars}</div>;
+  }
 
   const places = [
     {
@@ -120,7 +147,8 @@ const PlaceCard: React.FC = () => {
     {
       id: 11,
       name: "Shimla, Himachal Pradesh, India",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Longwood_%28Shimla%29.jpg/640px-Longwood_%28Shimla%29.jpg",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Longwood_%28Shimla%29.jpg/640px-Longwood_%28Shimla%29.jpg",
       location: "Shimla, Himachal Pradesh, India",
       mapLink: "https://www.google.com/maps/place/Amber+Fort,+Jaipur,+India",
       price: "₹500 for foreign tourists; ₹100 for Indian tourists",
@@ -129,35 +157,44 @@ const PlaceCard: React.FC = () => {
     {
       id: 12,
       name: "Shanti Stupa, Ladakh",
-      image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Shanti_Stupa_-Leh_-Jammu_and_Kashmir_-IMG001.jpg/640px-Shanti_Stupa_-Leh_-Jammu_and_Kashmir_-IMG001.jpg",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Shanti_Stupa_-Leh_-Jammu_and_Kashmir_-IMG001.jpg/640px-Shanti_Stupa_-Leh_-Jammu_and_Kashmir_-IMG001.jpg",
       location: "Shanti Stupa, Ladakh",
       mapLink: "https://www.google.com/maps/place/Charminar,+Hyderabad,+India",
       price: "₹250 for foreign tourists; ₹25 for Indian tourists",
       rating: "4.6/5",
     },
-  ]
+  ];
 
   return (
     <main className="place bg-black" role="main">
-      
-      <div className={darkMode ? "places-container bg-dark text-light":"places-container"}>
-        <h1 className={darkMode ? "title bg-dark text-light":"title"} id="places-heading">
+      <div
+        className={
+          darkMode ? "places-container bg-dark text-light" : "places-container"
+        }
+      >
+        <h1
+          className={darkMode ? "title bg-dark text-light" : "title"}
+          id="places-heading"
+        >
           Our Top Rated Tours and Adventures
         </h1>
-        <section 
-          className={darkMode ? "places-grid bg-dark text-light":"places-grid"}
+        <section
+          className={
+            darkMode ? "places-grid bg-dark text-light" : "places-grid"
+          }
           aria-labelledby="places-heading"
           role="region"
         >
           {places.map((place) => (
-            <article 
-              key={place.id} 
+            <article
+              key={place.id}
               className="place-card"
               role="article"
               aria-labelledby={`place-title-${place.id}`}
               tabIndex={0}
             >
-              <a 
+              <a
                 href="/agra"
                 aria-label={`View details for ${place.name}`}
                 tabIndex={0}
@@ -180,8 +217,8 @@ const PlaceCard: React.FC = () => {
                     title={`View ${place.location} on map`}
                     tabIndex={0}
                   >
-                    <FaMapMarkerAlt 
-                      className="map-icon" 
+                    <FaMapMarkerAlt
+                      className="map-icon"
                       aria-hidden="true"
                       role="img"
                     />
@@ -190,40 +227,51 @@ const PlaceCard: React.FC = () => {
                 <p className="price" aria-label={`Price: ${place.price}`}>
                   {place.price}
                 </p>
-                <p className="rating" aria-label={`Rating: ${place.rating} stars`}>
-                  <FaStar aria-hidden="true" /> 
+                <p
+                  className="rating"
+                  aria-label={`Rating: ${place.rating} stars`}
+                >
+                  <RatingStars rating={parseFloat(place.rating)} />
+
                   <span className="sr-only">Rating: </span>
                   {place.rating}
                 </p>
 
-              <button
-                onClick={() =>
-                  setSelectedPlaceId(selectedPlaceId === place.id ? null : place.id)
-                }
-                className="weather-btn"
-                aria-expanded={selectedPlaceId === place.id}
-                aria-controls={`weather-info-${place.id}`}
-                aria-label={selectedPlaceId === place.id ? `Hide weather information for ${place.location}` : `Show weather information for ${place.location}`}
-                type="button"
-              >
-                <FaCloudSun 
-                  style={{ marginRight: "6px" }} 
-                  aria-hidden="true"
-                />
-                {selectedPlaceId === place.id ? "Hide Weather" : "Show Weather"}
-              </button>
-
-              {selectedPlaceId === place.id && (
-                <div 
-                  id={`weather-info-${place.id}`}
-                  aria-live="polite"
-                  role="region"
-                  aria-label={`Weather information for ${place.location}`}
+                <button
+                  onClick={() =>
+                    setSelectedPlaceId(
+                      selectedPlaceId === place.id ? null : place.id
+                    )
+                  }
+                  className="weather-btn"
+                  aria-expanded={selectedPlaceId === place.id}
+                  aria-controls={`weather-info-${place.id}`}
+                  aria-label={
+                    selectedPlaceId === place.id
+                      ? `Hide weather information for ${place.location}`
+                      : `Show weather information for ${place.location}`
+                  }
+                  type="button"
                 >
-                  <WeatherCard city={place.location} />
-                </div>
-              )}
+                  <FaCloudSun
+                    style={{ marginRight: "6px" }}
+                    aria-hidden="true"
+                  />
+                  {selectedPlaceId === place.id
+                    ? "Hide Weather"
+                    : "Show Weather"}
+                </button>
 
+                {selectedPlaceId === place.id && (
+                  <div
+                    id={`weather-info-${place.id}`}
+                    aria-live="polite"
+                    role="region"
+                    aria-label={`Weather information for ${place.location}`}
+                  >
+                    <WeatherCard city={place.location} />
+                  </div>
+                )}
               </div>
             </article>
           ))}
