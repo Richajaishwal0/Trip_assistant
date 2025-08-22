@@ -1,0 +1,30 @@
+{
+  "name": "trip_assistant",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">\r <div style=\"display:flex;justify-content:center;flex-direction:row\">\r <img src=\"client/src/assets/logo.png\" alt=\"Trip Planner Logo\" width=\"18\" height=\"18\"/> <h2>Trip Planner </h2>\r </div>\r <!-- Animation for GitHub Markdown -->\r <picture>\r   <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=61DAFB&center=true&vCenter=true&width=435&lines=Your+Journey+Companion;AI-Powered+Travel+Planning;Discover%2C+Plan%2C+Experience;Travel+Smarter%2C+Together\">\r   <source media=\"(prefers-color-scheme: light)\" srcset=\"https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=1F6FEB&center=true&vCenter=true&width=435&lines=Your+Journey+Companion;AI-Powered+Travel+Planning;Discover%2C+Plan%2C+Experience;Travel+Smarter%2C+Together\">\r   <img src=\"https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=61DAFB&center=true&vCenter=true&width=435&lines=Your+Journey+Companion;AI-Powered+Travel+Planning;Discover%2C+Plan%2C+Experience;Travel+Smarter%2C+Together\" alt=\"Typing SVG\" />\r </picture>",
+  "main": "eslint.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dbansal06/Trip_assistant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dbansal06/Trip_assistant/issues"
+  },
+  "homepage": "https://github.com/Dbansal06/Trip_assistant#readme",
+  "dependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.12"
+  }
+}

@@ -20,6 +20,8 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/help': () => import('../pages/HelpCentre'),
   '/trip-budget': () => import('../components/TripBudgetEstimator'),
   '/about': () => import('../components/AboutUsPage'),
+  '/login': () => import('../pages/Login'), // New route for Login
+  '/signup': () => import('../pages/Signup'), // New route for Signup
 };
 
 // Define all app routes with lazy loading
@@ -67,6 +69,16 @@ export const routes: RouteConfig[] = [
     path: '/about',
     component: lazyLoad(componentPaths['/about']),
   },
+  {
+    path: '/login',
+    component: lazyLoad(componentPaths['/login']),
+    prefetch: true, // Prefetch since authentication is a key flow
+  },
+  {
+    path: '/signup',
+    component: lazyLoad(componentPaths['/signup']),
+    prefetch: true, // Prefetch since registration is a key flow
+  },
 ];
 
 // Function to prefetch critical routes
@@ -85,7 +97,7 @@ export function prefetchCriticalRoutes() {
             // Sanitize route path for logging
             const safePath = route.path.replace(/[\r\n]/g, '');
             console.log(`Prefetching route: ${safePath}`);
-          // amazonq-ignore-next-line
+            // amazonq-ignore-next-line
           }
         } catch (error) {
           // Sanitize route path for logging
