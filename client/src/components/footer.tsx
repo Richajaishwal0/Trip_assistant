@@ -375,7 +375,8 @@ const Footer: React.FC = () => {
               </div>
               <div className="col-md-5 col-lg-4 text-start">
                 <a
-                  href="#"
+                  href="https://facebook.com/"
+                  target="_blank"
                   className="btn m-1 text-white"
                   role="button"
                   style={{
@@ -407,7 +408,8 @@ const Footer: React.FC = () => {
                   <FaFacebookF size={16} />
                 </a>
                 <a
-                  href="#"
+                  href="https://x.com/"
+                  target="_blank"
                   className="btn m-1 text-white"
                   role="button"
                   style={{
@@ -439,7 +441,8 @@ const Footer: React.FC = () => {
                   <FaTwitter size={16} />
                 </a>
                 <a
-                  href="#"
+                  href="https://google.com/"
+                  target="_blank"
                   className="btn m-1 text-white"
                   role="button"
                   style={{
@@ -471,7 +474,8 @@ const Footer: React.FC = () => {
                   <FaGoogle size={16} />
                 </a>
                 <a
-                  href="#"
+                  href="https://instagram.com/"
+                  target="_blank"
                   className="btn m-1 text-white"
                   role="button"
                   style={{
