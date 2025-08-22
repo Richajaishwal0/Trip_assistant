@@ -15,11 +15,19 @@ const getMorePlaces = async (req, res) => {
       per_page
     );
 
-    // Using Pexels API for images (you should move this to .env)
+    // Check if PEXELS_API_KEY is configured
     const PEXELS_API_KEY = process.env.PEXELS_API_KEY;
+    
+    if (!PEXELS_API_KEY) {
+      console.error('❌ PEXELS_API_KEY environment variable is not set');
+      return res.status(500).json({
+        success: false,
+        message: 'External API configuration missing. Please contact administrator.',
+        error: 'Places service temporarily unavailable'
+      });
+    }
 
     console.log("PEXELS_API_KEY available:", !!PEXELS_API_KEY);
-
     console.log("Making request to Pexels API...");
 
     // Pexels API requires the key to be passed as a header

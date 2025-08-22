@@ -15,8 +15,17 @@ const authMiddleware = (req, res, next) => {
   const token = authHeader.split(' ')[1];
   
   try {
+    // Check if JWT_SECRET is configured
+    if (!process.env.JWT_SECRET) {
+      console.error('❌ SECURITY ERROR: JWT_SECRET environment variable is not set');
+      return res.status(500).json({
+        success: false,
+        message: 'Server configuration error. Please contact administrator.'
+      });
+    }
+
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-default-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Add user from payload
     req.user = decoded;

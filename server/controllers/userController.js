@@ -36,11 +36,19 @@ const login = async (req, res) => {
       });
     }
 
-    // Create JWT token
+    // Create JWT token - Fail if no secret is provided for security
+    if (!process.env.JWT_SECRET) {
+      console.error('❌ SECURITY ERROR: JWT_SECRET environment variable is not set');
+      return res.status(500).json({
+        success: false,
+        message: 'Server configuration error. Please contact administrator.'
+      });
+    }
+
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      process.env.JWT_SECRET || "your-default-secret-key",
-      { expiresIn: "1d" }
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
     );
 
     // Return user data without password
@@ -98,11 +106,19 @@ const register = async (req, res) => {
       mobile_no,
     });
 
-    // Create JWT token
+    // Create JWT token - Fail if no secret is provided for security  
+    if (!process.env.JWT_SECRET) {
+      console.error('❌ SECURITY ERROR: JWT_SECRET environment variable is not set');
+      return res.status(500).json({
+        success: false,
+        message: 'Server configuration error. Please contact administrator.'
+      });
+    }
+
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      process.env.JWT_SECRET || "your-default-secret-key",
-      { expiresIn: "1d" }
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
     );
 
     // Return user data without password
