@@ -7,10 +7,10 @@ import {
   Star,
   Calculator,
   DollarSign,
-  Menu,
   User,
   Sun,
   Moon,
+  Mail, // Keeping relevant icons
 } from "lucide-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -167,6 +167,17 @@ function Navbar() {
                 >
                   <DollarSign size={18} className="me-1" />
                   <span className="d-lg-none">Currency</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/contact"
+                  onClick={closeMobileNav}
+                  aria-label="Contact Us"
+                >
+                  <Mail size={18} className="me-1" />
+                  <span className="d-lg-none">Contact</span>
                 </Link>
               </li>
             </ul>
