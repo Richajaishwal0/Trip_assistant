@@ -1,4 +1,3 @@
-import React from 'react';
 import { lazyLoad } from './lazyLoadUtils';
 
 // Define route configurations for better organization and prefetching
@@ -22,7 +21,10 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/about': () => import('../components/AboutUsPage'),
   '/login': () => import('../pages/Login'),
   '/signup': () => import('../pages/Signup'),
-  '/contact': () => import('../pages/Contact'), // New route for Contact Us
+  '/contact': () => import('../pages/Contact'),
+  '/faq': () => import('../pages/FAQ'),
+  '/terms': () => import('../pages/Terms'),
+  '/privacy': () => import('../pages/Privacy'),
 };
 
 // Define all app routes with lazy loading
@@ -85,6 +87,21 @@ export const routes: RouteConfig[] = [
     component: lazyLoad(componentPaths['/contact']),
     prefetch: true, // Prefetch for user accessibility
   },
+  {
+    path: '/faq',
+    component: lazyLoad(componentPaths['/faq']),
+    prefetch: true, // Prefetch for user support
+  },
+  {
+    path: '/terms',
+    component: lazyLoad(componentPaths['/terms']),
+    prefetch: true, // Prefetch for legal information
+  },
+  {
+    path: '/privacy',
+    component: lazyLoad(componentPaths['/privacy']),
+    prefetch: true, // Prefetch for user transparency
+  },
 ];
 
 // Function to prefetch critical routes
@@ -103,7 +120,7 @@ export function prefetchCriticalRoutes() {
             // Sanitize route path for logging
             const safePath = route.path.replace(/[\r\n]/g, '');
             console.log(`Prefetching route: ${safePath}`);
-          // amazonq-ignore-next-line
+            // amazonq-ignore-next-line
           }
         } catch (error) {
           // Sanitize route path for logging

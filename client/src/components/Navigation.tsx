@@ -10,7 +10,10 @@ import {
   User,
   Sun,
   Moon,
-  Mail, // Keeping relevant icons
+  Mail,
+  HelpCircle,
+  FileText,
+  Shield, // Added for Privacy icon
 } from "lucide-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -51,7 +54,7 @@ function Navbar() {
           );
           bsCollapse.hide();
         } else {
-          navbarCollapse.classList.remove("show");
+          navbarCollapse.className = navbarCollapse.className.replace("show", "");
         }
       }
     } catch (error) {
@@ -75,7 +78,6 @@ function Navbar() {
     <>
       <nav className="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
         <div className="container-fluid">
-          {/* Logo - Left side */}
           <button
             className="navbar-brand btn p-0 border-0 bg-transparent"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -86,7 +88,6 @@ function Navbar() {
             </div>
           </button>
 
-          {/* Mobile toggle button */}
           <button
             className="navbar-toggler"
             type="button"
@@ -99,9 +100,7 @@ function Navbar() {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* Collapsible content - Right side */}
           <div className="collapse navbar-collapse" id="navbarNav" ref={navCollapseRef}>
-            {/* Navigation links - centered */}
             <ul className="navbar-nav mx-auto">
               <li className="nav-item">
                 <Link
@@ -180,11 +179,42 @@ function Navbar() {
                   <span className="d-lg-none">Contact</span>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/faq"
+                  onClick={closeMobileNav}
+                  aria-label="FAQ"
+                >
+                  <HelpCircle size={18} className="me-1" />
+                  <span className="d-lg-none">FAQ</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/terms"
+                  onClick={closeMobileNav}
+                  aria-label="Terms & Conditions"
+                >
+                  <FileText size={18} className="me-1" />
+                  <span className="d-lg-none">Terms</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  to="/privacy"
+                  onClick={closeMobileNav}
+                  aria-label="Privacy Policy"
+                >
+                  <Shield size={18} className="me-1" />
+                  <span className="d-lg-none">Privacy</span>
+                </Link>
+              </li>
             </ul>
 
-            {/* Right side actions */}
             <div className="d-flex align-items-center gap-3 ms-auto">
-              {/* Theme toggle */}
               <button
                 className="btn"
                 onClick={toggleDarkMode}
@@ -205,7 +235,6 @@ function Navbar() {
                 {darkMode ? <Sun size={18} /> : <Moon size={18} />}
               </button>
 
-              {/* User dropdown */}
               <div className="dropdown">
                 <button
                   className="btn dropdown-toggle"
