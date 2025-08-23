@@ -20,7 +20,9 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     document.body.classList.contains("dark-mode")
   );
   const chatRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+
+  const formRef = useRef<HTMLFormElement>(null);
+
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
   // Combined effect for theme detection and event listeners
@@ -63,6 +65,17 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      event.key === "Enter" &&
+      (event.ctrlKey || event.metaKey)
+    ) {
+      event.preventDefault();
+      // Submit the form programmatically
+      formRef.current?.requestSubmit();
+    }
+  };
 
   const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -209,7 +222,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       </main>
 
       <form 
-        className="chatbot-footer d-flex" 
+
+        ref={formRef}
+        className="chatbot-footer p-2 d-flex" 
+
         onSubmit={handleSendMessage}
         role="form"
         aria-label="Send message to travel assistant"
@@ -224,6 +240,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           className="form-control"
           placeholder="Type a message..."
           aria-describedby="chat-help"
+          onKeyDown={handleInputKeyDown}
           required
         />
         <div id="chat-help" className="sr-only">
