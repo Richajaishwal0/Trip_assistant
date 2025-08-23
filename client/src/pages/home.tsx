@@ -99,7 +99,7 @@ const Home: React.FC = () => {
                     <Link to="/places" className="btn-primary">
                       Explore Destinations <FaArrowRight />
                     </Link>
-                    <Link to="/auth" className="btn-secondary">
+                    <Link to="/auth?path=/login" className="btn-secondary">
                       Get Started
                     </Link>
                   </div>
@@ -219,7 +219,7 @@ const Home: React.FC = () => {
               perfect getaway
             </p>
             <div className="cta-buttons">
-              <Link to="/auth" className="btn-cta-primary">
+              <Link to="/auth?path=/signup" className="btn-cta-primary">
                 Sign Up Now <FaArrowRight />
               </Link>
               <Link to="/places" className="btn-cta-secondary">

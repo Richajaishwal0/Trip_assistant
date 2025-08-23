@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import { Toaster } from "sonner";
 
@@ -99,7 +100,7 @@ const AppContent = () => {
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={<route.component />}
+                  element={ <route.component />}
                 />
               ))}
             </Routes>

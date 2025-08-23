@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   Home,
   MapPin,
@@ -7,266 +7,207 @@ import {
   Star,
   Calculator,
   DollarSign,
-  Menu,
   User,
   Sun,
   Moon,
+  Menu,
+  X,
+  HelpCircle,
 } from "lucide-react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
-import "./Navigation.css";
 import Logo from "./Logo";
-import { initializeBootstrap } from "../utils/bootstrapInit";
+import { useToken } from "../context/TokenProvider";
 
-function Navbar() {
+function ProfileDropdown() {
   const navigate = useNavigate();
-  const navCollapseRef = useRef<HTMLDivElement>(null);
-  const [darkMode, setDarkMode] = useState(() => {
-    try {
-      return localStorage.getItem("darkMode") === "true";
-    } catch {
-      return false;
-    }
-  });
+  const [open, setOpen] = useState(false);
+  const { isLoggedin, login , logout } = useToken();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    try {
-      localStorage.setItem("darkMode", newMode.toString());
-    } catch {
-      console.warn("Could not save dark mode preference");
-    }
-    document.body.classList.toggle("dark-mode", newMode);
-  };
-
-  const closeMobileNav = () => {
-    try {
-      const navbarCollapse = navCollapseRef.current;
-      if (navbarCollapse && navbarCollapse.classList.contains("show")) {
-        if (typeof window !== 'undefined' && window.bootstrap) {
-          const bsCollapse = new window.bootstrap.Collapse(
-            navbarCollapse,
-            { toggle: false }
-          );
-          bsCollapse.hide();
-        } else {
-          navbarCollapse.classList.remove("show");
-        }
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
       }
-    } catch (error) {
-      console.warn("Could not close mobile navigation:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  }, [darkMode]);
-
-  useEffect(() => {
-    initializeBootstrap();
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+    navigate("/");
+  };
+
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
-        <div className="container-fluid">
-          {/* Logo - Left side */}
-          <button
-            className="navbar-brand btn p-0 border-0 bg-transparent"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            aria-label="Trip Assistant - Scroll to top"
-          >
-            <div className="d-flex align-items-center">
-              <Logo />
-            </div>
-          </button>
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-md"
+        aria-label="User menu"
+      >
+        <User size={18} />
+      </button>
 
-          {/* Mobile toggle button */}
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          {/* Collapsible content - Right side */}
-          <div className="collapse navbar-collapse" id="navbarNav" ref={navCollapseRef}>
-            {/* Navigation links - centered */}
-            <ul className="navbar-nav mx-auto">
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/"
-                  onClick={closeMobileNav}
-                  aria-label="Home page"
-                >
-                  <Home size={18} className="me-1" />
-                  <span className="d-lg-none">Home</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/places"
-                  onClick={closeMobileNav}
-                  aria-label="Places to visit"
-                >
-                  <MapPin size={18} className="me-1" />
-                  <span className="d-lg-none">Places</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/find-friends"
-                  onClick={closeMobileNav}
-                  aria-label="Find Friends"
-                >
-                  <Users size={18} className="me-1" />
-                  <span className="d-lg-none">Friends</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/more-places"
-                  onClick={closeMobileNav}
-                  aria-label="Famous Places"
-                >
-                  <Star size={18} className="me-1" />
-                  <span className="d-lg-none">Famous</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/trip-budget"
-                  onClick={closeMobileNav}
-                  aria-label="Trip Budget Estimator"
-                >
-                  <Calculator size={18} className="me-1" />
-                  <span className="d-lg-none">Budget</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  to="/currency"
-                  onClick={closeMobileNav}
-                  aria-label="Currency Converter"
-                >
-                  <DollarSign size={18} className="me-1" />
-                  <span className="d-lg-none">Currency</span>
-                </Link>
-              </li>
-            </ul>
-
-            {/* Right side actions */}
-            <div className="d-flex align-items-center gap-3 ms-auto">
-              {/* Theme toggle */}
+      {open && (
+        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden z-50">
+          {!isLoggedin ? (
+            <>
               <button
-                className="btn"
-                onClick={toggleDarkMode}
-                aria-label={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-                title="Toggle theme"
-                style={{ 
-                  background: 'transparent', 
-                  border: 'none', 
-                  color: 'white',
-                  padding: '0.5rem',
-                  minWidth: '40px',
-                  minHeight: '40px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                className="w-full px-4 py-2 text-left text-black hover:bg-gray-100 dark:hover:bg-gray-700"
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/auth?path=/signup",);
                 }}
               >
-                {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+                Sign Up
               </button>
+              <button
+                className="w-full px-4 py-2 text-left text-black hover:bg-gray-100 dark:hover:bg-gray-700"
+                onClick={() => {
+                  setOpen(false);
+                  navigate("/auth?path=/login");
+                }}
+              >
+                Log In
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/profile"
+                onClick={() => setOpen(false)}
+                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="w-full px-4 py-2 text-left text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                Log Out
+              </button>
+            </>
+          )}
+          <div className="border-t border-gray-200 dark:border-gray-700" />
+          <Link
+            to="/help"
+            onClick={() => setOpen(false)}
+            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+          >
+            Help Centre
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
 
-              {/* User dropdown */}
-              <div className="dropdown">
-                <button
-                  className="btn dropdown-toggle"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  aria-label="User menu"
-                  style={{ 
-                    width: '40px', 
-                    height: '40px', 
-                    borderRadius: '50%',
-                    background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                    border: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-                  }}
-                >
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    background: 'rgba(255,255,255,0.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <User size={14} />
-                  </div>
-                </button>
-                <ul className="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => {
-                        closeMobileNav();
-                        navigate("/auth", { state: { isLogin: false } });
-                      }}
-                    >
-                      Sign up
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      className="dropdown-item"
-                      onClick={() => {
-                        closeMobileNav();
-                        navigate("/auth", { state: { isLogin: true } });
-                      }}
-                    >
-                      Log in
-                    </button>
-                  </li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li>
-                    <Link
-                      className="dropdown-item"
-                      to="/help"
-                      onClick={closeMobileNav}
-                    >
-                      Help Centre
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
+function Navbar() {
+  const location = useLocation();
+  const [darkMode, setDarkMode] = useState(
+    () => localStorage.getItem("darkMode") === "true"
+  );
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+    localStorage.setItem("darkMode", darkMode.toString());
+    document.body.classList.toggle("dark-mode", darkMode);
+  }, [darkMode]);
+
+  const navLinks = [
+    { path: "/", label: "Home", icon: Home },
+    { path: "/places", label: "Places", icon: MapPin },
+    { path: "/find-friends", label: "Friends", icon: Users },
+    { path: "/more-places", label: "Famous", icon: Star },
+    { path: "/trip-budget", label: "Budget", icon: Calculator },
+    { path: "/currency", label: "Currency", icon: DollarSign },
+  ];
+
+  return (
+    <nav className="bg-indigo-600 dark:bg-gray-900 text-white fixed w-full z-50 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="flex items-center space-x-2"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            <Logo />
+          </Link>
+
+          {/* Desktop Links */}
+          <div className="hidden md:flex space-x-6">
+            {navLinks.map(({ path, label, icon: Icon }) => (
+              <Link
+                key={path}
+                to={path}
+                className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  location.pathname === path
+                    ? "bg-white/20"
+                    : "hover:bg-white/10"
+                }`}
+              >
+                <Icon size={18} />
+                <span>{label}</span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Right controls */}
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2 rounded-full hover:bg-white/20"
+              aria-label="Toggle theme"
+            >
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <ProfileDropdown />
+
+            {/* Mobile toggle */}
+            <button
+              className="md:hidden p-2 rounded-lg hover:bg-white/20"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
-      </nav>
-    </>
+      </div>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden bg-indigo-700 dark:bg-gray-800 px-4 pb-4 space-y-2">
+          {navLinks.map(({ path, label, icon: Icon }) => (
+            <Link
+              key={path}
+              to={path}
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium ${
+                location.pathname === path
+                  ? "bg-white/20"
+                  : "hover:bg-white/10"
+              }`}
+            >
+              <Icon size={18} />
+              <span>{label}</span>
+            </Link>
+          ))}
+          <Link
+            to="/help"
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium hover:bg-white/10"
+          >
+            <HelpCircle size={18} />
+            <span>Help Centre</span>
+          </Link>
+        </div>
+      )}
+    </nav>
   );
 }
 

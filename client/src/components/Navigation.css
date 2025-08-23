@@ -1,4 +1,12 @@
 /* Custom Navbar Styles */
+/* Debug container to confirm visibility */
+.navbar .d-flex.align-items-center.gap-3.ms-auto {
+  background-color: rgba(255, 0, 0, 0.3) !important; /* semi-transparent red */
+  z-index: 1050 !important; /* ensure it's on top */
+  position: relative !important; /* ensure normal flow */
+}
+
+
 .custom-navbar {
   background: #1a237e !important;
   box-shadow: 0 4px 20px rgba(26, 35, 126, 0.3);

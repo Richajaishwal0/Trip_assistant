@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import {
   FaUserFriends,
@@ -8,6 +8,8 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import ScrollToTop from "../components/ScrollToTop";
+import { useToken } from "../context/TokenProvider";
+import { useNavigate } from "react-router-dom";
 
 // Dummy user data
 const users = [
@@ -92,6 +94,8 @@ const users = [
 ];
 
 const UserCard: React.FC<{ user: (typeof users)[0] }> = ({ user }) => {
+  const navigate = useNavigate();
+  const { isLoggedin } = useToken();
   const [requested, setRequested] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -105,22 +109,23 @@ const UserCard: React.FC<{ user: (typeof users)[0] }> = ({ user }) => {
 
   const cardStyle = darkMode
     ? {
-        background: '#2d3748',
-        color: '#f7fafc',
-        border: '1px solid #4a5568',
-        boxShadow: '0 4px 24px #23294644',
-      }
+      background: '#2d3748',
+      color: '#f7fafc',
+      border: '1px solid #4a5568',
+      boxShadow: '0 4px 24px #23294644',
+    }
     : {};
-const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || "http://localhost:5000";
+  const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || "http://localhost:5000";
   //updating user's activity by calling backend api for findfriends activity
-    useEffect(() => {
-      const userId = localStorage.getItem("user_id");
-      if (!userId) return; // No user logged in
-  
-      axios.post(`${apiBaseUrl}/api/user/activity`, { userId })
-        .then(res => console.log("Activity updated:", res.data))
-        .catch(err => console.error("Error updating activity", err));
-    }, []);
+  useEffect(() => {
+    if(!isLoggedin) navigate("/auth?path=/login");
+
+    const userId = localStorage.getItem("user_id");
+
+    axios.post(`${apiBaseUrl}/api/user/activity`, { userId })
+      .then(res => console.log("Activity updated:", res.data))
+      .catch(err => console.error("Error updating activity", err));
+  }, []);
 
   return (
     <div className="card" style={cardStyle}>
@@ -151,12 +156,12 @@ const App: React.FC = () => {
 
   const headerStyle = darkMode
     ? {
-        background: '#2d3748',
-        borderBottom: '2px solid #FAD700',
-        color: '#FAD700',
-        borderRadius: '16px 16px 0 0',
-        boxShadow: '0 2px 12px #23294644',
-      }
+      background: '#2d3748',
+      borderBottom: '2px solid #FAD700',
+      color: '#FAD700',
+      borderRadius: '16px 16px 0 0',
+      boxShadow: '0 2px 12px #23294644',
+    }
     : {};
 
   return (
@@ -203,7 +208,7 @@ const App: React.FC = () => {
       {view === "friends" && <h2>Your Friends</h2>}
       {view === "requests" && <h2>Friend Requests</h2>}
       {view === "messages" && <h2>Messages</h2>}
-      
+
       {/* Scroll to Top Button */}
       <ScrollToTop />
     </div>
