@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const { badges } = require("../badgesConfig");
+const { badges } = require("../config/badgesConfig");
 
 router.post("/", async (req, res) => {
   const { userId } = req.body;
