@@ -7,7 +7,6 @@ import {
   Star,
   Calculator,
   DollarSign,
-  Menu,
   User,
   Sun,
   Moon,
