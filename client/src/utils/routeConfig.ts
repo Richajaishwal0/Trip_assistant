@@ -19,7 +19,7 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/help': () => import('../pages/HelpCentre'),
   '/trip-budget': () => import('../components/TripBudgetEstimator'),
   '/about': () => import('../components/AboutUsPage'),
-  '/privacy': () => import('../pages/Privacy'), // New route for Privacy Policy
+  '/privacy': () => import('../pages/Privacy'),
 };
 
 // Define all app routes with lazy loading
