@@ -10,7 +10,7 @@ const TripBudgetEstimator: React.FC = () => {
   };
 
   return (
-    <div className="p-4 max-w-md mx-auto bg-white rounded shadow">
+    <div className="mt-4 p-4 max-w-md mx-auto bg-white rounded shadow">
       <h2 className="text-xl font-bold mb-4">Trip Budget Estimator</h2>
 
       <label className="block mb-2">Number of Days:</label>

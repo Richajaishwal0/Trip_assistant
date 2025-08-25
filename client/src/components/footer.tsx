@@ -13,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const Footer: React.FC = () => {
   return (
-    <div className="my-5">
+    <div className="mb-5">
       <footer
         className="text-start text-white"
         style={{
@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
           width: "100%",
           position: "absolute",
-          borderRadius: "20px 20px 0 0",
+          borderRadius: "1px 1px 0 0",
         }}
       >
         <div className="container p-4 pb-0">

@@ -34,6 +34,15 @@ const AppContent = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // navbar height
+  const [navBarHeight, setNavBarHeight] = React.useState(0);
+  useEffect(() => {
+    const navBar = document.querySelector(".navbar");
+    if(navBar){
+      setNavBarHeight(navBar.clientHeight);
+    }
+  }, [location.pathname]);
+
   // Determine if the header and footer should be shown based on the route
   const showHeaderFooter = useMemo(
     () => location.pathname !== "/auth" && location.pathname !== "/admin",
@@ -66,11 +75,12 @@ const AppContent = () => {
       {showHeaderFooter && <Navbar />}
 
       {/* Main content area with dynamic padding to prevent overlap with fixed navbar */}
+
       <main
         id="main-content"
         style={{
           paddingTop:
-            showHeaderFooter && location.pathname !== "/help" ? "80px" : "0",
+            showHeaderFooter && location.pathname !== "/help" ? `${navBarHeight}px` : "0",
         }}
         role="main"
         tabIndex={-1}

@@ -284,196 +284,112 @@ function Navbar() {
                     </linearGradient>
                   </defs>
                   <rect x="8" y="8" width="24" height="24" rx="3" fill="url(#g1)" stroke="rgba(255,255,255,.3)" strokeWidth="1" />
-                  <path d="M12 16h16 M12 20h16 M12 24h16 M16 12v16 M20 12v16 M24 12v16" stroke="rgba(255,255,255,.2)" strokeWidth=".5"/>
-                  <circle cx="20" cy="18" r="2" fill="url(#g2)"/>
-                  <path d="M20 20v6" stroke="url(#g2)" strokeWidth="2" strokeLinecap="round"/>
-                  <circle cx="28" cy="12" r="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.3)" strokeWidth=".5"/>
-                  <path d="M28 9v6M25 12h6" stroke="rgba(255,255,255,.6)" strokeWidth="1" strokeLinecap="round"/>
-                  <path d="M12 28c2-2 4-1 8-1s6-1 8 1" stroke="url(#g2)" strokeWidth="2" strokeLinecap="round" fill="none"/>
+                  <path d="M12 16h16 M12 20h16 M12 24h16 M16 12v16 M20 12v16 M24 12v16" stroke="rgba(255,255,255,.2)" strokeWidth=".5" />
+                  <circle cx="20" cy="18" r="2" fill="url(#g2)" />
+                  <path d="M20 20v6" stroke="url(#g2)" strokeWidth="2" strokeLinecap="round" />
+                  <circle cx="28" cy="12" r="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.3)" strokeWidth=".5" />
+                  <path d="M28 9v6M25 12h6" stroke="rgba(255,255,255,.6)" strokeWidth="1" strokeLinecap="round" />
+                  <path d="M12 28c2-2 4-1 8-1s6-1 8 1" stroke="url(#g2)" strokeWidth="2" strokeLinecap="round" fill="none" />
                 </svg>
               </div>
             </div>
-          </button>
+          </Link>
 
-          {/* Desktop nav */}
-          <ul className="nav-links" role="menubar" aria-label="Main menu">
-            <li className="nav-item" role="none">
-              <Link className="nav-link" to="/" role="menuitem" onClick={closeMobileNav} aria-label="Home">
-                <Home size={20} aria-hidden="true" />
-                <span className="nav-tip">Home</span>
-              </Link>
-            </li>
-            <li className="nav-item" role="none">
-              <Link className="nav-link" to="/places" role="menuitem" onClick={closeMobileNav} aria-label="Places">
-                <MapPin size={20} aria-hidden="true" />
-                <span className="nav-tip">Places</span>
-              </Link>
-            </li>
-            <li className="nav-item" role="none">
-              <Link className="nav-link" to="/find-friends" role="menuitem" onClick={closeMobileNav} aria-label="Friends">
-                <Users size={20} aria-hidden="true" />
-                <span className="nav-tip">Friends</span>
-              </Link>
-            </li>
-            <li className="nav-item" role="none">
-              <Link className="nav-link" to="/more-places" role="menuitem" onClick={closeMobileNav} aria-label="Famous">
-                <Star size={20} aria-hidden="true" />
-                <span className="nav-tip">Famous</span>
-              </Link>
-            </li>
-            <li className="nav-item" role="none">
-              <Link className="nav-link" to="/trip-budget" role="menuitem" onClick={closeMobileNav} aria-label="Budget">
-                <Calculator size={20} aria-hidden="true" />
-                <span className="nav-tip">Budget</span>
-              </Link>
-            </li>
-            <li className="nav-item" role="none">
-              <Link className="nav-link" to="/currency" role="menuitem" onClick={closeMobileNav} aria-label="Currency">
-                <DollarSign size={20} aria-hidden="true" />
-                <span className="nav-tip">Currency</span>
-              </Link>
-            </li>
-          </ul>
-
-          {/* Right actions */}
-          <div className="nav-actions">
-            {/* mobile toggle */}
-            <button
-              ref={mobileToggleRef}
-              className="nav-btn nav-mobileToggle"
-              aria-expanded={mobileOpen}
-              aria-controls="nav-mobile-menu"
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              onClick={() => setMobileOpen((s) => !s)}
-              type="button"
-            >
-              <Menu size={20} />
-            </button>
-
-            {/* dark mode */}
-            <button
-              className="nav-btn"
-              aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-              title="Toggle theme"
-              onClick={toggleDarkMode}
-              type="button"
-            >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-
-            {/* profile dropdown */}
-            <div className="nav-dd hidden lg:block">
-              <button
-                ref={profileBtnRef}
-                className="nav-btn"
-                aria-haspopup="menu"
-                aria-expanded={profileOpen}
-                aria-controls="nav-profile-menu"
-                onClick={() => setProfileOpen((s) => !s)}
-                type="button"
-                title="User menu"
-              >
-                <div className="nav-profilePic" aria-hidden="true">
-                  <User size={16} />
-                </div>
-              </button>
-
-              <div
-                ref={profileMenuRef}
-                id="nav-profile-menu"
-                className={`nav-menu ${profileOpen ? "open" : ""}`}
-                role="menu"
-              >
-                <button
-                  className="nav-ddItem"
-                  role="menuitem"
-                  onClick={() => {
-                    setMobileOpen(false);
-                    setProfileOpen(false);
-                    navigate("/auth", { state: { isLogin: false } });
-                  }}
-                >
-                  <span aria-hidden="true">➕</span>
-                  <span>Sign up</span>
-                </button>
-
-                <button
-                  className="nav-ddItem"
-                  role="menuitem"
-                  onClick={() => {
-                    setMobileOpen(false);
-                    setProfileOpen(false);
-                    navigate("/auth", { state: { isLogin: true } });
-                  }}
-                >
-                  <span aria-hidden="true">🔐</span>
-                  <span>Log in</span>
-                </button>
-
-                <hr className="nav-hr" />
-
-                <Link
-                  to="/help"
-                  className="nav-ddLink"
-                  role="menuitem"
-                  onClick={() => setProfileOpen(false)}
-                >
-                  <span aria-hidden="true">❓</span>
-                  <span>Help Centre</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile full menu */}
-        {mobileOpen && (
-          <div
-            id="nav-mobile-menu"
-            className="nav-mobile"
-            role="menu"
-            aria-label="Mobile main menu"
-          >
-            <Link
-              ref={firstMobileLinkRef}
-              className="nav-link"
-              to="/"
-              onClick={closeMobileNav}
-            >
-              <Home size={18} aria-hidden="true" />
+        {/* Desktop nav */}
+        <ul className="nav-links" role="menubar" aria-label="Main menu">
+          <li className="nav-item" role="none">
+            <Link className="nav-link" to="/" role="menuitem" onClick={closeMobileNav} aria-label="Home">
+              <Home size={20} aria-hidden="true" />
               <span className="nav-tip">Home</span>
             </Link>
-
-            <Link className="nav-link" to="/places" onClick={closeMobileNav}>
-              <MapPin size={18} aria-hidden="true" />
+          </li>
+          <li className="nav-item" role="none">
+            <Link className="nav-link" to="/places" role="menuitem" onClick={closeMobileNav} aria-label="Places">
+              <MapPin size={20} aria-hidden="true" />
               <span className="nav-tip">Places</span>
             </Link>
-
-            <Link className="nav-link" to="/find-friends" onClick={closeMobileNav}>
-              <Users size={18} aria-hidden="true" />
+          </li>
+          <li className="nav-item" role="none">
+            <Link className="nav-link" to="/find-friends" role="menuitem" onClick={closeMobileNav} aria-label="Friends">
+              <Users size={20} aria-hidden="true" />
               <span className="nav-tip">Friends</span>
             </Link>
-
-            <Link className="nav-link" to="/more-places" onClick={closeMobileNav}>
-              <Star size={18} aria-hidden="true" />
+          </li>
+          <li className="nav-item" role="none">
+            <Link className="nav-link" to="/more-places" role="menuitem" onClick={closeMobileNav} aria-label="Famous">
+              <Star size={20} aria-hidden="true" />
               <span className="nav-tip">Famous</span>
             </Link>
-
-            <Link className="nav-link" to="/trip-budget" onClick={closeMobileNav}>
-              <Calculator size={18} aria-hidden="true" />
+          </li>
+          <li className="nav-item" role="none">
+            <Link className="nav-link" to="/trip-budget" role="menuitem" onClick={closeMobileNav} aria-label="Budget">
+              <Calculator size={20} aria-hidden="true" />
               <span className="nav-tip">Budget</span>
             </Link>
-
-            <Link className="nav-link" to="/currency" onClick={closeMobileNav}>
-              <DollarSign size={18} aria-hidden="true" />
+          </li>
+          <li className="nav-item" role="none">
+            <Link className="nav-link" to="/currency" role="menuitem" onClick={closeMobileNav} aria-label="Currency">
+              <DollarSign size={20} aria-hidden="true" />
               <span className="nav-tip">Currency</span>
             </Link>
+          </li>
+        </ul>
 
-            <div style={{ borderTop: "1px solid rgba(255,255,255,.06)", marginTop: 8, paddingTop: 8 }}>
+        {/* Right actions */}
+        <div className="nav-actions">
+          {/* mobile toggle */}
+          <button
+            ref={mobileToggleRef}
+            className="nav-btn nav-mobileToggle"
+            aria-expanded={mobileOpen}
+            aria-controls="nav-mobile-menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMobileOpen((s) => !s)}
+            type="button"
+          >
+            <Menu size={20} />
+          </button>
+
+          {/* dark mode */}
+          <button
+            className="nav-btn"
+            aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title="Toggle theme"
+            onClick={toggleDarkMode}
+            type="button"
+          >
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+
+          {/* profile dropdown */}
+          <div className="nav-dd hidden lg:block">
+            <button
+              ref={profileBtnRef}
+              className="nav-btn"
+              aria-haspopup="menu"
+              aria-expanded={profileOpen}
+              aria-controls="nav-profile-menu"
+              onClick={() => setProfileOpen((s) => !s)}
+              type="button"
+              title="User menu"
+            >
+              <div className="nav-profilePic" aria-hidden="true">
+                <User size={16} />
+              </div>
+            </button>
+
+            <div
+              ref={profileMenuRef}
+              id="nav-profile-menu"
+              className={`nav-menu ${profileOpen ? "open" : ""}`}
+              role="menu"
+            >
               <button
                 className="nav-ddItem"
+                role="menuitem"
                 onClick={() => {
                   setMobileOpen(false);
+                  setProfileOpen(false);
                   navigate("/auth", { state: { isLogin: false } });
                 }}
               >
@@ -483,8 +399,10 @@ function Navbar() {
 
               <button
                 className="nav-ddItem"
+                role="menuitem"
                 onClick={() => {
                   setMobileOpen(false);
+                  setProfileOpen(false);
                   navigate("/auth", { state: { isLogin: true } });
                 }}
               >
@@ -492,17 +410,100 @@ function Navbar() {
                 <span>Log in</span>
               </button>
 
-              <Link className="nav-ddLink" to="/help" onClick={() => setMobileOpen(false)}>
+              <hr className="nav-hr" />
+
+              <Link
+                to="/help"
+                className="nav-ddLink"
+                role="menuitem"
+                onClick={() => setProfileOpen(false)}
+              >
                 <span aria-hidden="true">❓</span>
                 <span>Help Centre</span>
               </Link>
             </div>
           </div>
-        )}
-      </nav>
+        </div>
+      </div>
 
-      {/* Spacer to avoid content under fixed bar */}
-      <div aria-hidden="true" style={{ height: "var(--nav-height)" }} />
+      {/* Mobile full menu */}
+      {mobileOpen && (
+        <div
+          id="nav-mobile-menu"
+          className="nav-mobile"
+          role="menu"
+          aria-label="Mobile main menu"
+        >
+          <Link
+            ref={firstMobileLinkRef}
+            className="nav-link"
+            to="/"
+            onClick={closeMobileNav}
+          >
+            <Home size={18} aria-hidden="true" />
+            <span className="nav-tip">Home</span>
+          </Link>
+
+          <Link className="nav-link" to="/places" onClick={closeMobileNav}>
+            <MapPin size={18} aria-hidden="true" />
+            <span className="nav-tip">Places</span>
+          </Link>
+
+          <Link className="nav-link" to="/find-friends" onClick={closeMobileNav}>
+            <Users size={18} aria-hidden="true" />
+            <span className="nav-tip">Friends</span>
+          </Link>
+
+          <Link className="nav-link" to="/more-places" onClick={closeMobileNav}>
+            <Star size={18} aria-hidden="true" />
+            <span className="nav-tip">Famous</span>
+          </Link>
+
+          <Link className="nav-link" to="/trip-budget" onClick={closeMobileNav}>
+            <Calculator size={18} aria-hidden="true" />
+            <span className="nav-tip">Budget</span>
+          </Link>
+
+          <Link className="nav-link" to="/currency" onClick={closeMobileNav}>
+            <DollarSign size={18} aria-hidden="true" />
+            <span className="nav-tip">Currency</span>
+          </Link>
+
+          <div style={{ borderTop: "1px solid rgba(255,255,255,.06)", marginTop: 8, paddingTop: 8 }}>
+            <button
+              className="nav-ddItem"
+              onClick={() => {
+                setMobileOpen(false);
+                navigate("/auth", { state: { isLogin: false } });
+              }}
+            >
+              <span aria-hidden="true">➕</span>
+              <span>Sign up</span>
+            </button>
+
+            <button
+              className="nav-ddItem"
+              onClick={() => {
+                setMobileOpen(false);
+                navigate("/auth", { state: { isLogin: true } });
+              }}
+            >
+              <span aria-hidden="true">🔐</span>
+              <span>Log in</span>
+            </button>
+
+            <Link className="nav-ddLink" to="/help" onClick={() => setMobileOpen(false)}>
+              <span aria-hidden="true">❓</span>
+              <span>Help Centre</span>
+            </Link>
+          </div>
+        </div>
+      )}
+    </nav >
+
+      {/* Spacer to avoid content under fixed bar */ }
+      < div aria-hidden="true" style = {{ height: "var(--nav-height)" }
+} />
     </>
   );
 }
