@@ -465,3 +465,25 @@ body.dark-mode .spinner-border-sm {
     transition: all 0.3s ease;
   }
 }
+
+@media (max-width: 480px) {
+  .chatbot-container {
+    position: fixed;  
+    width: 90%;
+    max-width: 350px;
+    bottom: 140px;
+    left: 16px;
+    max-height: 90vh;
+    z-index: 9999;           
+  }
+
+  .chatbot-btn {
+    right: 10px !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .chatbot-body {
+    max-height: calc(90vh - 100px);
+  }
+}

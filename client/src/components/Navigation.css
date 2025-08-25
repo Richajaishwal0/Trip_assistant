@@ -14,7 +14,7 @@ body.dark-mode .custom-navbar {
 
 /* Logo button styling */
 .navbar-brand {
-  padding: 0.5rem !important;
+  padding: 0.79rem !important;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
