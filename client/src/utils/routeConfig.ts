@@ -16,7 +16,7 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/auth': () => import('../pages/Auth'),
   '/admin': () => import('../pages/Admin/admin'),
   '/more-places': () => import('../pages/MorePlaces'),
-  '/places/:placeName': () => import('../pages/PlaceDetails'),
+  '/place-details': () => import('../pages/PlaceDetails'),
   '/help': () => import('../pages/HelpCentre'),
   '/trip-budget': () => import('../components/TripBudgetEstimator'),
   '/about': () => import('../components/AboutUsPage'),
@@ -53,7 +53,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: '/places/:placeName',
-    component: lazyLoad(componentPaths['/places/:placeName']),
+    component: lazyLoad(componentPaths['/place-details']),
   },
   {
     path: '/help',
@@ -77,9 +77,21 @@ export function prefetchCriticalRoutes() {
       // Start loading the component in the background
       const importFunc = componentPaths[route.path];
       if (importFunc) {
-        // Trigger the import but don't wait for it
-        importFunc();
-        console.log(`Prefetching route: ${route.path}`);
+        try {
+          // Trigger the import but don't wait for it
+          importFunc();
+          if (process.env.NODE_ENV === 'development') {
+            // amazonq-ignore-next-line
+            // Sanitize route path for logging
+            const safePath = route.path.replace(/[\r\n]/g, '');
+            console.log(`Prefetching route: ${safePath}`);
+          // amazonq-ignore-next-line
+          }
+        } catch (error) {
+          // Sanitize route path for logging
+          const safePath = route.path.replace(/[\r\n]/g, '');
+          console.warn(`Failed to prefetch route ${safePath}:`, error);
+        }
       }
     });
 }

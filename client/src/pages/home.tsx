@@ -9,6 +9,7 @@ import {
   FaRocket,
   FaHeart,
 } from "react-icons/fa";
+import ScrollToTop from "../components/ScrollToTop";
 
 const Home: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -228,6 +229,9 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
+      
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
     </div>
   );
 };

@@ -2,9 +2,13 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { FaMapMarkerAlt, FaStar, FaComments, FaTimes } from "react-icons/fa";
+
+import { FaMapMarkerAlt, FaStar, FaRobot } from "react-icons/fa";
+
 import PlaceCard from "../components/placeCard";
 import SearchBar from "../components/searchbar";
 import Chatbot from "../components/chatbot";
+
 import "./Places.css";
 
 // Import images properly
@@ -16,6 +20,9 @@ import home5 from "../images/home5.jpeg";
 import ihomeImage from "../images/ihome_image.png";
 import logo1 from "../images/logo1.jpg";
 import bgAuth from "../images/bg-auth.jpg";
+
+import ScrollToTop from "../components/ScrollToTop";
+
 
 interface Place {
   id: number;
@@ -272,12 +279,28 @@ const Places: React.FC = () => {
       )}
 
       {/* Floating Chatbot Button */}
+
       <button className="chatbot-btn btn btn-primary" onClick={() => setIsChatOpen(true)}>
         <FaComments size={20} />
+
+      <button
+        className="chatbot-btn"
+        onClick={() => setIsChatOpen(true)}
+        aria-label="Open travel assistant chat"
+        title="Chat with our travel assistant"
+      >
+        <FaRobot size={20} />
       </button>
       {isChatOpen && <Chatbot onClose={() => setIsChatOpen(false)} />}
 
+
       {/* Top Rated Tours and Adventures Section */}
+
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
+
+      {/* Top Rated Tours and Adventures Section from PlaceCard */}
+
       <PlaceCard />
     </>
   );

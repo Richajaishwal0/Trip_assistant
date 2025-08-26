@@ -1,0 +1,178 @@
+/* Custom Navbar Styles */
+.custom-navbar {
+  background: #1a237e !important;
+  box-shadow: 0 4px 20px rgba(26, 35, 126, 0.3);
+  transition: all 0.3s ease;
+  padding: 0.5rem 0;
+}
+
+/* Dark mode navbar */
+body.dark-mode .custom-navbar {
+  background: #1a202c !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Logo button styling */
+.navbar-brand {
+  padding: 0.5rem !important;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: scale(1.05);
+}
+
+/* Navigation links */
+.navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 500;
+  padding: 0.75rem 1rem !important;
+  border-radius: 8px;
+  margin: 0 0.25rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: white !important;
+  background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+/* Active link styling */
+.navbar-nav .nav-link.active {
+  color: white !important;
+  background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+}
+
+/* Button styling */
+.btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+  border-color: #4f46e5 !important;
+  color: white !important;
+  transform: scale(1.05);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+  border-color: #4f46e5 !important;
+  color: white !important;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background: linear-gradient(135deg, #6366f1, #7c3aed) !important;
+  border-color: #6366f1 !important;
+  transform: scale(1.05);
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  background: #1a237e !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  border-radius: 12px !important;
+}
+
+body.dark-mode .dropdown-menu {
+  background: #1a202c !important;
+}
+
+.dropdown-item {
+  color: rgba(255, 255, 255, 0.9) !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.3s ease;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+  color: white !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 991.98px) {
+  .navbar-nav {
+    padding: 1rem 0;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 1rem !important;
+    margin: 0.25rem 0;
+    border-radius: 12px;
+  }
+  
+  .d-flex.align-items-center.gap-2 {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-navbar {
+    padding: 0.25rem 0;
+  }
+  
+  .navbar-brand {
+    padding: 0.25rem !important;
+  }
+  
+  .btn-outline-light {
+    padding: 0.5rem !important;
+  }
+}
+
+/* Navbar toggler */
+.navbar-toggler {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25) !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Smooth transitions */
+.navbar-collapse {
+  transition: all 0.3s ease;
+}
+
+/* Focus states for accessibility */
+.navbar-brand:focus,
+.nav-link:focus,
+.btn:focus {
+  outline: 2px solid #4f46e5 !important;
+  outline-offset: 2px !important;
+}
+
+/* Prevent layout shift */
+.navbar {
+  min-height: 64px;
+}
+
+/* Logo hover effect */
+.navbar-brand svg {
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover svg {
+  transform: scale(1.1);
+}

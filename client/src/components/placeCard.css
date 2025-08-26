@@ -155,6 +155,36 @@
   color: #f7fafc;
 }
 
+.section-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 600;
+  text-align: center;
+  margin: 3rem 0 2rem 0;
+  background: linear-gradient(135deg, #45526e, #fad700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #45526e, #fad700);
+  border-radius: 2px;
+  animation: shimmer 2s infinite;
+}
+
+.section-title.bg-dark {
+  color: #f7fafc;
+}
+
 .places-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -163,6 +193,24 @@
 }
 
 .places-grid.bg-dark {
+  background: transparent;
+}
+
+.places-carousel {
+  position: relative;
+  overflow: hidden;
+  margin: 2rem 0;
+  padding: 1rem 0;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 20px;
+  padding: 0 20px;
+  will-change: transform;
+}
+
+.places-carousel.bg-dark {
   background: transparent;
 }
 
@@ -219,6 +267,11 @@
   border-color: #fad700;
 }
 
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
 .place-image {
   width: 100%;
   height: 90px;
@@ -231,6 +284,34 @@
 .place-card:hover .place-image {
   transform: scale(1.1);
   filter: brightness(1.1) contrast(1.1);
+}
+
+.overlay-btn {
+  position: relative;
+  bottom: 50px;
+  right: 10px;
+  background: rgba(255, 105, 135, 0.9);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  backdrop-filter: blur(10px);
+}
+
+.place-card:hover .overlay-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.overlay-btn:hover {
+  background: rgba(255, 105, 135, 1);
+  transform: translateY(-2px);
 }
 
 .place-info {
@@ -320,31 +401,6 @@
   color: #e6c200;
   transform: scale(1.05);
   transition: all 0.2s ease;
-}
-
-/* Enhanced hover effects for better UX */
-.place-card::after {
-  content: "";
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: all 0.3s ease;
-  z-index: 3;
-  backdrop-filter: blur(10px);
-}
-
-.place-card:hover::after {
-  opacity: 1;
-  transform: scale(1);
 }
 
 /* Loading animation for images */

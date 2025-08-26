@@ -16,8 +16,46 @@ interface ChatbotProps {
 
 const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [darkMode, setDarkMode] = useState(() => 
+    document.body.classList.contains("dark-mode")
+  );
   const chatRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
+  // Combined effect for theme detection and event listeners
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setDarkMode(document.body.classList.contains("dark-mode"));
+    };
+    
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+    
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscapeKey);
+    
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [onClose]);
 
   useEffect(() => {
     // Scroll to the bottom when messages update
@@ -105,15 +143,16 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
 
   return (
     <aside 
-      className="chatbot-container card shadow"
+      ref={containerRef}
+      className="chatbot-container"
       role="complementary"
       aria-labelledby="chatbot-title"
       aria-live="polite"
     >
-      <header className="chatbot-header bg-primary text-white p-2 d-flex justify-content-between align-items-center">
+      <header className="chatbot-header d-flex justify-content-between align-items-center">
         <h2 id="chatbot-title" className="m-0 h6">Travel Assistant</h2>
         <button 
-          className="btn btn-sm btn-light" 
+          className="btn" 
           onClick={onClose}
           aria-label="Close chat assistant"
           type="button"
@@ -123,7 +162,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       </header>
 
       <main 
-        className="chatbot-body p-2" 
+        className="chatbot-body" 
         ref={chatRef}
         role="log"
         aria-label="Chat conversation"
@@ -131,9 +170,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         aria-atomic="false"
       >
         {messages.length === 0 ? (
-          <p className="text-muted" role="status">
-            Hello! How can I assist you with your travel plans?
-          </p>
+          <div className="welcome-message" role="status">
+            <div className="welcome-icon">🤖</div>
+            <p>Hello! I'm your travel assistant. How can I help you plan your perfect trip?</p>
+          </div>
         ) : (
           messages.map((msg: Message, index: number) => (
             <div
@@ -169,7 +209,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       </main>
 
       <form 
-        className="chatbot-footer p-2 d-flex" 
+        className="chatbot-footer d-flex" 
         onSubmit={handleSendMessage}
         role="form"
         aria-label="Send message to travel assistant"
@@ -191,7 +231,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         </div>
         <button 
           type="submit" 
-          className="btn btn-primary ms-2"
+          className="btn"
           aria-label="Send message"
         >
           Send

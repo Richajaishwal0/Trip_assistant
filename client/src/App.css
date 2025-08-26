@@ -1,3 +1,6 @@
+/* Import responsive utilities */
+@import './components/responsive-utils.css';
+
 /* Smooth transition for theme switching */
 .place {
   transition: background-color 0.3s ease, color 0.3s ease;

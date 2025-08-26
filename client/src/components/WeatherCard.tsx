@@ -36,13 +36,21 @@ fetch(
 
   return (
     <div 
-      className="weather-text"
+      className="weather-text weather-responsive"
       role="status"
       aria-live="polite"
       aria-label={loading 
         ? `Loading weather information for ${city}`
         : `Current weather in ${city}: ${weather}`
       }
+      style={{
+        fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+        padding: '0.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        flexWrap: 'wrap'
+      }}
     >
       <span aria-hidden="true">🌤️</span>{" "}
       {loading ? (

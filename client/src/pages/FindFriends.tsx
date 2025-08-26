@@ -7,6 +7,7 @@ import {
   FaEnvelope,
   FaSearch,
 } from "react-icons/fa";
+import ScrollToTop from "../components/ScrollToTop";
 
 // Dummy user data
 const users = [
@@ -202,6 +203,9 @@ const App: React.FC = () => {
       {view === "friends" && <h2>Your Friends</h2>}
       {view === "requests" && <h2>Friend Requests</h2>}
       {view === "messages" && <h2>Messages</h2>}
+      
+      {/* Scroll to Top Button */}
+      <ScrollToTop />
     </div>
   );
 };
