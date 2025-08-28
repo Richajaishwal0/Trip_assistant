@@ -1,146 +1,28 @@
-const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { handleServerError, sendSuccess } = require("../utils/errorHandler");
+// 1. IMPORT THE VALIDATION RESULT FUNCTION
+import { validationResult } from 'express-validator';
+import User from '../models/User.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-// Login controller
-const login = async (req, res) => {
+export const register = async (req, res) => {
+  // 2. CHECK FOR VALIDATION ERRORS
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // If there are errors, send them back to the frontend
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // The rest of your existing registration logic continues from here...
+  const { username, email, password } = req.body;
+
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Email and password are required",
-      });
-    }
-
-    // Find user by email using MongoDB
-    const user = await User.findOne({ email });
-    console.log(user)
-
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid email or password",
-      });
-    }
-
-    // Secure password comparison using bcrypt
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid email or password",
-      });
-    }
-
-    // Create JWT token
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      process.env.JWT_SECRET || "your-default-secret-key",
-      { expiresIn: "1d" }
-    );
-
-    // Return user data without password
-    const userData = {
-      id: user._id,
-      email: user.email,
-      user_name: user.user_name,
-      mobile_no: user.mobile_no,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    };
-
-    return sendSuccess(res, { user: userData, token }, "Login successful");
-  } catch (error) {
-    console.log(error)
-    // return handleServerError(error, "Login error", res);
+    // ...existing code to check if user exists, hash password, and save user
+  } catch (err) {
+    // ...existing error handling
   }
 };
 
-// Register controller
-const register = async (req, res) => {
-  try {
-    const {
-      userName: user_name,
-      email,
-      password,
-      mobileNo: mobile_no,
-    } = req.body;
-
-    if (!user_name || !email || !password || !mobile_no) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
-
-    // Check if email already exists using MongoDB
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return res.status(409).json({
-        success: false,
-        message: "Email already registered",
-      });
-    }
-
-    // Hash the password securely before storing
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Create new user with MongoDB
-    const user = await User.create({
-      user_name,
-      email,
-      password: hashedPassword,
-      mobile_no,
-    });
-
-    // Create JWT token
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      process.env.JWT_SECRET || "your-default-secret-key",
-      { expiresIn: "1d" }
-    );
-
-    // Return user data without password
-    const userData = {
-      id: user._id,
-      email: user.email,
-      user_name: user.user_name,
-      mobile_no: user.mobile_no,
-    };
-
-    return sendSuccess(
-      res,
-      { user: userData, token },
-      "User registered successfully"
-    );
-  } catch (error) {
-    return handleServerError(error, "Registration error", res);
-  }
-};
-
-// Get user profile
-const getProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.userId).select("-password");
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    return sendSuccess(res, { user });
-  } catch (error) {
-    return handleServerError(error, "Get profile error", res);
-  }
-};
-
-module.exports = {
-  login,
-  register,
-  getProfile,
+// The 'login' function does not need changes for this bug
+export const login = async (req, res) => {
+  // ...
 };
