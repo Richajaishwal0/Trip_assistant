@@ -4,9 +4,16 @@ import { useState, useEffect } from "react";
 import { FaMapMarkerAlt, FaStar, FaRobot } from "react-icons/fa";
 import PlaceCard from "../components/placeCard";
 import "./Places.css";
+
 import SearchBar from "../components/searchbar";
 import Chatbot from "../components/chatbot";
 import ScrollToTop from "../components/ScrollToTop";
+// import OptimizedMap from "../components/map/OptimizedMap";
+import { lazy, Suspense, useMemo } from "react"; // ✅
+const OptimizedMap = lazy(() => import("../components/map/OptimizedMap")); 
+
+
+
 
 const places = [
   {
@@ -17,6 +24,8 @@ const places = [
     date: "29 Mar – 3 Apr",
     price: "₹26,432 night",
     rating: 5.0,
+    lat: 34.6940,
+    lng: -84.4821,
   },
   {
     id: 2,
@@ -26,6 +35,8 @@ const places = [
     date: "23–28 Mar",
     price: "₹26,996 night",
     rating: 5.0,
+    lat: 34.7937,
+    lng: -84.3660,
   },
   {
     id: 3,
@@ -35,6 +46,8 @@ const places = [
     date: "2–7 Mar",
     price: "₹17,407 night",
     rating: 5.0,
+    lat: 34.8631,
+    lng: -84.3247,
   },
   {
     id: 4,
@@ -44,42 +57,19 @@ const places = [
     date: "10–15 Apr",
     price: "₹22,000 night",
     rating: 4.8,
-  },
-  {
-    id: 5,
-    image: "src/images/home5.jpeg",
-    location: "Asheville, North Carolina, US",
-    distance: "300 km away",
-    date: "5–10 May",
-    price: "₹28,500 night",
-    rating: 4.9,
-  },
-  {
-    id: 6,
-    image: "src/images/ihome_image.png",
-    location: "Miami Beach, Florida, US",
-    distance: "900 km away",
-    date: "12–17 Jun",
-    price: "₹35,000 night",
-    rating: 4.7,
-  },
-  {
-    id: 7,
-    image: "src/images/logo1.jpg",
-    location: "Nashville, Tennessee, US",
-    distance: "400 km away",
-    date: "20–25 Jul",
-    price: "₹19,800 night",
-    rating: 4.6,
+    lat: 32.0809,
+    lng: -81.0912,
   },
   {
     id: 8,
-    image: "src/images/bg-auth.jpg",
+    image: "/images/bg-auth.jpg",
     location: "Austin, Texas, US",
     distance: "1200 km away",
     date: "1–6 Aug",
     price: "₹32,000 night",
     rating: 4.8,
+    lat: 30.2672,
+    lng: -97.7431,
   },
   {
     id: 9,
@@ -89,6 +79,8 @@ const places = [
     date: "15–20 Sep",
     price: "₹40,000 night",
     rating: 4.9,
+    lat: 37.7749,
+    lng: -122.4194,
   },
   {
     id: 10,
@@ -98,6 +90,8 @@ const places = [
     date: "25–30 Oct",
     price: "₹38,000 night",
     rating: 4.7,
+    lat: 47.6062,
+    lng: -122.3321,
   },
 ];
 
@@ -141,6 +135,32 @@ const Places: React.FC = () => {
     }, 2000);
     return () => clearInterval(interval);
   }, [totalPlaces]);
+
+
+//   const points = useMemo(   // ✅
+//   () =>
+//     places.map((p) => ({
+//       id: p.id,
+//       lat: 28.6139 + Math.random(), // 🔧 dummy coords for now
+//       lng: 77.2090 + Math.random(),
+//       title: p.location,
+//       description: `${p.price}, Rating: ${p.rating}`,
+//     })),
+//   []
+// );
+
+const points = useMemo(
+  () =>
+    places.map((p) => ({
+      id: p.id,
+      lat: p.lat,
+      lng: p.lng,
+      title: p.location,
+      description: `${p.price}, Rating: ${p.rating}`,
+    })),
+  [places]
+);
+
 
   return (
     <>
@@ -196,7 +216,11 @@ const Places: React.FC = () => {
           </div>
         </div>
       </div>
+  {/* ✅ Add map here */}
+    <Suspense fallback={<div style={{ height: "60vh" }}>Loading map…</div>}>
+<OptimizedMap center={[39.8283, -98.5795]} zoom={4} points={points} />
 
+    </Suspense>
       {/* Floating Chatbot Button */}
       <button
         className="chatbot-btn"

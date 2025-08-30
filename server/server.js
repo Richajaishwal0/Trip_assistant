@@ -4,6 +4,15 @@ const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
 
+// Validate environment variables before starting server
+const { validateEnvironment } = require("./utils/envValidator");
+const envValidation = validateEnvironment();
+
+if (!envValidation.success) {
+  console.error('❌ Server startup failed due to environment configuration errors');
+  process.exit(1);
+}
+
 const connectDB = require("./config/db");
 const {
   handleServerError,
@@ -14,9 +23,16 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
-// Serve uploads from the exact same path as uploads.js
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Configure CORS based on environment
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
+app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("static"));
 
 // Database connection
@@ -37,6 +53,9 @@ app.use("/api/more-places", placeRoutes);
 app.use("/api/user/activity",userActivityRoutes)
 
 // Start server
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📡 CORS origin: ${process.env.CORS_ORIGIN || 'http://localhost:5173'}`);
 });
