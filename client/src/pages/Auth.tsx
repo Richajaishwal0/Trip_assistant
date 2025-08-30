@@ -1,3 +1,4 @@
+import Navigation from "../components/Navigation";
 import { useState, useEffect, FormEvent } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -183,7 +184,9 @@ function Auth() {
     }
   };
 
-  return (
+return (
+  <>
+    <Navigation />   {/* ✅ Navbar will now appear at the top */}
     <main
       className="min-vh-100 d-flex justify-content-center align-items-center bg-image flex-grow-1"
       style={{
@@ -194,6 +197,7 @@ function Auth() {
       }}
       role="main"
     >
+
       <div
         className="card p-4 pb-2 rounded-5 shadow-lg border-0 m-3 sm:m-0"
         style={{
@@ -418,6 +422,7 @@ function Auth() {
         </p>
       </div>
     </main>
+    </>
   );
 }
 

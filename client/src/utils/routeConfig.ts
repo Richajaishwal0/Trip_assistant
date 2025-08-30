@@ -16,10 +16,11 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/auth': () => import('../pages/Auth'),
   '/admin': () => import('../pages/Admin/admin'),
   '/more-places': () => import('../pages/MorePlaces'),
-  '/places/:placeName': () => import('../pages/PlaceDetails'),
+  '/place-details': () => import('../pages/PlaceDetails'),
   '/help': () => import('../pages/HelpCentre'),
   '/trip-budget': () => import('../components/TripBudgetEstimator'),
   '/budget-planner': () => import('../pages/BudgetPlannerPage'),
+  '/currency': () => import('../components/Currency_new'),
   '/about': () => import('../components/AboutUsPage'),
 };
 
@@ -54,7 +55,7 @@ export const routes: RouteConfig[] = [
   },
   {
     path: '/places/:placeName',
-    component: lazyLoad(componentPaths['/places/:placeName']),
+    component: lazyLoad(componentPaths['/place-details']),
   },
   {
     path: '/help',
@@ -69,6 +70,10 @@ export const routes: RouteConfig[] = [
     component: lazyLoad(componentPaths['/budget-planner']),
   },
   {
+    path: '/currency',
+    component: lazyLoad(componentPaths['/currency']),
+  },
+  {
     path: '/about',
     component: lazyLoad(componentPaths['/about']),
   },
@@ -79,12 +84,13 @@ export function prefetchCriticalRoutes() {
   routes
     .filter(route => route.prefetch)
     .forEach(route => {
-      // Start loading the component in the background
       const importFunc = componentPaths[route.path];
       if (importFunc) {
-        // Trigger the import but don't wait for it
-        importFunc();
-        console.log(`Prefetching route: ${route.path}`);
-      }
-    });
-}
+        try {
+          importFunc(); // Trigger the import but don't wait for it
+          if (process.env.NODE_ENV === 'development') {
+            const safePath = route.path.replace(/[\r\n]/g, '');
+            console.log(`Prefetching route: ${safePath}`);
+          }
+        } catch (error) {
+          const safePath = route.path.replace(/[\r\n]/g, ''

@@ -1,0 +1,18 @@
+/* Mobile responsive navigation */
+@media (max-width: 1088px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-toggle {
+    display: block !important;
+  }
+}
+
+@media (min-width: 1089px) {
+  .mobile-menu {
+    display: none !important;
+  }
+  .mobile-toggle {
+    display: none !important;
+  }
+}

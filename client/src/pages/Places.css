@@ -1,65 +1,123 @@
-/* Horizontal carousel for places */
+/* Enhanced Responsive Carousel */
 .places-carousel {
-  width: 100vw;
-  max-width: 100vw;
+  width: 100%;
   margin: 0;
-  overflow-x: hidden;
-  overflow-y: visible;
-  padding-bottom: 16px;
+  overflow: hidden;
+  padding: 1rem 0;
   position: relative;
+}
+
+@media (max-width: 768px) {
+  .places-carousel {
+    padding: 0.5rem 0;
+  }
 }
 
 .carousel-track {
   display: flex;
-  flex-direction: row;
-  gap: 32px;
-  min-width: 100vw;
+  gap: 1.5rem;
   transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .carousel-track {
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-track {
+    gap: 0.75rem;
+    padding: 0 0.25rem;
+  }
 }
 
 .place-card {
   flex: 0 0 280px;
-  max-width: 300px;
-  height: 340px;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(69, 82, 110, 0.18),
-    0 1.5px 6px rgba(69, 82, 110, 0.1);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+  box-shadow: 0 4px 16px rgba(69, 82, 110, 0.18);
+  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-start;
-  max-width: 350px;
+  height: auto;
+  min-height: 320px;
+}
+
+@media (max-width: 768px) {
+  .place-card {
+    flex: 0 0 250px;
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .place-card {
+    flex: 0 0 220px;
+    min-height: 280px;
+  }
 }
 
 /* Professional card layout styles */
 .card-image-wrapper {
   position: relative;
   width: 100%;
-  height: 140px;
+  height: 160px;
   overflow: hidden;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .card-image-wrapper {
+    height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-image-wrapper {
+    height: 120px;
+  }
 }
 
 .view-details-btn {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: #ff385c;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(255, 56, 92, 0.9);
   color: #fff;
   border: none;
-  border-radius: 16px;
-  padding: 4px 12px;
-  height: auto;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  transition: background 0.2s;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
 }
+
+.card-image-wrapper:hover .view-details-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .view-details-btn:hover {
-  background: #e11d48;
+  background: rgba(225, 29, 72, 0.95);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 480px) {
+  .view-details-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    bottom: 6px;
+    right: 6px;
+  }
 }
 
 .place-header {
@@ -70,53 +128,124 @@
   margin-bottom: 4px;
 }
 .place-title {
-  font-size: 16px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   font-weight: 600;
   color: #232946;
+  margin: 0;
+  line-height: 1.3;
+}
+
+@media (max-width: 480px) {
+  .place-title {
+    font-size: 0.9rem;
+  }
 }
 .place-rating {
   display: flex;
   align-items: center;
+  gap: 0.25rem;
   color: #ffb400;
   font-weight: 500;
-  font-size: 14px;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  white-space: nowrap;
 }
 .place-meta {
-  display: flex;
-  flex-direction: column;
-  font-size: 11px;
-  color: #555;
-  margin-bottom: 1px;
+  font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+  color: #666;
+  margin: 0.5rem 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+  .place-meta {
+    font-size: 0.75rem;
+    margin: 0.25rem 0;
+  }
 }
 .place-footer {
   display: flex;
-  justify-content: flex-end;
-  font-size: 15px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.price {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   font-weight: bold;
   color: #ff385c;
 }
 .places-container {
-  padding: 20px;
+  padding: 2rem 1rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  .places-container {
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .places-container {
+    padding: 1rem 0.25rem;
+  }
 }
 
 .title {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin-bottom: 2rem;
+  font-weight: 700;
+  color: #1a237e;
+}
+
+@media (max-width: 768px) {
+  .title {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    margin-bottom: 1rem;
+  }
 }
 
 .places-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
-  justify-content: center;
-  align-items: stretch;
+  gap: 1.5rem;
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 2rem auto 0;
+  padding: 0 1rem;
+}
+
+/* Mobile First Grid */
+.places-grid {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 576px) {
+  .places-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 992px) {
+  .places-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .places-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 
@@ -128,16 +257,34 @@
 }
 
 .place-image {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   width: 100%;
-  height: 140px;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.place-card:hover .place-image {
+  transform: scale(1.05);
 }
 
 .place-info {
-  padding: 2px 6px 2px 6px;
-  min-height: 0;
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .place-info {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .place-info {
+    padding: 0.5rem;
+  }
 }
 
 .price {
@@ -153,18 +300,7 @@
   font-weight: bold;
 }
 
-.chatbot-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
+/* Chatbot button styles are now in chatbot.css */
 
 body.dark-mode {
   background: #232946 !important;

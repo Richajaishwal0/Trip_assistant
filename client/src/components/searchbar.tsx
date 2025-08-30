@@ -37,6 +37,20 @@ const SearchBar: React.FC = () => {
   const [where, setWhere] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setDarkMode(document.body.classList.contains("dark-mode"));
+    };
+    checkDarkMode();
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
  useEffect(() => {
   const fetchSuggestions = async () => {
     if (where.length < 3) {
@@ -133,12 +147,13 @@ const SearchBar: React.FC = () => {
       {/* Main Search Bar */}
       <div className="d-flex justify-content-center mb-4">
         <form
-          className="p-4 rounded-4 shadow-lg bg-white"
+          className={`p-4 rounded-4 shadow-lg ${darkMode ? 'bg-dark text-light' : 'bg-white'}`}
           style={{ 
             maxWidth: "1000px", 
             width: "100%",
-            border: "2px solid #45526e",
-            transition: "all 0.3s ease"
+            border: `2px solid ${darkMode ? '#fad700' : '#45526e'}`,
+            transition: "all 0.3s ease",
+            backgroundColor: darkMode ? '#2d3748' : '#fff'
           }}
           onSubmit={(e) => {
             e.preventDefault();
@@ -151,7 +166,7 @@ const SearchBar: React.FC = () => {
             {/* Where Input */}
             <Col xs={12} sm={6} md={3}>
               <Form.Label 
-                className="fw-bold text-muted mb-2"
+                className={`fw-bold mb-2 ${darkMode ? 'text-light' : 'text-muted'}`}
                 htmlFor="search-location"
               >
                 Where
@@ -161,12 +176,17 @@ const SearchBar: React.FC = () => {
   id="search-location"
   type="text"
   placeholder="Search places"
-  className="border-0 p-3 rounded-3"
+  className={`border-0 p-3 rounded-3 ${darkMode ? 'bg-secondary text-light' : ''}`}
   value={where}
   onChange={(e) => setWhere(e.target.value)}
   onFocus={() => setShowSuggestions(true)}
-  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} // close suggestions after click
-  style={{ fontSize: "0.95rem" }}
+  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+  style={{ 
+    fontSize: "0.95rem",
+    backgroundColor: darkMode ? '#374151' : '#fff',
+    color: darkMode ? '#fff' : '#000',
+    border: darkMode ? '1px solid #4b5563' : '1px solid #ddd'
+  }}
   aria-describedby="location-help"
   aria-expanded={showSuggestions && suggestions.length > 0}
   aria-haspopup="listbox"
@@ -183,8 +203,8 @@ const SearchBar: React.FC = () => {
     aria-label="Location suggestions"
     style={{
       position: "absolute",
-      backgroundColor: "#fff",
-      border: "1px solid #ccc",
+      backgroundColor: darkMode ? '#374151' : '#fff',
+      border: `1px solid ${darkMode ? '#4b5563' : '#ccc'}`,
       borderRadius: "4px",
       zIndex: 1000,
       marginTop: "4px",
@@ -194,6 +214,7 @@ const SearchBar: React.FC = () => {
       listStyle: "none",
       padding: 0,
       margin: 0,
+      color: darkMode ? '#fff' : '#000'
     }}
   >
     {suggestions.map((suggestion, index) => (
@@ -215,7 +236,15 @@ const SearchBar: React.FC = () => {
         style={{
           padding: "8px 12px",
           cursor: "pointer",
-          borderBottom: "1px solid #eee",
+          borderBottom: `1px solid ${darkMode ? '#4b5563' : '#eee'}`,
+          backgroundColor: darkMode ? '#374151' : '#fff',
+          color: darkMode ? '#fff' : '#000'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = darkMode ? '#4b5563' : '#f8f9fa';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = darkMode ? '#374151' : '#fff';
         }}
         tabIndex={0}
       >
@@ -230,7 +259,7 @@ const SearchBar: React.FC = () => {
             {/* Check In */}
             <Col xs={6} sm={3} md={2}>
               <Form.Label 
-                className="fw-bold text-dark mb-2"
+                className={`fw-bold mb-2 ${darkMode ? 'text-light' : 'text-dark'}`}
                 htmlFor="check-in-date"
               >
                 Check in
@@ -248,7 +277,7 @@ const SearchBar: React.FC = () => {
             {/* Check Out */}
             <Col xs={6} sm={3} md={2}>
               <Form.Label 
-                className="fw-bold text-dark mb-2"
+                className={`fw-bold mb-2 ${darkMode ? 'text-light' : 'text-dark'}`}
                 htmlFor="check-out-date"
               >
                 Check out
@@ -266,7 +295,7 @@ const SearchBar: React.FC = () => {
             {/* Guests */}
             <Col xs={12} sm={6} md={3}>
               <Form.Label 
-                className="fw-bold text-dark mb-2"
+                className={`fw-bold mb-2 ${darkMode ? 'text-light' : 'text-dark'}`}
                 htmlFor="guests-select"
               >
                 Guests
@@ -391,16 +420,17 @@ const SearchBar: React.FC = () => {
         <div className="d-flex justify-content-center mb-4">
           <section
             id="advanced-filters"
-            className="p-4 rounded-4 shadow-lg bg-white w-100"
+            className={`p-4 rounded-4 shadow-lg w-100 ${darkMode ? 'bg-dark text-light' : 'bg-white'}`}
             style={{ 
               maxWidth: "1000px", 
-              border: "2px solid #45526e",
-              animation: "slideDown 0.3s ease-out"
+              border: `2px solid ${darkMode ? '#fad700' : '#45526e'}`,
+              animation: "slideDown 0.3s ease-out",
+              backgroundColor: darkMode ? '#2d3748' : '#fff'
             }}
             aria-label="Advanced search filters"
           >
             <div className="d-flex justify-content-between align-items-center mb-4">
-              <h6 className="mb-0 fw-bold text-dark">
+              <h6 className={`mb-0 fw-bold ${darkMode ? 'text-light' : 'text-dark'}`}>
                 <FaFilter className="me-2" />
                 Advanced Filters
               </h6>
@@ -549,7 +579,7 @@ const SearchBar: React.FC = () => {
             {/* Active Filters Display */}
             {hasActiveFilters && (
               <div className="mt-4 pt-4 border-top">
-                <h6 className="fw-bold mb-3 text-dark">
+                <h6 className={`fw-bold mb-3 ${darkMode ? 'text-light' : 'text-dark'}`}>
                   <FaFilter className="me-2" />
                   Active Filters:
                 </h6>
@@ -668,6 +698,42 @@ const SearchBar: React.FC = () => {
           min-width: 44px;
         }
 
+        /* Dark mode styles */
+        body.dark-mode .search-container .form-control {
+          background-color: #374151 !important;
+          border-color: #4b5563 !important;
+          color: #fff !important;
+        }
+        
+        body.dark-mode .search-container .form-control::placeholder {
+          color: #9ca3af !important;
+        }
+        
+        body.dark-mode .search-container .dropdown-menu {
+          background-color: #374151 !important;
+          border-color: #4b5563 !important;
+        }
+        
+        body.dark-mode .search-container .dropdown-item {
+          color: #fff !important;
+        }
+        
+        body.dark-mode .search-container .dropdown-item:hover {
+          background-color: #4b5563 !important;
+        }
+        
+        body.dark-mode .search-container .react-datepicker-wrapper input {
+          background-color: #374151 !important;
+          border-color: #4b5563 !important;
+          color: #fff !important;
+        }
+        
+        body.dark-mode .search-container .dropdown-toggle {
+          background-color: #374151 !important;
+          border-color: #4b5563 !important;
+          color: #fff !important;
+        }
+        
         /* High contrast mode support */
         @media (prefers-contrast: high) {
           .bg-white {
@@ -676,6 +742,10 @@ const SearchBar: React.FC = () => {
           }
           .text-muted {
             color: #000 !important;
+          }
+          body.dark-mode .search-container form {
+            background: #000 !important;
+            border: 2px solid #fff !important;
           }
         }
 

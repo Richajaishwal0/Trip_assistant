@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import "./chatbot.css";
 import { handleError } from "../utils/errorHandlerToast";
+import { apiPost } from "../utils/apiUtils";
 
 interface Message {
   text: string;
@@ -17,7 +18,33 @@ interface ChatbotProps {
 const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const chatRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
+  // Combined effect for event listeners
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
+    
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscapeKey);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [onClose]);
 
   useEffect(() => {
     // Scroll to the bottom when messages update
@@ -25,6 +52,17 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      event.key === "Enter" &&
+      (event.ctrlKey || event.metaKey)
+    ) {
+      event.preventDefault();
+      // Submit the form programmatically
+      formRef.current?.requestSubmit();
+    }
+  };
 
   const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,40 +75,23 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     // Add user message
     setMessages((prev: Message[]) => [...prev, { text: userMessage, type: "user" }]);
     input.value = "";
+    
+    // Add loading state for UI feedback
+    setMessages((prev: Message[]) => [
+      ...prev,
+      { text: "Thinking...", type: "bot", isLoading: true }
+    ]);
 
     try {
-      const res = await fetch(`${apiBaseUrl}/api/query`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt: userMessage }),
-      });
-
-      // Add loading state for UI feedback
-      setMessages((prev: Message[]) => [
-        ...prev,
-        { text: "Thinking...", type: "bot", isLoading: true }
-      ]);
-
-      // Check if response is ok and has content
-      if (!res.ok) {
-        throw new Error(`Server error: ${res.status} ${res.statusText}`);
-      }
-
-      const responseText = await res.text();
-      if (!responseText) {
-        throw new Error("Empty response from server");
-      }
-
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error("JSON parse error:", parseError);
-        console.error("Response text:", responseText);
-        throw new Error("Invalid response format from server");
-      }
+      // Use our standardized API utility
+      const data = await apiPost<{ message?: string; error?: string }>(
+        `${apiBaseUrl}/api/query`, 
+        { prompt: userMessage },
+        {
+          showErrorToast: false, // We'll handle the error display ourselves
+          timeout: 30000, // Chatbot responses can take longer
+        }
+      );
       
       // Remove the loading message
       setMessages((prev: Message[]) => prev.filter(msg => !msg.isLoading));
@@ -104,16 +125,17 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
   };
 
   return (
-    <aside 
-      className="chatbot-container card shadow"
+    <div 
+      ref={containerRef}
+      className="chatbot-container"
       role="complementary"
       aria-labelledby="chatbot-title"
       aria-live="polite"
     >
-      <header className="chatbot-header bg-primary text-white p-2 d-flex justify-content-between align-items-center">
+      <header className="chatbot-header d-flex justify-content-between align-items-center">
         <h2 id="chatbot-title" className="m-0 h6">Travel Assistant</h2>
         <button 
-          className="btn btn-sm btn-light" 
+          className="btn" 
           onClick={onClose}
           aria-label="Close chat assistant"
           type="button"
@@ -123,7 +145,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       </header>
 
       <main 
-        className="chatbot-body p-2" 
+        className="chatbot-body" 
         ref={chatRef}
         role="log"
         aria-label="Chat conversation"
@@ -131,9 +153,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         aria-atomic="false"
       >
         {messages.length === 0 ? (
-          <p className="text-muted" role="status">
-            Hello! How can I assist you with your travel plans?
-          </p>
+          <div className="welcome-message" role="status">
+            <div className="welcome-icon">🤖</div>
+            <p>Hello! I'm your travel assistant. How can I help you plan your perfect trip?</p>
+          </div>
         ) : (
           messages.map((msg: Message, index: number) => (
             <div
@@ -169,7 +192,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       </main>
 
       <form 
+
+        ref={formRef}
         className="chatbot-footer p-2 d-flex" 
+
         onSubmit={handleSendMessage}
         role="form"
         aria-label="Send message to travel assistant"
@@ -184,6 +210,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           className="form-control"
           placeholder="Type a message..."
           aria-describedby="chat-help"
+          onKeyDown={handleInputKeyDown}
           required
         />
         <div id="chat-help" className="sr-only">
@@ -191,13 +218,13 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         </div>
         <button 
           type="submit" 
-          className="btn btn-primary ms-2"
+          className="btn"
           aria-label="Send message"
         >
           Send
         </button>
       </form>
-    </aside>
+    </div>
   );
 };
 

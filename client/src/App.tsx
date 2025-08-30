@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useMemo } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -24,20 +24,27 @@ import "./responsive.css";
 // IMPORTANT: You must add your new routes (Currency, AboutUsPage, etc.) to this file.
 import { routes, prefetchCriticalRoutes } from "./utils/routeConfig";
 
-// Prefetch critical routes for better performance
-setTimeout(prefetchCriticalRoutes, 1000);
-
 // App content component as a function component
 const AppContent = () => {
   const location = useLocation(); // Get the current route
+  
+  // Prefetch critical routes after component mounts
+  useEffect(() => {
+    const timer = setTimeout(prefetchCriticalRoutes, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Determine if the header and footer should be shown based on the route
-  const showHeaderFooter =
-    location.pathname !== "/auth" && location.pathname !== "/admin";
-  const showFooter =
-    showHeaderFooter &&
-    location.pathname !== "/find-friends" &&
-    location.pathname !== "/help";
+  const showHeaderFooter = useMemo(
+    () => location.pathname !== "/auth" && location.pathname !== "/admin",
+    [location.pathname]
+  );
+  const showFooter = useMemo(
+    () => showHeaderFooter &&
+      location.pathname !== "/find-friends" &&
+      location.pathname !== "/help",
+    [showHeaderFooter, location.pathname]
+  );
 
   return (
     <ErrorBoundary>
@@ -55,6 +62,7 @@ const AppContent = () => {
         }}
       />
 
+      
       {/* Show Navbar conditionally */}
       {showHeaderFooter && <Navbar />}
 
@@ -106,23 +114,19 @@ const AppContent = () => {
   );
 };
 
-// Use React.memo for performance optimization
-const MemoizedAppContent = React.memo(AppContent);
+// AppContent doesn't need memoization as it has no props and location changes trigger re-renders anyway
 
 // App component with Router and ErrorBoundary
 function App() {
   return (
     <ErrorBoundary>
       <Router>
-        <MemoizedAppContent />
+        <AppContent />
       </Router>
     </ErrorBoundary>
   );
 }
 
-// Add performance measurement for development environment
-if (process.env.NODE_ENV !== "production") {
-  console.log("[Performance] App component monitoring enabled");
-}
+
 
 export default App;
