@@ -61,7 +61,7 @@ const login = async (req, res) => {
       updatedAt: user.updatedAt
     };
 
-    return sendSuccess(res, { user: userData, token }, "Login successful");
+    return sendSuccess(res, {...userData , token} , "Login successful");
   } catch (error) {
     console.log(error)
     // return handleServerError(error, "Login error", res);
@@ -72,10 +72,10 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   try {
     const {
-      userName: user_name,
+      userName : user_name,
       email,
-      password,
-      mobileNo: mobile_no,
+      mobileNo : mobile_no,
+      password
     } = req.body;
 
     if (!user_name || !email || !password || !mobile_no) {
@@ -154,6 +154,19 @@ const getProfile = async (req, res) => {
     return handleServerError(error, "Get profile error", res);
   }
 };
+
+const VerifyToken = (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1]; // Expecting 'Bearer <token>'
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'No token provided' });
+  }
+  jwt.verify(token, process.env.JWT_SECRET || 'your-default-secret-key', (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ success: false, message: 'Invalid token' });
+    } 
+    return res.status(200).json({ success: true, message: 'Token is valid', user: decoded });
+  });
+};
 //update user;
 const updateuser = async (req, res) => {
   try {
@@ -225,6 +238,7 @@ module.exports = {
   login,
   register,
   getProfile,
+  VerifyToken,
   updateuser,
   Deleteuser,
 };

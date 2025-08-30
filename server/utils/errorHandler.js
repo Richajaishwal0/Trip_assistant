@@ -77,7 +77,7 @@ function sendSuccess(res, data = null, message = 'Operation successful', statusC
   return res.status(statusCode).json({
     success: true,
     message: message,
-    data: data
+    user : data
   });
 }
 
