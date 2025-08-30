@@ -6,6 +6,11 @@ import { FaMapMarkerAlt, FaStar, FaComments, FaTimes } from "react-icons/fa";
 import { FaMapMarkerAlt, FaStar, FaRobot } from "react-icons/fa";
 
 import PlaceCard from "../components/placeCard";
+
+
+import "./Places.css";
+
+
 import SearchBar from "../components/searchbar";
 import Chatbot from "../components/chatbot";
 
@@ -22,6 +27,12 @@ import logo1 from "../images/logo1.jpg";
 import bgAuth from "../images/bg-auth.jpg";
 
 import ScrollToTop from "../components/ScrollToTop";
+// import OptimizedMap from "../components/map/OptimizedMap";
+import { lazy, Suspense, useMemo } from "react"; // ✅
+const OptimizedMap = lazy(() => import("../components/map/OptimizedMap")); 
+
+
+
 
 
 interface Place {
@@ -44,7 +55,12 @@ const places: Place[] = [
     date: "29 Mar – 3 Apr",
     price: "₹26,432 night",
     rating: 5.0,
+
     description: "Beautiful cabin in the woods with modern amenities and stunning views.",
+
+    lat: 34.6940,
+    lng: -84.4821,
+
   },
   {
     id: 2,
@@ -54,7 +70,12 @@ const places: Place[] = [
     date: "23–28 Mar",
     price: "₹26,996 night",
     rating: 5.0,
+
     description: "Cozy cabin with a private hot tub and breathtaking views of the surrounding mountains.",
+
+    lat: 34.7937,
+    lng: -84.3660,
+
   },
   {
     id: 3,
@@ -64,7 +85,12 @@ const places: Place[] = [
     date: "2–7 Mar",
     price: "₹17,407 night",
     rating: 5.0,
+
     description: "Charming cabin with a fireplace and a fully equipped kitchen, perfect for a romantic getaway.",
+
+    lat: 34.8631,
+    lng: -84.3247,
+
   },
   {
     id: 4,
@@ -74,6 +100,7 @@ const places: Place[] = [
     date: "10–15 Apr",
     price: "₹22,000 night",
     rating: 4.8,
+
     description: "Historic mansion with a private pool and a beautifully landscaped garden, ideal for a family vacation.",
   },
   {
@@ -109,12 +136,25 @@ const places: Place[] = [
   {
     id: 8,
     image: bgAuth,
+
+    lat: 32.0809,
+    lng: -81.0912,
+  },
+  {
+    id: 8,
+    image: "/images/bg-auth.jpg",
+
     location: "Austin, Texas, US",
     distance: "1200 km away",
     date: "1–6 Aug",
     price: "₹32,000 night",
     rating: 4.8,
+
     description: "Modern condo with a private pool and a stunning view of the surrounding cityscape, ideal for a city break.",
+
+    lat: 30.2672,
+    lng: -97.7431,
+
   },
   {
     id: 9,
@@ -124,7 +164,12 @@ const places: Place[] = [
     date: "15–20 Sep",
     price: "₹40,000 night",
     rating: 4.9,
+
     description: "Luxurious apartment with a private balcony and a stunning view of the Golden Gate Bridge, perfect for a city break.",
+
+    lat: 37.7749,
+    lng: -122.4194,
+
   },
   {
     id: 10,
@@ -134,7 +179,12 @@ const places: Place[] = [
     date: "25–30 Oct",
     price: "₹38,000 night",
     rating: 4.7,
+
     description: "Charming cabin with a private hot tub and a fully equipped kitchen, perfect for a romantic getaway.",
+
+    lat: 47.6062,
+    lng: -122.3321,
+
   },
 ];
 
@@ -179,6 +229,7 @@ const Places: React.FC = () => {
     return () => clearInterval(interval);
   }, [totalPlaces]);
 
+
   const handleViewDetails = (place: Place) => {
     setSelectedPlace(place);
     setIsModalOpen(true);
@@ -190,6 +241,33 @@ const Places: React.FC = () => {
     setIsModalOpen(false);
     document.body.style.overflow = "unset";
   };
+
+
+//   const points = useMemo(   // ✅
+//   () =>
+//     places.map((p) => ({
+//       id: p.id,
+//       lat: 28.6139 + Math.random(), // 🔧 dummy coords for now
+//       lng: 77.2090 + Math.random(),
+//       title: p.location,
+//       description: `${p.price}, Rating: ${p.rating}`,
+//     })),
+//   []
+// );
+
+const points = useMemo(
+  () =>
+    places.map((p) => ({
+      id: p.id,
+      lat: p.lat,
+      lng: p.lng,
+      title: p.location,
+      description: `${p.price}, Rating: ${p.rating}`,
+    })),
+  [places]
+);
+
+
 
   return (
     <>
@@ -240,6 +318,10 @@ const Places: React.FC = () => {
           </div>
         </div>
       </div>
+  {/* ✅ Add map here */}
+    <Suspense fallback={<div style={{ height: "60vh" }}>Loading map…</div>}>
+<OptimizedMap center={[39.8283, -98.5795]} zoom={4} points={points} />
+
 
       {/* Place Details Modal */}
       {isModalOpen && selectedPlace && (
@@ -277,6 +359,9 @@ const Places: React.FC = () => {
           </div>
         </div>
       )}
+
+
+    </Suspense>
 
       {/* Floating Chatbot Button */}
 

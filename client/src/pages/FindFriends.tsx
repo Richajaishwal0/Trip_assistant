@@ -1,12 +1,13 @@
 import * as React from "react";
 import { useState , useEffect } from "react";
-import axios from "axios";
 import {
   FaUserFriends,
   FaUserPlus,
   FaEnvelope,
   FaSearch,
 } from "react-icons/fa";
+import { apiPost } from "../utils/apiUtils";
+import { handleError } from "../utils/errorHandlerToast";
 import ScrollToTop from "../components/ScrollToTop";
 
 // Dummy user data
@@ -117,9 +118,26 @@ const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || "http://localhost:5000"
       const userId = localStorage.getItem("user_id");
       if (!userId) return; // No user logged in
   
-      axios.post(`${apiBaseUrl}/api/user/activity`, { userId })
-        .then(res => console.log("Activity updated:", res.data))
-        .catch(err => console.error("Error updating activity", err));
+      // Use standardized API utility for consistent error handling
+      const updateActivity = async () => {
+        try {
+          const response = await apiPost(`${apiBaseUrl}/api/user/activity`, { userId }, { 
+            showErrorToast: false // Don't show toast for background activity updates
+          });
+          
+          // Only log in development
+          if (import.meta.env.DEV) {
+            console.log("Activity updated:", response);
+          }
+        } catch (error) {
+          // Handle errors quietly - this is a background operation
+          if (import.meta.env.DEV) {
+            console.error("Error updating activity:", error);
+          }
+        }
+      };
+      
+      updateActivity();
     }, []);
 
   return (
