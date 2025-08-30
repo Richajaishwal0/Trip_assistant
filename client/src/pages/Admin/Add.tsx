@@ -29,7 +29,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({
   });
 
   const [images, setImages] = useState<File[]>([]);
-
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
   // Handle input changes
   const handleChange = (
     e: React.ChangeEvent<
@@ -57,7 +57,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({
 
     try {
       await axios.post(
-        "http://localhost:5000/api/properties",
+        `${apiBaseUrl}/api/properties`,
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },

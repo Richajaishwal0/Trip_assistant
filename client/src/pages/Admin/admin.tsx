@@ -17,9 +17,10 @@ const Dashboard: React.FC = () => {
     fetchProperties();
   }, []);
 
+  const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || "http://localhost:5000";
   const fetchProperties = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/properties/read"); //changed the api to '/properties/read'
+      const response = await axios.get(`${apiBaseUrl}/api/properties/read`); //changed the api to '/properties/read'
       setProperties(response.data);
     } catch (error) {
       handleError(error, "Error occured while fetching properties.")
@@ -57,7 +58,7 @@ const Dashboard: React.FC = () => {
                   <div key={property.property_id} className="col-md-4 mb-3">
                     <div className="card">
                       <img
-                        src={`http://localhost:5000${property.images.split(",")[0]}`}
+                        src={`${apiBaseUrl}${property.images.split(",")[0]}`}
                         alt="Property"
                         className="card-img-top"
                         style={{ height: "200px", objectFit: "cover" }}

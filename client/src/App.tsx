@@ -62,6 +62,7 @@ const AppContent = () => {
         }}
       />
 
+      
       {/* Show Navbar conditionally */}
       {showHeaderFooter && <Navbar />}
 
