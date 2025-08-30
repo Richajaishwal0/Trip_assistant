@@ -330,13 +330,30 @@ The backend will run at [http://localhost:5000](http://localhost:5000)
 
 #### Step 1: Copy Sample Files
 
-Both `client` and `server` directories contain `.env.sample` files with all required variables:
+Both `client` and `server` directories contain `.env.sample` and `.env.example` files with all required variables:
 
 ```bash
 # Copy sample files to create your environment configuration
 cp client/.env.sample client/.env
-cp server/.env.sample server/.env
+cp server/.env.example server/.env
 ```
+
+#### Server Environment Setup Script
+
+For easier server environment configuration, we've created a helpful setup script:
+
+```bash
+cd server
+npm run setup-env
+```
+
+This interactive script will:
+- Guide you through setting up all required environment variables
+- Generate secure random values for secrets like JWT_SECRET
+- Use default values where appropriate
+- Check for any missing critical variables
+
+For more information about environment setup, see [server/ENV_SETUP.md](server/ENV_SETUP.md).
 
 #### Step 2: Configure Server Environment Variables
 
