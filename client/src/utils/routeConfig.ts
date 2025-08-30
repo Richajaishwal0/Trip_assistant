@@ -1,4 +1,3 @@
-import React from 'react';
 import { lazyLoad } from './lazyLoadUtils';
 
 // Define route configurations for better organization and prefetching
@@ -21,6 +20,7 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/trip-budget': () => import('../components/TripBudgetEstimator'),
   '/currency': () => import('../components/Currency_new'),
   '/about': () => import('../components/AboutUsPage'),
+  '/privacy': () => import('../pages/Privacy'),
 };
 
 // Define all app routes with lazy loading
@@ -72,6 +72,11 @@ export const routes: RouteConfig[] = [
     path: '/about',
     component: lazyLoad(componentPaths['/about']),
   },
+  {
+    path: '/privacy',
+    component: lazyLoad(componentPaths['/privacy']),
+    prefetch: true, // Prefetch for user transparency
+  },
 ];
 
 // Function to prefetch critical routes
@@ -90,7 +95,7 @@ export function prefetchCriticalRoutes() {
             // Sanitize route path for logging
             const safePath = route.path.replace(/[\r\n]/g, '');
             console.log(`Prefetching route: ${safePath}`);
-          // amazonq-ignore-next-line
+            // amazonq-ignore-next-line
           }
         } catch (error) {
           // Sanitize route path for logging
