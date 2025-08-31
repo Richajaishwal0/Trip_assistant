@@ -18,6 +18,58 @@ function Auth() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [userNameError, setUserNameError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+
+  // Validation patterns from backend
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const userNamePattern = /^[a-zA-Z0-9\s]+$/;
+
+  const validateUserName = (name: string): { isValid: boolean; error: string | null } => {
+    if (!name.trim()) {
+      return { isValid: false, error: "Username is required" };
+    }
+    if (name.length < 2) {
+      return { isValid: false, error: "Username must be at least 2 characters long" };
+    }
+    if (name.length > 50) {
+      return { isValid: false, error: "Username cannot exceed 50 characters" };
+    }
+    if (!userNamePattern.test(name)) {
+      return { isValid: false, error: "Username can only contain letters, numbers, and spaces" };
+    }
+    return { isValid: true, error: null };
+  };
+
+  const validateEmail = (email: string): { isValid: boolean; error: string | null } => {
+    if (!email.trim()) {
+      return { isValid: false, error: "Email is required" };
+    }
+    if (!emailPattern.test(email)) {
+      return { isValid: false, error: "Please provide a valid email address" };
+    }
+    return { isValid: true, error: null };
+  };
+
+  // Password validation pattern from backend
+  const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  const validatePassword = (pass: string): { isValid: boolean; error: string | null } => {
+    if (!pass) {
+      return { isValid: false, error: "Password is required" };
+    }
+    if (pass.length < 8) {
+      return { isValid: false, error: "Password must be at least 8 characters long" };
+    }
+    if (!passwordPattern.test(pass)) {
+      return { 
+        isValid: false, 
+        error: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+      };
+    }
+    return { isValid: true, error: null };
+  };
 
   // --- Phone number validation (unchanged core logic) ---
   const validatePhoneNumber = (
@@ -68,8 +120,27 @@ function Auth() {
     event.preventDefault();
     setAuthError(null);
     setPhoneError(null);
+    setEmailError(null);
+    setUserNameError(null);
+
+    // Validate email for both login and signup
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.isValid) {
+      setEmailError(emailValidation.error);
+      showError(emailValidation.error || "Please provide a valid email");
+      return;
+    }
 
     if (!isLogin) {
+      // Validate username for signup
+      const userNameValidation = validateUserName(userName);
+      if (!userNameValidation.isValid) {
+        setUserNameError(userNameValidation.error);
+        showError(userNameValidation.error || "Please provide a valid username");
+        return;
+      }
+
+      // Validate phone number
       const phoneValidation = validatePhoneNumber(mobileNo);
       if (!phoneValidation.isValid) {
         setPhoneError(phoneValidation.error);
@@ -78,9 +149,20 @@ function Auth() {
       }
     }
 
-    if (!isLogin && password !== confirmPassword) {
-      showError("Passwords do not match!");
-      return;
+    if (!isLogin) {
+      // Validate password format
+      const passwordValidation = validatePassword(password);
+      if (!passwordValidation.isValid) {
+        setPasswordError(passwordValidation.error);
+        showError(passwordValidation.error || "Please check password requirements");
+        return;
+      }
+
+      // Validate password match
+      if (password !== confirmPassword) {
+        showError("Passwords do not match!");
+        return;
+      }
     }
 
     if (!isOnline()) {
@@ -194,6 +276,9 @@ return (
         backgroundSize: "cover",
         backgroundPosition: "center",
         backdropFilter: "blur(6px)",
+        paddingTop: "80px", // Add padding to account for fixed header
+        minHeight: "100vh",
+        position: "relative",
       }}
       role="main"
     >
@@ -203,9 +288,12 @@ return (
         style={{
           maxWidth: "420px",
           width: "100%",
-          background: "rgba(255, 255, 255, 0.86)", // glassmorphism while keeping theme
+          background: "rgba(255, 255, 255, 0.95)", // Increased opacity for better readability
           backdropFilter: "blur(12px)",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.25)",
+          margin: "20px auto", // Center the card and add some vertical spacing
+          position: "relative", // Ensure proper stacking context
+          zIndex: 1, // Ensure card appears above background
         }}
         role="region"
         aria-labelledby="auth-heading"
@@ -229,19 +317,30 @@ return (
               <input
                 id="userName"
                 type="text"
-                className="form-control rounded-4 shadow-sm border-0 px-3 py-2"
+                className={`form-control rounded-4 shadow-sm px-3 py-2 ${
+                  userNameError ? "is-invalid" : userName && !userNameError ? "is-valid" : "border-0"
+                }`}
                 style={{ transition: "all 0.3s ease-in-out" }}
                 placeholder="Enter your UserName"
                 value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => {
+                  setUserName(e.target.value);
+                  const validation = validateUserName(e.target.value);
+                  setUserNameError(validation.error);
+                }}
                 required
-                aria-describedby={!isLogin ? "userName-help" : undefined}
-                aria-invalid={authError ? "true" : "false"}
+                aria-describedby={!isLogin ? "userName-help userName-error" : undefined}
+                aria-invalid={userNameError ? "true" : "false"}
               />
               {!isLogin && (
-                <div id="userName-help" className="form-text text-dark">
-                  Choose a unique username for your account.
-                </div>
+                <>
+                  {userNameError && (
+                    <div id="userName-error" className="invalid-feedback" role="alert">
+                      <span className="me-1" aria-hidden="true">⚠️</span>
+                      {userNameError}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
@@ -251,18 +350,27 @@ return (
             <input
               id="email"
               type="email"
-              className="form-control rounded-4 shadow-sm border-0 px-3 py-2"
+              className={`form-control rounded-4 shadow-sm px-3 py-2 ${
+                emailError ? "is-invalid" : email && !emailError ? "is-valid" : "border-0"
+              }`}
               style={{ transition: "all 0.3s ease-in-out" }}
               placeholder="Enter your email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                const validation = validateEmail(e.target.value);
+                setEmailError(validation.error);
+              }}
               required
-              aria-describedby="email-help"
-              aria-invalid={authError ? "true" : "false"}
+              aria-describedby="email-help email-error"
+              aria-invalid={emailError ? "true" : "false"}
             />
-            <div id="email-help" className="form-text text-muted small">
-              We'll never share your email with anyone else.
-            </div>
+            {emailError && (
+              <div id="email-error" className="invalid-feedback" role="alert">
+                <span className="me-1" aria-hidden="true">⚠️</span>
+                {emailError}
+              </div>
+            )}
           </div>
 
           {/* --- Phone (Sign Up only) --- */}
@@ -284,9 +392,6 @@ return (
                 aria-invalid={phoneError ? "true" : "false"}
                 maxLength={20}
               />
-              <div id="phone-help" className="form-text text-muted small">
-                Enter with country code (e.g., +1-2XXXXX, +91 XXXXX)
-              </div>
               {phoneError && (
                 <div id="phone-error" className="invalid-feedback d-block" role="alert">
                   <span className="me-1" aria-hidden="true">⚠️</span>
@@ -307,20 +412,51 @@ return (
             <input
               id="password"
               type="password"
-              className="form-control rounded-4 shadow-sm border-0 px-3 py-2"
+              className={`form-control rounded-4 shadow-sm px-3 py-2 ${
+                !isLogin && password
+                  ? passwordPattern.test(password)
+                    ? "is-valid border-success"
+                    : "is-invalid border-danger"
+                  : "border-0"
+              }`}
               style={{ transition: "all 0.3s ease-in-out" }}
               placeholder="Enter your password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (!isLogin) {
+                  const validation = validatePassword(e.target.value);
+                  setPasswordError(validation.error);
+                }
+              }}
               required
-              aria-describedby="password-help"
-              aria-invalid={authError ? "true" : "false"}
+              aria-describedby="password-help password-requirements"
+              aria-invalid={passwordError ? "true" : "false"}
             />
-            <div id="password-help" className="form-text text-muted small">
-              {!isLogin
-                ? "Password must be at least 8 characters long."
-                : "Enter your account password."}
-            </div>
+            {!isLogin && (
+              <div id="password-requirements" className="form-text">
+                <div className={`small ${password.length >= 8 ? 'text-success' : 'text-muted'}`}>
+                  ✓ At least 8 characters
+                </div>
+                <div className={`small ${/[A-Z]/.test(password) ? 'text-success' : 'text-muted'}`}>
+                  ✓ One uppercase letter
+                </div>
+                <div className={`small ${/[a-z]/.test(password) ? 'text-success' : 'text-muted'}`}>
+                  ✓ One lowercase letter
+                </div>
+                <div className={`small ${/\d/.test(password) ? 'text-success' : 'text-muted'}`}>
+                  ✓ One number
+                </div>
+                <div className={`small ${/[@$!%*?&]/.test(password) ? 'text-success' : 'text-muted'}`}>
+                  ✓ One special character (@$!%*?&)
+                </div>
+              </div>
+            )}
+            {isLogin && (
+              <div id="password-help" className="form-text text-muted small">
+                Enter your account password.
+              </div>
+            )}
           </div>
 
           {/* --- Confirm Password (Sign Up only) --- */}
@@ -342,9 +478,6 @@ return (
                     : "false"
                 }
               />
-              <div id="confirmPassword-help" className="form-text text-muted small">
-                Re-enter your password to confirm.
-              </div>
             </div>
           )}
 
