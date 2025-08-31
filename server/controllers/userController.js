@@ -72,10 +72,10 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   try {
     const {
-      userName: user_name,
+      user_name,
       email,
       password,
-      mobileNo: mobile_no,
+      mobile_no,
     } = req.body;
 
     if (!user_name || !email || !password || !mobile_no) {
