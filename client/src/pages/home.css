@@ -243,17 +243,17 @@ body {
 
 .btn-secondary {
   background: transparent;
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
+  color: #facc15; /* Yellow text */
+  border: 2px solid #facc15;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: white;
+  background: #eab308;  /* Darker golden yellow */
+  color: #1a1a1a;       /* Dark text for readability */
+  border-color: #eab308;
   transform: translateY(-2px);
-  color: white;
-  text-decoration: none;
 }
 
 /* Slide Indicators */
@@ -295,16 +295,16 @@ body {
 }
 
 .home.dark-mode .btn-secondary {
-  background: rgba(255, 255, 255, 0.08);
-  border: 2px solid rgba(250, 215, 0, 0.3);
-  color: #fad700;
+  background: transparent;
+  border: 2px solid #facc15;
+  color: #facc15;
 }
 
 .home.dark-mode .btn-secondary:hover {
-  background: rgba(250, 215, 0, 0.1);
-  border-color: rgba(250, 215, 0, 0.5);
-  color: #fad700;
+  background: #eab308;
+  color: #1a1a1a;
 }
+
 
 .home.dark-mode .indicator {
   background: rgba(250, 215, 0, 0.3);
@@ -334,6 +334,7 @@ body {
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
+
 
 /* Enhanced Responsive Features Section */
 .features-section {
@@ -1510,20 +1511,20 @@ body {
   .container {
     padding: 0 1rem;
   }
-  
+
   .welcome-badge {
     font-size: 0.8rem;
     padding: 0.5rem 1rem;
   }
-  
+
   .section-header {
     margin-bottom: 3rem;
   }
-  
+
   .section-header h2 {
     font-size: clamp(1.5rem, 5vw, 2.2rem);
   }
-  
+
   .section-header p {
     font-size: 1rem;
   }
@@ -1533,24 +1534,24 @@ body {
   .container {
     padding: 0 0.5rem;
   }
-  
+
   .welcome-badge {
     font-size: 0.75rem;
     padding: 0.4rem 0.8rem;
   }
-  
+
   .section-header {
     margin-bottom: 2rem;
   }
-  
+
   .section-header h2 {
     font-size: clamp(1.3rem, 6vw, 1.8rem);
   }
-  
+
   .section-header p {
     font-size: 0.9rem;
   }
-  
+
   .stat-number {
     font-size: 2.5rem;
   }
@@ -1561,24 +1562,24 @@ body {
   .hero-section {
     height: 100vh;
   }
-  
+
   .hero-content {
     padding: 1rem;
   }
-  
+
   .hero-title {
     font-size: clamp(1.5rem, 4vh, 2.5rem);
   }
-  
+
   .hero-subtitle {
     font-size: clamp(0.9rem, 2vh, 1.2rem);
     margin-bottom: 1rem;
   }
-  
+
   .hero-buttons {
     margin-top: 1rem;
   }
-  
+
   .btn-primary,
   .btn-secondary {
     padding: 0.6rem 1.5rem;
@@ -1610,7 +1611,7 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  
+
   .hero-slide,
   .badge-icon,
   .feature-card,
@@ -1630,13 +1631,13 @@ body {
     background: #fff;
     border: 2px solid #000;
   }
-  
+
   .btn-primary {
     background: #000;
     color: #fff;
     border: 2px solid #fff;
   }
-  
+
   .btn-secondary {
     background: #fff;
     color: #000;
@@ -1654,7 +1655,7 @@ body {
   .btn-cta-secondary {
     display: none;
   }
-  
+
   .features-section,
   .stats-section {
     background: #fff !important;
