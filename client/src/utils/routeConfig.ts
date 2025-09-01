@@ -19,6 +19,7 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/place-details': () => import('../pages/PlaceDetails'),
   '/help': () => import('../pages/HelpCentre'),
   '/trip-budget': () => import('../components/TripBudgetEstimator'),
+  '/budget-planner': () => import('../pages/BudgetPlannerPage'),
   '/currency': () => import('../components/Currency_new'),
   '/about': () => import('../components/AboutUsPage'),
 };
@@ -65,6 +66,10 @@ export const routes: RouteConfig[] = [
     component: lazyLoad(componentPaths['/trip-budget']),
   },
   {
+    path: '/budget-planner',
+    component: lazyLoad(componentPaths['/budget-planner']),
+  },
+  {
     path: '/currency',
     component: lazyLoad(componentPaths['/currency']),
   },
@@ -79,24 +84,13 @@ export function prefetchCriticalRoutes() {
   routes
     .filter(route => route.prefetch)
     .forEach(route => {
-      // Start loading the component in the background
       const importFunc = componentPaths[route.path];
       if (importFunc) {
         try {
-          // Trigger the import but don't wait for it
-          importFunc();
+          importFunc(); // Trigger the import but don't wait for it
           if (process.env.NODE_ENV === 'development') {
-            // amazonq-ignore-next-line
-            // Sanitize route path for logging
             const safePath = route.path.replace(/[\r\n]/g, '');
             console.log(`Prefetching route: ${safePath}`);
-          // amazonq-ignore-next-line
           }
         } catch (error) {
-          // Sanitize route path for logging
-          const safePath = route.path.replace(/[\r\n]/g, '');
-          console.warn(`Failed to prefetch route ${safePath}:`, error);
-        }
-      }
-    });
-}
+          const safePath = route.path.replace(/[\r\n]/g, ''

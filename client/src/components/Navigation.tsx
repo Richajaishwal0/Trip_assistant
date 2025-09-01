@@ -54,17 +54,8 @@ export default function Navigation() {
         </Link>
 
         {/* Desktop Menu */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          flex: 1,
-          justifyContent: 'center'
-        }} className="desktop-nav">
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '2rem'
-          }}>
+        <div style={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'center' }} className="desktop-nav">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
             {navLinks.map(({ to, icon: Icon, label }) => (
               <Link key={to} to={to} style={{
                 color: 'white',
@@ -75,8 +66,8 @@ export default function Navigation() {
                 padding: '0.5rem 1rem',
                 borderRadius: '6px',
                 transition: 'all 0.3s ease'
-              }} onMouseEnter={(e) => e.target.style.background = 'rgba(255,255,255,0.1)'}
-                 onMouseLeave={(e) => e.target.style.background = 'transparent'}>
+              }} onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
                 <Icon size={18} />
                 <span>{label}</span>
               </Link>
@@ -85,11 +76,7 @@ export default function Navigation() {
         </div>
 
         {/* Right Side Actions */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1rem'
-        }} className="desktop-nav">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} className="desktop-nav">
           <button onClick={toggleDarkMode} style={{
             background: 'none',
             border: 'none',
@@ -98,8 +85,7 @@ export default function Navigation() {
             padding: '0.5rem',
             borderRadius: '6px',
             transition: 'all 0.3s ease'
-          }} onMouseEnter={(e) => e.target.style.background = 'rgba(255,255,255,0.1)'}
-             onMouseLeave={(e) => e.target.style.background = 'transparent'}>
+          }}>
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           <button onClick={() => navigate('/auth')} style={{
@@ -185,8 +171,7 @@ export default function Navigation() {
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.75rem',
-              width: 'fit-content'
+              gap: '0.75rem'
             }}>
               <User size={18} />
               <span>Login</span>
