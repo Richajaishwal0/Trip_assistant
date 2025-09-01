@@ -1,17 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import {
-  Home,
-  MapPin,
-  Users,
-  Star,
-  Calculator,
-  DollarSign,
-  User,
-  Sun,
-  Moon,
-} from "lucide-react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "./Navigation.css";
