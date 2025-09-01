@@ -1,6 +1,6 @@
 const Privacy = () => {
   return (
-    <div className="container mt-5">
+    <div className="full-width-container mt-5">
       <div className="card p-4 shadow-sm">
         <h2 className="card-title text-center mb-4">Privacy Policy</h2>
         <p className="card-text">
@@ -29,14 +29,22 @@ const Privacy = () => {
         </p>
       </div>
       <style jsx>{`
-        .container {
+        .full-width-container {
+          width: 100%;
+          padding: 0 15px;
           background-color: #ffffff;
           color: #333333;
         }
 
-        .dark-mode .container {
+        .dark-mode .full-width-container {
           background-color: #1a1a1a;
           color: #ffffff;
+        }
+
+        .card {
+          background-color: #ffffff;
+          border: 1px solid #ddd;
+          border-radius: 8px;
         }
 
         .dark-mode .card {
@@ -45,14 +53,40 @@ const Privacy = () => {
           border: 1px solid #444444;
         }
 
+        .list-group-item {
+          background-color: #ffffff;
+          border-color: #ddd;
+        }
+
         .dark-mode .list-group-item {
           background-color: #2a2a2a;
           color: #ffffff;
           border-color: #444444;
         }
 
+        .card-text.text-muted {
+          color: #6c757d;
+        }
+
         .dark-mode .card-text.text-muted {
           color: #aaaaaa !important;
+        }
+
+        /* Ensure full-width content */
+        @media (min-width: 576px) {
+          .full-width-container {
+            padding: 0 30px;
+          }
+        }
+        @media (min-width: 768px) {
+          .full-width-container {
+            padding: 0 50px;
+          }
+        }
+        @media (min-width: 992px) {
+          .full-width-container {
+            padding: 0 100px;
+          }
         }
       `}</style>
     </div>
