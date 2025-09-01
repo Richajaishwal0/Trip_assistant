@@ -28,6 +28,33 @@ const Privacy = () => {
           For the latest updates, please check back periodically. Last updated: August 25, 2025.
         </p>
       </div>
+      <style jsx>{`
+        .container {
+          background-color: #ffffff;
+          color: #333333;
+        }
+
+        .dark-mode .container {
+          background-color: #1a1a1a;
+          color: #ffffff;
+        }
+
+        .dark-mode .card {
+          background-color: #2a2a2a;
+          color: #ffffff;
+          border: 1px solid #444444;
+        }
+
+        .dark-mode .list-group-item {
+          background-color: #2a2a2a;
+          color: #ffffff;
+          border-color: #444444;
+        }
+
+        .dark-mode .card-text.text-muted {
+          color: #aaaaaa !important;
+        }
+      `}</style>
     </div>
   );
 };
