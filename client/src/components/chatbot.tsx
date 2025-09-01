@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa";
 import "./chatbot.css";
 import { handleError } from "../utils/errorHandlerToast";
+import { apiPost } from "../utils/apiUtils";
 
 interface Message {
   text: string;
@@ -16,19 +17,14 @@ interface ChatbotProps {
 
 const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [darkMode, setDarkMode] = useState(() => 
-    document.body.classList.contains("dark-mode")
-  );
   const chatRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 
-  // Combined effect for theme detection and event listeners
+  // Combined effect for event listeners
   useEffect(() => {
-    const checkDarkMode = () => {
-      setDarkMode(document.body.classList.contains("dark-mode"));
-    };
-    
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         onClose();
@@ -40,18 +36,11 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
         onClose();
       }
     };
-
-    const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
     
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEscapeKey);
     
     return () => {
-      observer.disconnect();
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscapeKey);
     };
@@ -64,6 +53,17 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     }
   }, [messages]);
 
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      event.key === "Enter" &&
+      (event.ctrlKey || event.metaKey)
+    ) {
+      event.preventDefault();
+      // Submit the form programmatically
+      formRef.current?.requestSubmit();
+    }
+  };
+
   const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -75,40 +75,23 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     // Add user message
     setMessages((prev: Message[]) => [...prev, { text: userMessage, type: "user" }]);
     input.value = "";
+    
+    // Add loading state for UI feedback
+    setMessages((prev: Message[]) => [
+      ...prev,
+      { text: "Thinking...", type: "bot", isLoading: true }
+    ]);
 
     try {
-      const res = await fetch(`${apiBaseUrl}/api/query`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt: userMessage }),
-      });
-
-      // Add loading state for UI feedback
-      setMessages((prev: Message[]) => [
-        ...prev,
-        { text: "Thinking...", type: "bot", isLoading: true }
-      ]);
-
-      // Check if response is ok and has content
-      if (!res.ok) {
-        throw new Error(`Server error: ${res.status} ${res.statusText}`);
-      }
-
-      const responseText = await res.text();
-      if (!responseText) {
-        throw new Error("Empty response from server");
-      }
-
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch (parseError) {
-        console.error("JSON parse error:", parseError);
-        console.error("Response text:", responseText);
-        throw new Error("Invalid response format from server");
-      }
+      // Use our standardized API utility
+      const data = await apiPost<{ message?: string; error?: string }>(
+        `${apiBaseUrl}/api/query`, 
+        { prompt: userMessage },
+        {
+          showErrorToast: false, // We'll handle the error display ourselves
+          timeout: 30000, // Chatbot responses can take longer
+        }
+      );
       
       // Remove the loading message
       setMessages((prev: Message[]) => prev.filter(msg => !msg.isLoading));
@@ -142,7 +125,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
   };
 
   return (
-    <aside 
+    <div 
       ref={containerRef}
       className="chatbot-container"
       role="complementary"
@@ -209,7 +192,10 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       </main>
 
       <form 
-        className="chatbot-footer d-flex" 
+
+        ref={formRef}
+        className="chatbot-footer p-2 d-flex" 
+
         onSubmit={handleSendMessage}
         role="form"
         aria-label="Send message to travel assistant"
@@ -224,6 +210,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           className="form-control"
           placeholder="Type a message..."
           aria-describedby="chat-help"
+          onKeyDown={handleInputKeyDown}
           required
         />
         <div id="chat-help" className="sr-only">
@@ -237,7 +224,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           Send
         </button>
       </form>
-    </aside>
+    </div>
   );
 };
 

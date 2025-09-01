@@ -30,29 +30,30 @@ pids
 coverage/
 *.lcov
 
-# Environment variables
+# Environment variables (CRITICAL: Never commit these)
 .env
 .env.*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-
-# Editor files
-.vscode/
-.DS_Store
-.venv
-
-# OS/IDE files
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-#added .env file that stores mongoDB connection string
 server/.env
-Thumbs.db
+client/.env
+
+# Backup environment files
+.env.backup
+.env.orig
+*.env.backup
+
+# Security and credential files
+secrets/
+credentials/
+certificates/
+*.pem
+*.key
+*.cert
+*.crt
+config/production.json
 
 # TypeScript build info
 *.tsbuildinfo

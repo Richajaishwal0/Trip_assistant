@@ -99,8 +99,11 @@ const Home: React.FC = () => {
                     <Link to="/places" className="btn-primary">
                       Explore Destinations <FaArrowRight />
                     </Link>
-                    <Link to="/auth" className="btn-secondary">
-                      Get Started
+                    <Link to="/login" className="btn-primary">
+                      Login
+                    </Link>
+                    <Link to="/signup" className="btn-secondary">
+                      Signup
                     </Link>
                   </div>
                 </div>
@@ -128,7 +131,6 @@ const Home: React.FC = () => {
           isVisible ? "animate-in" : ""
         }`}
       >
-        {/* Floating Geometric Elements */}
         <div className="floating-shapes">
           <div className="floating-shape shape-1"></div>
           <div className="floating-shape shape-2"></div>
@@ -206,8 +208,6 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Popular Places Section removed from Home. Now only in Places page. */}
 
       {/* Call to Action Section */}
       <section className={`cta-section ${darkMode ? "dark-mode" : ""}`}>
