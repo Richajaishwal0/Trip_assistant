@@ -43,6 +43,8 @@ interface Place {
   price: string;
   rating: number;
   description?: string;
+  lat?: number;
+  lng?: number;
 }
 
 const places: Place[] = [
