@@ -122,6 +122,8 @@ const places: Place[] = [
     price: "₹35,000 night",
     rating: 4.7,
     description: "Luxurious beachfront condo with a private balcony and a stunning view of the ocean, ideal for a beach vacation.",
+    lat: 25.79,
+    lng: -80.14,
   },
   {
     id: 7,
