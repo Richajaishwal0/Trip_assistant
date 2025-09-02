@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "./Navigation.css";
+import Logo from "./Logo";
+import { initializeBootstrap } from "../utils/bootstrapInit";
+
 import { Home, MapPin, Users, Star, Calculator, DollarSign, User, Menu, X, Sun, Moon } from "lucide-react";
+
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
