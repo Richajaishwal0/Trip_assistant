@@ -139,6 +139,8 @@ const places: Place[] = [
     price: "₹19,800 night",
     rating: 4.6,
     description: "Charming cabin with a private hot tub and a fully equipped kitchen, perfect for a romantic getaway.",
+    lat: 36.16,
+    lng: -86.78,
   },
   {
     id: 8,
