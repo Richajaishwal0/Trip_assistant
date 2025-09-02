@@ -37,7 +37,7 @@ const Privacy = () => {
         }
 
         .dark-mode .full-width-container {
-          background-color: #1a1a1a;
+          background-color: #232946;
           color: #ffffff;
         }
 
@@ -48,7 +48,7 @@ const Privacy = () => {
         }
 
         .dark-mode .card {
-          background-color: #2a2a2a;
+          background-color: #232946;
           color: #ffffff;
           border: 1px solid #444444;
         }
@@ -59,7 +59,7 @@ const Privacy = () => {
         }
 
         .dark-mode .list-group-item {
-          background-color: #2a2a2a;
+          background-color: #232946;
           color: #ffffff;
           border-color: #444444;
         }
