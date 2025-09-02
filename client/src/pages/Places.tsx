@@ -374,7 +374,7 @@ const points = useMemo(
 
       <button className="chatbot-btn btn btn-primary" onClick={() => setIsChatOpen(true)}>
         <FaComments size={20} />
-
+</button>
       <button
         className="chatbot-btn"
         onClick={() => setIsChatOpen(true)}
