@@ -324,10 +324,10 @@ function Navbar() {
               <Link
                 key={path}
                 to={path}
-                className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium hover:text-white hover:bg-white/20 ${
                   location.pathname === path
-                    ? "bg-white/20"
-                    : "hover:bg-white/10"
+                    ? "bg-white/20 text-white"
+                    : "text-indigo-200"
                 }`}
 >>>>>>> 29d190e (added authentication middleware to verify token for user validation , modified authentication logic on client side by seperating loginand signup form and using zod for validation to make code readable and maintainable. Enhanced user flow by logout option when user is logged in and signup/login when user log outs. added logic unauthenticated user to go to specific routes.)
               >
