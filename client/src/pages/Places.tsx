@@ -111,6 +111,8 @@ const places: Place[] = [
     description: "Historic mansion with a private pool and a beautifully landscaped garden, ideal for a family vacation.",
     lat: 32.08,
     lng: -81.09,
+    lat: 32.08,
+    lng: -81.09,
   },
   {
     id: 5,
