@@ -151,6 +151,8 @@ const places: Place[] = [
     description: "Charming cabin with a private hot tub and a fully equipped kitchen, perfect for a romantic getaway.",
     lat: 36.16,
     lng: -86.78,
+    lat: 36.16,
+    lng: -86.78,
   },
   {
     id: 8,
