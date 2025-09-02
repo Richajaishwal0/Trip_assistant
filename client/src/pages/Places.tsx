@@ -47,6 +47,8 @@ interface Place {
   lng?: number;
   lat?: number;
   lng?: number;
+  lat?: number;
+  lng?: number;
 }
 
 const places: Place[] = [
