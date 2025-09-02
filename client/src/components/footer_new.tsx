@@ -139,14 +139,14 @@ const Footer: React.FC = () => {
 
       {/* Main Footer Content */}
       <div
-        className="container py-5"
+        className="container"
         style={{ 
           position: "relative", 
           zIndex: 2,
           width: "100%",
           maxWidth: "1400px",
           margin: "0 auto",
-          padding: "2rem 1rem"
+          padding: "0rem 2rem 0rem 2rem"
         }}
       >
         {/* Newsletter Section */}
@@ -645,6 +645,31 @@ const Footer: React.FC = () => {
             .col-lg-4 .mb-4 h2 .me-2 {
               margin-right: 0.5rem;
             }
+          }
+
+          /* Remove unwanted extra space at the very bottom of the footer */
+          footer {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+          }
+
+          /* Ensure container doesn't add extra bottom padding */
+          .container.py-5 {
+            padding-bottom: 0 !important;
+          }
+
+          /* Tighten the bottom area (bottom row) */
+          .row.mt-5.pt-4 {
+            margin-top: 1rem !important;
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+          }
+
+          /* Limit the height of the decorative wave so it doesn't add extra space */
+          .wave-container {
+            height: 60px;
+            overflow: hidden;
+            top: 0;
           }
         `}
       </style>
