@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { FaMapMarkerAlt, FaStar, FaComments, FaTimes } from "react-icons/fa";
+import { FaMapMarkerAlt, FaStar, FaRobot, FaComments, FaTimes } from "react-icons/fa";
 
 import { FaMapMarkerAlt, FaStar, FaRobot } from "react-icons/fa";
 
