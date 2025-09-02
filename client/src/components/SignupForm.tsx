@@ -14,16 +14,16 @@ export default function SignupForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting, touchedFields },
   } = useForm<SignupFormInputs>({
-    mode : "onChange",
+    mode : "all",
     resolver: zodResolver(SignupSchema),
     defaultValues:{
-        userName: '',
-        email: '',
-        mobileNo: '',
-        password: '',
-        confirmPassword: ''
+        userName: "",
+        email: "",
+        mobileNo: "",
+        password: "",
+        confirmPassword: ""
     }
   });
 
@@ -66,7 +66,7 @@ export default function SignupForm() {
             {errors.userName ? (
               <div className="invalid-feedback">{errors.userName.message}</div>
             ) : (
-                <div className="text-green-600">Username is valid</div>
+                touchedFields.userName && <div className="text-green-600">Username is valid</div>
             )
         }
           </div>
@@ -82,7 +82,7 @@ export default function SignupForm() {
             {errors.email ? (
               <div className="invalid-feedback">{errors.email.message}</div>
             ): (
-                <div className="text-green-600">Email is valid</div>
+                touchedFields.email && <div className="text-green-600">Email is valid</div>
             )
         }
           </div>
@@ -99,7 +99,7 @@ export default function SignupForm() {
               <div className="invalid-feedback">{errors.mobileNo.message}</div>
             )
             : (
-                <div className="text-green-600">Phone number is valid</div>
+                touchedFields.mobileNo && <div className="text-green-600">Phone number is valid</div>
             )
         }
           </div>
@@ -116,7 +116,7 @@ export default function SignupForm() {
               <div className="invalid-feedback">{errors.password.message}</div>
             )
             : (
-                <div className="text-green-600">Password is valid</div>
+                touchedFields.password && <div className="text-green-600">Password is valid</div>
             )
             }
           </div>

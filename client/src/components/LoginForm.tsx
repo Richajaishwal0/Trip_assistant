@@ -15,9 +15,9 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting, touchedFields }
   } = useForm<LoginFormInputs>({
-    mode : "onChange",
+    mode : "all",
     resolver: zodResolver(LoginSchema),
     defaultValues:{
         email: '',
@@ -72,9 +72,13 @@ export default function LoginForm() {
               placeholder="Enter your email"
               {...register("email")}
             />
-            {errors.email && (
+            {errors.email ? (
               <div className="invalid-feedback">{errors.email.message}</div>
-            )}
+            )
+            :(
+              touchedFields.email && <div className="text-green-600">Email is valid</div>
+            )
+          }
           </div>
 
           {/* Password */}
@@ -85,9 +89,12 @@ export default function LoginForm() {
               placeholder="Enter your password"
               {...register("password")}
             />
-            {errors.password && (
+            {errors.password ? (
               <div className="invalid-feedback">{errors.password.message}</div>
-            )}
+            ):(
+              touchedFields.password && <div className="text-green-600">Password is valid</div>
+            )
+          }
           </div>
 
           <button
