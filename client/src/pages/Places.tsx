@@ -45,12 +45,6 @@ interface Place {
   description?: string;
   lat?: number;
   lng?: number;
-  lat?: number;
-  lng?: number;
-  lat?: number;
-  lng?: number;
-  lat?: number;
-  lng?: number;
 }
 
 const places: Place[] = [
@@ -62,12 +56,9 @@ const places: Place[] = [
     date: "29 Mar – 3 Apr",
     price: "₹26,432 night",
     rating: 5.0,
-
     description: "Beautiful cabin in the woods with modern amenities and stunning views.",
-
     lat: 34.6940,
     lng: -84.4821,
-
   },
   {
     id: 2,
@@ -77,12 +68,9 @@ const places: Place[] = [
     date: "23–28 Mar",
     price: "₹26,996 night",
     rating: 5.0,
-
     description: "Cozy cabin with a private hot tub and breathtaking views of the surrounding mountains.",
-
     lat: 34.7937,
     lng: -84.3660,
-
   },
   {
     id: 3,
@@ -92,9 +80,7 @@ const places: Place[] = [
     date: "2–7 Mar",
     price: "₹17,407 night",
     rating: 5.0,
-
     description: "Charming cabin with a fireplace and a fully equipped kitchen, perfect for a romantic getaway.",
-
     lat: 34.8631,
     lng: -84.3247,
 
@@ -107,10 +93,7 @@ const places: Place[] = [
     date: "10–15 Apr",
     price: "₹22,000 night",
     rating: 4.8,
-
     description: "Historic mansion with a private pool and a beautifully landscaped garden, ideal for a family vacation.",
-    lat: 32.08,
-    lng: -81.09,
     lat: 32.08,
     lng: -81.09,
   },
@@ -123,8 +106,6 @@ const places: Place[] = [
     price: "₹28,500 night",
     rating: 4.9,
     description: "Modern cabin with a hot tub and a stunning view of the surrounding mountains, perfect for a relaxing retreat.",
-    lat: 35.60,
-    lng: -82.55,
     lat: 35.60,
     lng: -82.55,
   },
@@ -151,31 +132,18 @@ const places: Place[] = [
     description: "Charming cabin with a private hot tub and a fully equipped kitchen, perfect for a romantic getaway.",
     lat: 36.16,
     lng: -86.78,
-    lat: 36.16,
-    lng: -86.78,
-  },
-  {
-    id: 8,
-    image: bgAuth,
-
-    lat: 32.0809,
-    lng: -81.0912,
   },
   {
     id: 8,
     image: "/images/bg-auth.jpg",
-
     location: "Austin, Texas, US",
     distance: "1200 km away",
     date: "1–6 Aug",
     price: "₹32,000 night",
     rating: 4.8,
-
     description: "Modern condo with a private pool and a stunning view of the surrounding cityscape, ideal for a city break.",
-
     lat: 30.2672,
     lng: -97.7431,
-
   },
   {
     id: 9,
@@ -185,12 +153,9 @@ const places: Place[] = [
     date: "15–20 Sep",
     price: "₹40,000 night",
     rating: 4.9,
-
     description: "Luxurious apartment with a private balcony and a stunning view of the Golden Gate Bridge, perfect for a city break.",
-
     lat: 37.7749,
     lng: -122.4194,
-
   },
   {
     id: 10,
@@ -200,9 +165,7 @@ const places: Place[] = [
     date: "25–30 Oct",
     price: "₹38,000 night",
     rating: 4.7,
-
     description: "Charming cabin with a private hot tub and a fully equipped kitchen, perfect for a romantic getaway.",
-
     lat: 47.6062,
     lng: -122.3321,
 
