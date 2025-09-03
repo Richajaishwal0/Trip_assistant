@@ -16,7 +16,7 @@ export default function SignupForm() {
     handleSubmit,
     formState: { errors, isSubmitting, touchedFields },
   } = useForm<SignupFormInputs>({
-    mode : "all",
+    mode : "onChange",
     resolver: zodResolver(SignupSchema),
     defaultValues:{
         userName: "",
@@ -29,6 +29,8 @@ export default function SignupForm() {
 
   const onSubmit = async (data: SignupFormInputs) => {
     console.log("Signup Data:", data);
+    const {confirmPassword , ...other} = data;
+    data = other as SignupFormInputs;
     axios.post<ApiResponse>('http://localhost:5000/api/users/signup', data)
         .then((res)=>{
             showSuccess('SignUp successful!');

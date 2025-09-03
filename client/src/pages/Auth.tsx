@@ -14,9 +14,8 @@ const Auth = () => {
 
   useEffect(() => {
     const auth_token = localStorage.getItem("auth_token");
-    if (isLoggedin) {
-      alert(`${path}`)
-      naviagate(`${path}`);
+    if (!isLoggedin) {
+      naviagate(`/${path}`);
     }
 
     axios.get('http://localhost:5000/api/users/verifyToken', {
@@ -28,12 +27,12 @@ const Auth = () => {
       if (res.data.success) {
         naviagate("/places");
       } else {
-        naviagate(`${path}`);
+        naviagate(`/${path}`);
       }
     }
     ).catch((err) => {
       console.error("Token verification error:", err);
-      naviagate(`${path}`);
+      naviagate(`/${path}`);
     });
 
   }, [])
