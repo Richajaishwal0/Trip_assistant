@@ -21,6 +21,15 @@ const HelpCentre: React.FC = () => {
 
   return (
     <>
+    <style>
+        {`
+          .custom-placeholder::placeholder {
+            color: white;
+            opacity: 1; /* Override browser default fading */
+          }
+        `}
+      </style>
+
       <div
         className="min-vh-100"
         style={{
@@ -59,7 +68,7 @@ const HelpCentre: React.FC = () => {
                 <div className="position-relative">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
+                    className="form-control form-control-lg custom-placeholder text-white"
                     placeholder="Search FAQs..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -67,10 +76,10 @@ const HelpCentre: React.FC = () => {
                       background: "rgba(255, 255, 255, 0.1)",
                       border: "1.5px solid rgba(255, 255, 255, 0.3)",
                       borderRadius: "25px",
-                      color: "#ffffff",
                       backdropFilter: "blur(10px)",
                       boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
                       paddingLeft: "50px",
+                      
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = "#FFD700";
