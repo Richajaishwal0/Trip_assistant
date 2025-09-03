@@ -278,7 +278,7 @@ const HelpCentre: React.FC = () => {
                   <FAQItem
                     id="faq4"
                     question="How do I contact customer support?"
-                    answer="You can contact our customer support team through multiple channels: email us at support@helpdesk.com, call us at 1-800-HELP-NOW, or use the live chat feature available 24/7 on our website."
+                    answer="You can contact our customer support team through multiple channels: email us at T_M@gmail.com, call us at +91 01 234 567 88, or use the live chat feature available 24/7 on our website."
                     isExpanded={expandedFaq === "faq4"}
                     onToggle={() => toggleFaq("faq4")}
                   />
