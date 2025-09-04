@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const { badges } = require("../config/badgesConfig");
+const validate = require('../middleware/validation');
+const { activityCheckSchema } = require('../validators/activityValidators');
 
-router.post("/", async (req, res) => {
+router.post("/", validate(activityCheckSchema), async (req, res) => {
   const { userId } = req.body;
 
   try {
