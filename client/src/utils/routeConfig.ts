@@ -21,6 +21,7 @@ const componentPaths: Record<string, () => Promise<any>> = {
   '/trip-budget': () => import('../components/TripBudgetEstimator'),
   '/currency': () => import('../components/Currency_new'),
   '/about': () => import('../components/AboutUsPage'),
+  '/profile' : () => import('../pages/UserProfile')
 };
 
 // Define all app routes with lazy loading
@@ -71,6 +72,10 @@ export const routes: RouteConfig[] = [
   {
     path: '/about',
     component: lazyLoad(componentPaths['/about']),
+  },
+  {
+    path: '/profile',
+    component: lazyLoad(componentPaths['/profile']),
   },
 ];
 

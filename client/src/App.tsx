@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 
 // Core component imports
 import Navbar from "./components/Navigation";
-import Footer from "./components/footer";
+import Footer from "./components/footer_new";
 import NetworkStatusBar from "./components/NetworkStatusBar";
 import LoadingState from "./components/LoadingState";
 import ErrorBoundary from "./components/ErrorBoundary";

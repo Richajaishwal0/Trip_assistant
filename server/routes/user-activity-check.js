@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const { badges } = require("../badgesConfig");
+const { badges } = require("../config/badgesConfig");
 const validate = require('../middleware/validation');
 const { activityCheckSchema } = require('../validators/activityValidators');
 

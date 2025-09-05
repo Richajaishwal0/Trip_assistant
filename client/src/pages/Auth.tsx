@@ -88,7 +88,8 @@ function Auth() {
     if (cleanPhone.length > 15) {
       return { isValid: false, error: "Phone number cannot exceed 15 digits" };
     }
-    const phonePattern = /^(\+?\d{1,3}[-.\s]?)?(\(?\d{1,4}\)?[-.\s]?)?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+    const phonePattern =
+      /^(\+?\d{1,3}[-.\s]?)?(\(?\d{1,4}\)?[-.\s]?)?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
     if (!phonePattern.test(phone)) {
       return {
         isValid: false,
@@ -170,21 +171,26 @@ function Auth() {
       return;
     }
 
-    const apiBaseUrl = import.meta.env?.VITE_API_BASE_URL || "http://localhost:5000";
-// ...existing code...
-    const url = isLogin ? `${apiBaseUrl}/api/users/login` : `${apiBaseUrl}/api/users/signup`;
+    const apiBaseUrl =
+      import.meta.env?.VITE_API_BASE_URL || "http://localhost:5000";
+    // ...existing code...
+    const url = isLogin
+      ? `${apiBaseUrl}/api/users/login`
+      : `${apiBaseUrl}/api/users/signup`;
     // Fix payload structure to match server expectations
-    const payload = isLogin 
+    const payload = isLogin
       ? { email, password }
       : { user_name: userName, email, password, mobile_no: mobileNo };
     // Check if server is reachable
     try {
-      await fetch(`${apiBaseUrl}/api/users`, { 
-        method: 'HEAD',
-        signal: AbortSignal.timeout(5000)
+      await fetch(`${apiBaseUrl}/api/users`, {
+        method: "HEAD",
+        signal: AbortSignal.timeout(5000),
       });
     } catch (serverError) {
-      setAuthError(`Cannot connect to server at ${apiBaseUrl}. Please ensure the backend server is running on port 5000.`);
+      setAuthError(
+        `Cannot connect to server at ${apiBaseUrl}. Please ensure the backend server is running on port 5000.`
+      );
       return;
     }
 
@@ -194,7 +200,7 @@ function Auth() {
       const response = await fetch(url, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
         signal: AbortSignal.timeout(10000),
@@ -204,11 +210,14 @@ function Auth() {
 
       if (response.ok) {
         showSuccess(isLogin ? "Login Successful" : "Signup Successful");
-// ...existing code...
+        // ...existing code...
         // Fix response data access - server returns data.data.user.id
         const userId = data.data?.user?.id || data.user?.id || data.user_id;
+        const user_name = data.data?.user?.user_name;
+
         if (userId) {
           localStorage.setItem("user_id", userId);
+          localStorage.setItem("user_name", user_name);
         }
         // Store token if available
         const token = data.data?.token || data.token;
@@ -218,8 +227,11 @@ function Auth() {
         navigate("/places");
       } else {
         // Fix error message extraction - server returns data.message
-        let errorMsg = data.message || data.data?.message || "Authentication failed. Please check your credentials.";
-        
+        let errorMsg =
+          data.message ||
+          data.data?.message ||
+          "Authentication failed. Please check your credentials.";
+
         // Add helpful hints for common login issues
         if (!isLogin) {
           setAuthError(errorMsg);
@@ -227,45 +239,46 @@ function Auth() {
           if (errorMsg.includes("Invalid email or password")) {
             errorMsg = `Invalid credentials. Try demo account:\nEmail: test@example.com\nPassword: password123`;
           } else if (
-            errorMsg.includes("User not found") || response.status === 404
+            errorMsg.includes("User not found") ||
+            response.status === 404
           ) {
             errorMsg = `Account not found. Use demo account:\nEmail: test@example.com\nPassword: password123`;
           }
           setAuthError(errorMsg);
         }
-        
+
         if (isLogin && errorMsg.toLowerCase().includes("not registered")) {
           setTimeout(() => {
             navigate("/auth", { state: { isLogin: false } }); // switch to signup
           }, 2000); // give user time to see error toast
         }
-        
+
         showError(errorMsg);
       }
     } catch (error) {
-      let errorMsg = isLogin 
-        ? "Unable to log in at this time. Please try again later." 
+      let errorMsg = isLogin
+        ? "Unable to log in at this time. Please try again later."
         : "Unable to create your account at this time. Please try again later.";
-      
+
       if (error instanceof Error) {
         if (error.name === "AbortError") {
-          errorMsg = "Request timed out. Please check your internet connection and try again.";
+          errorMsg =
+            "Request timed out. Please check your internet connection and try again.";
         } else if (error.message.includes("fetch")) {
           errorMsg = `Cannot connect to server. Make sure the backend is running on ${apiBaseUrl}.\n\nFor demo, try:\nEmail: test@example.com\nPassword: password123`;
         }
       }
-      
-      console.error('Auth error:', error);
-      console.log('API URL attempted:', url);
-      console.log('Payload sent:', payload);
-      
+
+      console.error("Auth error:", error);
+      console.log("API URL attempted:", url);
+      console.log("Payload sent:", payload);
+
       setAuthError(errorMsg);
       handleError(error, errorMsg);
     } finally {
       setIsSubmitting(false);
     }
   };
-
 return (
   <>
     <Navigation />   {/* ✅ Navbar will now appear at the top */}
@@ -294,25 +307,59 @@ return (
           margin: "20px auto", // Center the card and add some vertical spacing
           position: "relative", // Ensure proper stacking context
           zIndex: 1, // Ensure card appears above background
-        }}
-        role="region"
-        aria-labelledby="auth-heading"
-      >
-        <h1
-          className="text-center mb-4 fw-bold"
-          id="auth-heading"
-          style={{
-            color: "#d4527b",
-            letterSpacing: "1px",
-            fontSize: "2rem",
-          }}
-        >
-          {isLogin ? "Login" : "Sign Up"}
-        </h1>
 
-        <form onSubmit={handleSubmit} noValidate>
-          {/* --- Username (Sign Up only) --- */}
-          {!isLogin && (
+        }}
+        role="main"
+      >
+        <div
+          className="card p-4 pb-2 rounded-5 shadow-lg border-0 m-3 sm:m-0"
+          style={{
+            maxWidth: "420px",
+            width: "100%",
+            background: "rgba(255, 255, 255, 0.86)", // glassmorphism while keeping theme
+            backdropFilter: "blur(12px)",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.25)",
+          }}
+          role="region"
+          aria-labelledby="auth-heading"
+        >
+          <h1
+            className="text-center mb-4 fw-bold"
+            id="auth-heading"
+            style={{
+              color: "#d4527b",
+              letterSpacing: "1px",
+              fontSize: "2rem",
+            }}
+          >
+            {isLogin ? "Login" : "Sign Up"}
+          </h1>
+
+          <form onSubmit={handleSubmit} noValidate>
+            {/* --- Username (Sign Up only) --- */}
+            {!isLogin && (
+              <div className="mb-3">
+                <input
+                  id="userName"
+                  type="text"
+                  className="form-control rounded-4 shadow-sm border-0 px-3 py-2"
+                  style={{ transition: "all 0.3s ease-in-out" }}
+                  placeholder="Enter your UserName"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  required
+                  aria-describedby={!isLogin ? "userName-help" : undefined}
+                  aria-invalid={authError ? "true" : "false"}
+                />
+                {!isLogin && (
+                  <div id="userName-help" className="form-text text-dark">
+                    Choose a unique username for your account.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* --- Email --- */}
             <div className="mb-3">
               <input
                 id="userName"
@@ -405,8 +452,6 @@ return (
                 </div>
               )}
             </div>
-          )}
-
           {/* --- Password --- */}
           <div className="mb-3">
             <input
@@ -459,102 +504,130 @@ return (
             )}
           </div>
 
-          {/* --- Confirm Password (Sign Up only) --- */}
-          {!isLogin && (
+            {/* --- Password --- */}
             <div className="mb-3">
               <input
-                id="confirmPassword"
+                id="password"
                 type="password"
                 className="form-control rounded-4 shadow-sm border-0 px-3 py-2"
                 style={{ transition: "all 0.3s ease-in-out" }}
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-                aria-describedby="confirmPassword-help"
-                aria-invalid={
-                  authError || (password !== confirmPassword && !!confirmPassword)
-                    ? "true"
-                    : "false"
-                }
+                aria-describedby="password-help"
+                aria-invalid={authError ? "true" : "false"}
               />
-            </div>
-          )}
-
-          {/* --- Auth Error Alert --- */}
-          {authError && (
-            <div
-              className="mb-3"
-              role="alert"
-              aria-live="polite"
-              aria-atomic="true"
-            >
-              <div className="alert alert-danger d-flex align-items-center mb-0">
-                <div className="me-2" aria-hidden="true">⚠️</div>
-                <div style={{ whiteSpace: "pre-line" }}>{authError}</div>
+              <div id="password-help" className="form-text text-muted small">
+                {!isLogin
+                  ? "Password must be at least 8 characters long."
+                  : "Enter your account password."}
               </div>
             </div>
-          )}
 
-          {/* --- Submit --- */}
-          <button
-            type="submit"
-            className="btn w-100 fw-bold py-2 rounded-4 mt-1"
-            style={{
-              background: "linear-gradient(135deg, #d3be52 0%, #d4527b 100%)",
-              border: "none",
-              boxShadow: "0 4px 10px rgba(212, 82, 123, 0.4)",
-              transition: "transform 0.2s ease-in-out",
-            }}
-            onMouseOver={(e) =>
-              (e.currentTarget.style.transform = "scale(1.02)")
-            }
-            onMouseOut={(e) =>
-              (e.currentTarget.style.transform = "scale(1)")
-            }
-            disabled={isSubmitting}
-            aria-describedby="submit-help"
-          >
-            {isSubmitting ? (
-              <>
-                <span
-                  className="spinner-border spinner-border-sm me-2"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                {isLogin ? "Logging in..." : "Signing up..."}
-              </>
-            ) : isLogin ? (
-              "Login"
-            ) : (
-              "Sign Up"
+            {/* --- Confirm Password (Sign Up only) --- */}
+            {!isLogin && (
+              <div className="mb-3">
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  className="form-control rounded-4 shadow-sm border-0 px-3 py-2"
+                  style={{ transition: "all 0.3s ease-in-out" }}
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  aria-describedby="confirmPassword-help"
+                  aria-invalid={
+                    authError ||
+                    (password !== confirmPassword && !!confirmPassword)
+                      ? "true"
+                      : "false"
+                  }
+                />
+                <div
+                  id="confirmPassword-help"
+                  className="form-text text-muted small"
+                >
+                  Re-enter your password to confirm.
+                </div>
+              </div>
             )}
-          </button>
-        </form>
 
-        {/* --- Toggle Login/Signup --- */}
-        <p className="mt-3 text-center mb-0">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-          <button
-            className="btn btn-link fw-bold p-0"
-            style={{
-              color: "#d4527b",
-              textDecoration: "none",
-              transition: "color 0.3s ease-in-out",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.color = "#a8385c")}
-            onMouseOut={(e) => (e.currentTarget.style.color = "#d4527b")}
-            onClick={() => setIsLogin(!isLogin)}
-            type="button"
-            aria-label={
-              isLogin ? "Switch to sign up form" : "Switch to login form"
-            }
-          >
-            {isLogin ? "Sign Up" : "Login"}
-          </button>
-        </p>
-      </div>
-    </main>
+            {/* --- Auth Error Alert --- */}
+            {authError && (
+              <div
+                className="mb-3"
+                role="alert"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                <div className="alert alert-danger d-flex align-items-center mb-0">
+                  <div className="me-2" aria-hidden="true">
+                    ⚠️
+                  </div>
+                  <div style={{ whiteSpace: "pre-line" }}>{authError}</div>
+                </div>
+              </div>
+            )}
+
+            {/* --- Submit --- */}
+            <button
+              type="submit"
+              className="btn w-100 fw-bold py-2 rounded-4 mt-1"
+              style={{
+                background: "linear-gradient(135deg, #d3be52 0%, #d4527b 100%)",
+                border: "none",
+                boxShadow: "0 4px 10px rgba(212, 82, 123, 0.4)",
+                transition: "transform 0.2s ease-in-out",
+              }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.transform = "scale(1.02)")
+              }
+              onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+              disabled={isSubmitting}
+              aria-describedby="submit-help"
+            >
+              {isSubmitting ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  {isLogin ? "Logging in..." : "Signing up..."}
+                </>
+              ) : isLogin ? (
+                "Login"
+              ) : (
+                "Sign Up"
+              )}
+            </button>
+          </form>
+
+          {/* --- Toggle Login/Signup --- */}
+          <p className="mt-3 text-center mb-0">
+            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+            <button
+              className="btn btn-link fw-bold p-0"
+              style={{
+                color: "#d4527b",
+                textDecoration: "none",
+                transition: "color 0.3s ease-in-out",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.color = "#a8385c")}
+              onMouseOut={(e) => (e.currentTarget.style.color = "#d4527b")}
+              onClick={() => setIsLogin(!isLogin)}
+              type="button"
+              aria-label={
+                isLogin ? "Switch to sign up form" : "Switch to login form"
+              }
+            >
+              {isLogin ? "Sign Up" : "Login"}
+            </button>
+          </p>
+        </div>
+      </main>
     </>
   );
 }
