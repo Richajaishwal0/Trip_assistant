@@ -354,15 +354,6 @@ body.dark-mode .close-modal {
 @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
-
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(69, 82, 110, 0.18);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  height: auto;
-  min-height: 320px;
 }
 
 @media (max-width: 768px) {
@@ -419,7 +410,7 @@ body.dark-mode .close-modal {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: background 0.2s;
   outline: none;
-}
+
 
 
   backdrop-filter: blur(10px);
