@@ -21,7 +21,7 @@ const HelpCentre: React.FC = () => {
 
   return (
     <>
-    <style>
+      <style>
         {`
           .custom-placeholder::placeholder {
             color: white;
@@ -46,17 +46,13 @@ const HelpCentre: React.FC = () => {
             <h1
               className="display-4 fw-bold mb-4"
               style={{
-                background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                textShadow: "0 4px 4px rgba(0,0,0,0.3)",
               }}
             >
               Help Center
             </h1>
             <p
-              className="lead mb-5"
+              className="text-xl mb-5"
               style={{ textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}
             >
               Find answers to your questions or contact support
@@ -79,7 +75,6 @@ const HelpCentre: React.FC = () => {
                       backdropFilter: "blur(10px)",
                       boxShadow: "0 4px 15px rgba(0, 0, 0, 0.2)",
                       paddingLeft: "50px",
-                      
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = "#FFD700";
@@ -140,12 +135,7 @@ const HelpCentre: React.FC = () => {
                 <h2
                   className="h3 fw-semibold mb-3"
                   style={{
-                    background:
-                      "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                    textShadow: "0 4px 4px rgba(0,0,0,0.3)",
                   }}
                 >
                   Contact Support
@@ -198,11 +188,7 @@ const HelpCentre: React.FC = () => {
             <h2
               className="h1 text-white text-center mb-5"
               style={{
-                background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                textShadow: "0 4px 4px rgba(0,0,0,0.3)",
               }}
             >
               Common Help Topics
@@ -251,12 +237,7 @@ const HelpCentre: React.FC = () => {
                 <h2
                   className="h3 fw-semibold text-center mb-5"
                   style={{
-                    background:
-                      "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+                    textShadow: "0 4px 4px rgba(0,0,0,0.3)",
                   }}
                 >
                   Frequently Asked Questions
