@@ -11,13 +11,12 @@ const connectDB = async () => {
 
     const mongoURI = process.env.MONGO_DB_URI;
     
-    await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    
+    await mongoose.connect(mongoURI); //no need for options in Mongroove v6+
+
+    //Mask username & password safely
+    const safeURI = mongoURI.replace(/\/\/([^:]+):([^@]+)@/, "//*****:*****@");
     console.log("✅ MongoDB Database connected successfully!");
-    console.log(`📍 Connected to: ${mongoURI.replace(/\/\/.*@/, '//*****@')}`); // Hide credentials in logs
+    console.log(`📍 Connected to: ${safeURI}`); 
   } catch (error) {
     console.error("❌ MongoDB connection failed:", error.message);
     
