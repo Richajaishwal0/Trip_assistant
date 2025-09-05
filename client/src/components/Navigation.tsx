@@ -371,11 +371,11 @@ export default function Navigation() {
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               <span>Theme</span>
             </button>
-            {user_name === "" && (
+            {!isLoggedin && (
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  navigate("/auth");
+                  navigate("/auth?path=login");
                 }}
                 style={{
                   background: "rgba(255,255,255,0.2)",
