@@ -13,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const Footer: React.FC = () => {
   return (
-    <div className="my-5">
+    <div>
       <footer
         className="text-start text-white"
         style={{

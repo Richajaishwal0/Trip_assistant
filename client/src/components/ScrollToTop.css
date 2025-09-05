@@ -48,5 +48,6 @@ body.dark-mode .scroll-to-top-btn:hover {
     height: 40px;
     bottom: 70px;
     right: 12px;
+    margin-bottom: 10px; 
   }
 }
