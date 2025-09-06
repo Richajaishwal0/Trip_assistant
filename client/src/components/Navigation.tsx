@@ -13,8 +13,11 @@ import {
   Sun,
   Moon,
 } from "lucide-react";
+import { useToken } from "../context/TokenProvider";
 
 export default function Navigation() {
+  const {logout, isLoggedin} = useToken();
+
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(
     () => localStorage.getItem("darkMode") === "true"
@@ -90,10 +93,8 @@ export default function Navigation() {
   const handleLogout = () => {
     const input = confirm("Are you sure you want to logout!");
     if (input) {
-      localStorage.removeItem("user_id");
-      localStorage.removeItem("user_name");
-      localStorage.removeItem("auth_token");
-      navigate("/auth");
+      logout();
+      navigate("/auth?path=login");
       return;
     }
     return;
@@ -218,7 +219,7 @@ export default function Navigation() {
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          {user_name !== "" ? (
+          {isLoggedin ? (
             <>
               <button
                 onClick={handleDropdownToggle}
@@ -244,7 +245,7 @@ export default function Navigation() {
             </>
           ) : (
             <button
-              onClick={() => navigate("/auth")}
+              onClick={() => navigate("/auth?path=login")}
               style={{
                 background: "rgba(255,255,255,0.2)",
                 border: "1px solid rgba(255,255,255,0.5)",
@@ -267,7 +268,7 @@ export default function Navigation() {
 
         {/* Mobile Hamburger */}
         <div className="mobile-menu flex gap-2">
-          {user_name !== "" && (
+          {isLoggedin && (
             <>
               <button
                 onClick={handleDropdownToggle}
@@ -370,11 +371,11 @@ export default function Navigation() {
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               <span>Theme</span>
             </button>
-            {user_name === "" && (
+            {!isLoggedin && (
               <button
                 onClick={() => {
                   setIsOpen(false);
-                  navigate("/auth");
+                  navigate("/auth?path=login");
                 }}
                 style={{
                   background: "rgba(255,255,255,0.2)",

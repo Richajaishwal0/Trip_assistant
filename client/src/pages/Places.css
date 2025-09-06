@@ -351,7 +351,7 @@ body.dark-mode .close-modal {
   to { opacity: 1; }
 }
 
-@keyframes slideUp {
+/* @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 
@@ -363,7 +363,7 @@ body.dark-mode .close-modal {
   flex-direction: column;
   height: auto;
   min-height: 320px;
-}
+} */
 
 @media (max-width: 768px) {
   .place-card {
@@ -421,12 +421,12 @@ body.dark-mode .close-modal {
   outline: none;
 }
 
-
+/* 
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   opacity: 0;
   transform: translateY(10px);
-}
+} */
 
 .card-image-wrapper:hover .view-details-btn {
   opacity: 1;
