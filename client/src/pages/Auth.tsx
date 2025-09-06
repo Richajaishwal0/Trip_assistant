@@ -18,6 +18,11 @@ function Auth() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [passwordStrength, setPasswordStrength] = useState<{
+    label: string;
+    color: string;
+    score: number;
+  } | null>(null);
 
   // --- Phone number validation (unchanged core logic) ---
   const validatePhoneNumber = (
@@ -45,6 +50,32 @@ function Auth() {
       };
     }
     return { isValid: true, error: null };
+  };
+
+  // --- Password strength indicator (new feature) ---
+  const getPasswordStrength = (
+    password: string
+  ): { label: string; color: string; score: number } => {
+    let score = 0;
+
+    if (password.length >= 8) score++; // length
+    if (/[A-Z]/.test(password)) score++; // uppercase
+    if (/[0-9]/.test(password)) score++; // digit
+    if (/[^A-Za-z0-9]/.test(password)) score++; // special char
+
+    switch (score) {
+      case 0:
+      case 1:
+        return { label: "Weak", color: "red", score: 25 };
+      case 2:
+        return { label: "Fair", color: "orange", score: 50 };
+      case 3:
+        return { label: "Good", color: "blue", score: 75 };
+      case 4:
+        return { label: "Strong", color: "green", score: 100 };
+      default:
+        return { label: "Weak", color: "red", score: 25 };
+    }
   };
 
   const handlePhoneChange = (value: string) => {
@@ -197,6 +228,14 @@ function Auth() {
       setIsSubmitting(false);
     }
   };
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    if (value) {
+      setPasswordStrength(getPasswordStrength(value));
+    } else {
+      setPasswordStrength(null);
+    }
+  };
 
   return (
     <>
@@ -336,11 +375,34 @@ function Auth() {
                 style={{ transition: "all 0.3s ease-in-out" }}
                 placeholder="Enter your password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handlePasswordChange(e.target.value)}
                 required
                 aria-describedby="password-help"
                 aria-invalid={authError ? "true" : "false"}
               />
+
+              {/* Strength bar */}
+              {passwordStrength && (
+                <div className="mt-2">
+                  <div className="progress" style={{ height: "6px" }}>
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      style={{
+                        width: `${passwordStrength.score}%`,
+                        backgroundColor: passwordStrength.color,
+                      }}
+                      aria-valuenow={passwordStrength.score}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                    />
+                  </div>
+                  <small style={{ color: passwordStrength.color }}>
+                    {passwordStrength.label}
+                  </small>
+                </div>
+              )}
+
               <div id="password-help" className="form-text text-muted small">
                 {!isLogin
                   ? "Password must be at least 8 characters long."

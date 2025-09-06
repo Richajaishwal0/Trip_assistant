@@ -346,15 +346,25 @@ body.dark-mode .close-modal {
 }
 
 /* Animation */
+/* Animation */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from { 
+    transform: translateY(30px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
 
+/* Place card styles */
+.place-card {
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(69, 82, 110, 0.18);
@@ -378,6 +388,7 @@ body.dark-mode .close-modal {
     min-height: 280px;
   }
 }
+
 
 /* Professional card layout styles */
 .card-image-wrapper {
@@ -419,7 +430,7 @@ body.dark-mode .close-modal {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: background 0.2s;
   outline: none;
-}
+
 
 
   backdrop-filter: blur(10px);
@@ -427,6 +438,7 @@ body.dark-mode .close-modal {
   opacity: 0;
   transform: translateY(10px);
 }
+
 
 .card-image-wrapper:hover .view-details-btn {
   opacity: 1;
