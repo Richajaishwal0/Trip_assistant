@@ -17,7 +17,7 @@ const login = async (req, res) => {
 
     // Find user by email using MongoDB
     const user = await User.findOne({ email });
-    console.log(user)
+    console.log(user);
 
     if (!user) {
       return res.status(401).json({
@@ -38,10 +38,12 @@ const login = async (req, res) => {
 
     // Create JWT token - Fail if no secret is provided for security
     if (!process.env.JWT_SECRET) {
-      console.error('❌ SECURITY ERROR: JWT_SECRET environment variable is not set');
+      console.error(
+        "❌ SECURITY ERROR: JWT_SECRET environment variable is not set"
+      );
       return res.status(500).json({
         success: false,
-        message: 'Server configuration error. Please contact administrator.'
+        message: "Server configuration error. Please contact administrator.",
       });
     }
 
@@ -58,12 +60,12 @@ const login = async (req, res) => {
       user_name: user.user_name,
       mobile_no: user.mobile_no,
       createdAt: user.createdAt,
-      updatedAt: user.updatedAt
+      updatedAt: user.updatedAt,
     };
 
     return sendSuccess(res, { user: userData, token }, "Login successful");
   } catch (error) {
-    console.log(error)
+    console.log(error);
     // return handleServerError(error, "Login error", res);
   }
 };
@@ -71,12 +73,7 @@ const login = async (req, res) => {
 // Register controller
 const register = async (req, res) => {
   try {
-    const {
-      user_name,
-      email,
-      password,
-      mobile_no,
-    } = req.body;
+    const { user_name, email, password, mobile_no } = req.body;
 
     if (!user_name || !email || !password || !mobile_no) {
       return res.status(400).json({
@@ -106,12 +103,14 @@ const register = async (req, res) => {
       mobile_no,
     });
 
-    // Create JWT token - Fail if no secret is provided for security  
+    // Create JWT token - Fail if no secret is provided for security
     if (!process.env.JWT_SECRET) {
-      console.error('❌ SECURITY ERROR: JWT_SECRET environment variable is not set');
+      console.error(
+        "❌ SECURITY ERROR: JWT_SECRET environment variable is not set"
+      );
       return res.status(500).json({
         success: false,
-        message: 'Server configuration error. Please contact administrator.'
+        message: "Server configuration error. Please contact administrator.",
       });
     }
 
@@ -157,70 +156,71 @@ const getProfile = async (req, res) => {
 //update user;
 const updateuser = async (req, res) => {
   try {
-    const id=req.user.userId;
+    const id = req.user.userId;
 
-    const { userName, email, mobileNo } = req.body
+    const { user_name, email, mobile_no } = req.body;
 
-    if (!(userName || email || mobileNo)) {
+    if (!(user_name || email || mobile_no)) {
       return res.status(400).json({
         success: false,
         message: "fill at least one of them",
-      })
+      });
     }
 
     const Obj = {};
 
-    if (userName) Obj.user_name = userName;
+    if (user_name) Obj.user_name = user_name;
     if (email) Obj.email = email;
-    if (mobileNo) Obj.mobile_no = mobileNo;
-    const user = await User.findByIdAndUpdate(id,
-      { $set: Obj }, { new: true }).select("-password");
+    if (mobile_no) Obj.mobile_no = mobile_no;
+    const user = await User.findByIdAndUpdate(
+      id,
+      { $set: Obj },
+      { new: true }
+    ).select("-password");
 
     if (!user) {
       return res.status(400).json({
         success: false,
         message: "could not be updated",
-      })
+      });
     }
 
     res.status(200).json({
       success: true,
-      message: "User updated successfully", user
-    })
+      message: "User updated successfully",
+      user,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: error.message,
-    })
+    });
   }
-}
+};
 
 // it is for delete user
 const Deleteuser = async (req, res) => {
   try {
-    const id=req.user.userId;
+    const id = req.user.userId;
 
     const user = await User.findByIdAndDelete(id);
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "user not founded",
-      })
+      });
     }
     res.status(200).json({
       success: true,
       message: "user remove succefully",
-    })
-  }
-  catch (error) {
+    });
+  } catch (error) {
     res.status(500).json({
       success: false,
       message: error.message,
-    })
+    });
   }
-
-
-}
+};
 module.exports = {
   login,
   register,

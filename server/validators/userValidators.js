@@ -106,9 +106,9 @@ const registerSchema = {
 // Update user validation schema
 const updateUserSchema = {
   body: Joi.object({
-    userName: optionalUserNameSchema,
+    user_name: optionalUserNameSchema,
     email: optionalEmailSchema,
-    mobileNo: optionalMobileSchema
+    mobile_no: optionalMobileSchema
   }).min(1).messages({
     'object.min': 'At least one field must be provided for update'
   }),
