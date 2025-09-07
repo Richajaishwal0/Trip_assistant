@@ -116,14 +116,14 @@ export default function UserProfile() {
 
   return (
     <div
-      className={`d-flex align-items-center justify-content-center min-vh-100 ${
+      className={`d-flex align-items-center justify-content-center min-h-100 ${
         darkMode ? "bg-dark text-light" : "bg-light text-dark"
       }`}
       style={{
         background: darkMode 
           ? "linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)"
           : "linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%)",
-        padding: "10px"
+        padding: "20px"
       }}
     >
       <div className="container">
