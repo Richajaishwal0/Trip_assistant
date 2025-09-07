@@ -1,11 +1,11 @@
 /* Custom Navbar Styles */
+
 /* Debug container to confirm visibility */
 .navbar .d-flex.align-items-center.gap-3.ms-auto {
   background-color: rgba(255, 0, 0, 0.3) !important; /* semi-transparent red */
   z-index: 1050 !important; /* ensure it's on top */
   position: relative !important; /* ensure normal flow */
 }
-
 
 .custom-navbar {
   background: #1a237e !important;
@@ -22,7 +22,7 @@ body.dark-mode .custom-navbar {
 
 /* Logo button styling */
 .navbar-brand {
-  padding: 0.5rem !important;
+  padding: 0.79rem !important;
   border-radius: 8px;
   transition: all 0.3s ease;
 }
@@ -142,7 +142,49 @@ body.dark-mode .dropdown-menu {
   .btn-outline-light {
     padding: 0.5rem !important;
   }
-  .mobile-toggle {
-    display: none !important;
+  
+  .btn-outline-light {
+    padding: 0.5rem !important;
   }
+}
+
+/* Navbar toggler */
+.navbar-toggler {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25) !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* Smooth transitions */
+.navbar-collapse {
+  transition: all 0.3s ease;
+}
+
+/* Focus states for accessibility */
+.navbar-brand:focus,
+.nav-link:focus,
+.btn:focus {
+  outline: 2px solid #4f46e5 !important;
+  outline-offset: 2px !important;
+}
+
+/* Prevent layout shift */
+.navbar {
+  min-height: 64px;
+}
+
+/* Logo hover effect */
+.navbar-brand svg {
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover svg {
+  transform: scale(1.1);
 }
