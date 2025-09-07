@@ -94,10 +94,10 @@ const loginSchema = {
 // Register validation schema
 const registerSchema = {
   body: Joi.object({
-    user_name: userNameSchema,
+    userName: userNameSchema,
     email: emailSchema,
     password: passwordSchema,
-    mobile_no: mobileSchema
+    mobileNo: mobileSchema
   }),
   query: emptyQuerySchema,
   params: emptyParamsSchema

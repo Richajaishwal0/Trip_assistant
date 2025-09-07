@@ -98,7 +98,7 @@ function Auth() {
     // Fix payload structure to match server expectations
     const payload = isLogin
       ? { email, password }
-      : { user_name: userName, email, password, mobile_no: mobileNo };
+      : { userName, email, password, mobileNo };
     // Check if server is reachable
     try {
       await fetch(`${apiBaseUrl}/api/users`, {

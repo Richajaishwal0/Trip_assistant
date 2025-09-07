@@ -74,10 +74,11 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   try {
     // All fields matches in both frontend & backend
-    const { user_name, 
-      email, 
-      mobile_no, 
-      password 
+     const {
+      userName : user_name,
+      email,
+      mobileNo : mobile_no,
+      password
     } = req.body;
 
     if (!user_name || !email || !password || !mobile_no) {
