@@ -73,7 +73,8 @@ const login = async (req, res) => {
 // Register controller
 const register = async (req, res) => {
   try {
-    const { user_name, email, password, mobile_no } = req.body;
+    // All fields matches in both frontend & backend
+    const { user_name, email, mobile_no, password } = req.body;
 
     if (!user_name || !email || !password || !mobile_no) {
       return res.status(400).json({

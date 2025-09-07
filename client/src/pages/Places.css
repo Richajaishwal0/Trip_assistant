@@ -52,10 +52,10 @@
 }
 
 .place-card:hover {
-  transform: scale(1.00);
+  transform: scale(1);
   box-shadow: 0 8px 32px rgba(69, 82, 110, 0.22),
     0 2px 8px rgba(69, 82, 110, 0.13);
-    border: 1px solid gray;
+  border: 1px solid gray;
 }
 
 .place-card:focus,
@@ -322,7 +322,7 @@ body.dark-mode .close-modal {
     flex-direction: row;
     max-height: 80vh;
   }
-  
+
   .modal-image {
     width: 45%;
     height: auto;
@@ -331,13 +331,13 @@ body.dark-mode .close-modal {
     border-bottom-left-radius: 16px;
     object-fit: cover;
   }
-  
+
   .modal-details {
     width: 55%;
     padding: 32px;
     overflow-y: auto;
   }
-  
+
   .book-now-btn {
     width: auto;
     padding: 12px 32px;
@@ -347,14 +347,27 @@ body.dark-mode .close-modal {
 
 /* Animation */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-@keyframes slideUp {
+/* @keyframes slideUp {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
-}
+
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(69, 82, 110, 0.18);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  min-height: 320px;
+} */
 
 @media (max-width: 768px) {
   .place-card {
@@ -390,7 +403,6 @@ body.dark-mode .close-modal {
   .card-image-wrapper {
     height: 120px;
   }
-
 }
 
 .view-details-btn {
@@ -410,20 +422,19 @@ body.dark-mode .close-modal {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   transition: background 0.2s;
   outline: none;
+}
 
-
-
+/* 
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   opacity: 0;
   transform: translateY(10px);
-}
+} */
 
 .card-image-wrapper:hover .view-details-btn {
   opacity: 1;
   transform: translateY(0);
 }
-
 
 .view-details-btn:hover {
   background: rgba(225, 29, 72, 0.95);
@@ -573,10 +584,6 @@ body.dark-mode .close-modal {
   }
 }
 
-
-
-
-
 .place-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 32px rgba(69, 82, 110, 0.22),
@@ -653,4 +660,3 @@ body.dark-mode .title {
 body.dark-mode .places-grid {
   background: transparent !important;
 }
-
