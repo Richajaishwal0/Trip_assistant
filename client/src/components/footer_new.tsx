@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer style={footerStyle} className="mt-5 pt-5">
+    <footer style={footerStyle} className="pt-5">
       {/* Wave SVG Animation */}
       <div className="wave-container position-absolute w-100" style={{ top: 0, left: 0, zIndex: 1, overflow: 'hidden' }}>
         <svg viewBox="0 0 500 150" preserveAspectRatio="none" style={{ height: '100%', width: '100%' }}>

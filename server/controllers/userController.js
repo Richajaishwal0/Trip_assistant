@@ -17,7 +17,6 @@ const login = async (req, res) => {
 
     // Find user by email using MongoDB
     const user = await User.findOne({ email });
-    console.log(user)
 
     if (!user) {
       return res.status(401).json({

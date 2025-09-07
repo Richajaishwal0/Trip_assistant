@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { login, register, updateuser, Deleteuser, VerifyToken  } = require('../controllers/userController');
+const { login, register, updateuser, Deleteuser, VerifyToken, getProfile  } = require('../controllers/userController');
 const authMiddleware = require('../middleware/auth');
 const validate = require('../middleware/validation');
 const { 
@@ -16,6 +16,7 @@ router.post('/signup', validate(registerSchema), register);
 router.get("/verifyToken" , VerifyToken);
 
 // Protected routes with validation
+router.get("/", authMiddleware, getProfile)
 router.patch("/update/", authMiddleware, validate(updateUserSchema), updateuser);
 router.delete("/delete/", authMiddleware, validate(deleteUserSchema), Deleteuser);
 

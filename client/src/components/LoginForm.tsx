@@ -7,6 +7,7 @@ import { ApiResponse } from "../../types/ApiResponse";
 import { Link, useNavigate } from "react-router-dom";
 import { showError, showSuccess } from "../utils/toastUtils";
 import { useEffect } from "react";
+import { useToken } from "../context/TokenProvider";
 
 type LoginFormInputs = z.infer<typeof LoginSchema>;
 
@@ -25,6 +26,8 @@ export default function LoginForm() {
     }
   });
 
+  const {login} = useToken();
+
   useEffect(()=>{
     const user_id = localStorage.getItem("user_id");
     const auth_token = localStorage.getItem("auth_token");
@@ -41,14 +44,17 @@ export default function LoginForm() {
         console.log("Login Response:", res.data);
         showSuccess('Login successful!');
         const userId = res.data?.user?.id;
+        const userName = res.data?.user?.user_name;
         console.log("User ID:", userId);
         if (userId) {
             localStorage.setItem("user_id", userId);
+            localStorage.setItem("user_name", userName);
         }
         const token = res.data?.user?.token;
         console.log("Token:", token);
         if (token) {
           localStorage.setItem("auth_token", token);
+          login();
         }
         navigate("/places");
     })
