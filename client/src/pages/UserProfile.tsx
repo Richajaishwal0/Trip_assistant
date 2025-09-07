@@ -86,8 +86,8 @@ export default function UserProfile() {
     };
     try {
       const token = localStorage.getItem("auth_token");
-      const response = await axios.put(
-        "http://localhost:5000/api/users/update/",
+      const response = await axios.patch(
+        "http://localhost:5000/api/users/update",
         updatedUser,
         {
           headers: {
