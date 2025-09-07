@@ -51,7 +51,6 @@ export default function UserProfile() {
         },
       })
       .then((response) => {
-        console.log(response.data);
         const userData = response.data.data.user;
         setUser(userData);
         setEditedUser({
@@ -62,10 +61,10 @@ export default function UserProfile() {
       })
       .catch((error) => {
         console.error("Error fetching user data:", error);
+        showError("Error while fetching user data.");
       });
   }, []);
 
-  console.log(user);
   const handleEdit = () => {
     setIsEditing(true);
     setEditedUser({ ...user });
@@ -84,7 +83,6 @@ export default function UserProfile() {
       email: editedUser.email,
       mobile_no: editedUser.mobile_no,
     };
-    console.log(updatedUser);
     try {
       const token = localStorage.getItem("auth_token");
       const response = await axios.put(
@@ -100,11 +98,8 @@ export default function UserProfile() {
 
       setIsEditing(false);
       showSuccess(response?.data?.message || "Profile updated successfully!");
-      // console.log("Profile updated successfully:", response.data);
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      showError("Error while updating profile.");
-      // You can add error handling here (e.g., show toast notification)
+    } catch (error: any) {
+      showError(error?.response?.data?.errors?.[0].split(":")[1] || "Error while updating profile.");
     } finally {
       setLoading(false);
     }
@@ -117,7 +112,6 @@ export default function UserProfile() {
     }));
   };
 
-  console.log(user);
   return (
     <div
       className={`min-vh-100 ${
