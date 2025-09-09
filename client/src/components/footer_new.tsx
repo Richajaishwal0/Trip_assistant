@@ -6,7 +6,6 @@ import {
   FaLinkedinIn,
   FaYoutube,
   FaPlane,
-  FaHeart,
   FaGlobe,
   FaShieldAlt,
   FaUserFriends,
@@ -23,7 +22,7 @@ import {
 
 const Footer: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
 
   useEffect(() => {
     // Check if dark mode is enabled
@@ -33,15 +32,15 @@ const Footer: React.FC = () => {
     setDarkMode(isDark);
   }, []);
 
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      // Handle newsletter subscription
-      console.log("Subscribing email:", email);
-      setEmail("");
-      // You can add actual subscription logic here
-    }
-  };
+  // const handleSubscribe = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (email) {
+  //     // Handle newsletter subscription
+  //     console.log("Subscribing email:", email);
+  //     setEmail("");
+  //     // You can add actual subscription logic here
+  //   }
+  // };
 
   const footerLinks = {
     destinations: [
@@ -83,7 +82,28 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer style={footerStyle} className="mt-5">
+    <footer style={footerStyle} className="pt-5">
+      {/* Wave SVG Animation */}
+      <div className="wave-container position-absolute w-100" style={{ top: 0, left: 0, zIndex: 1, overflow: 'hidden' }}>
+        <svg viewBox="0 0 500 150" preserveAspectRatio="none" style={{ height: '100%', width: '100%' }}>
+          <path 
+            d="M0.00,49.98 C195.31,150.48 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" 
+            style={{ 
+              stroke: 'none', 
+              fill: 'rgba(255, 255, 255, 0.05)',
+            }}>
+            <animate 
+              attributeName="d" 
+              dur="10s" 
+              repeatCount="indefinite"
+              values="M0.00,49.98 C195.31,150.48 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z;
+                      M0.00,49.98 C149.99,150.48 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z;
+                      M0.00,49.98 C195.31,150.48 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
+            />
+          </path>
+        </svg>
+      </div>
+      
       {/* Animated Background Elements */}
       <div
         className="position-absolute w-100 h-100"
@@ -119,19 +139,37 @@ const Footer: React.FC = () => {
 
       {/* Main Footer Content */}
       <div
-        className="container py-5"
-        style={{ position: "relative", zIndex: 2 }}
+        className="container"
+        style={{ 
+          position: "relative", 
+          zIndex: 2,
+          width: "100%",
+          maxWidth: "1400px",
+          margin: "0 auto",
+          padding: "0rem 2rem 0rem 2rem"
+        }}
       >
         {/* Newsletter Section */}
-        <div className="row mb-5">
+        {/* <div className="row mb-5">
           <div className="col-12 text-center">
             <div
-              className="p-4 rounded-4 mb-4"
+              className="p-4 rounded-4 mb-4 newsletter-container"
               style={{
                 background: "rgba(255, 255, 255, 0.1)",
                 backdropFilter: "blur(20px)",
                 border: "1px solid rgba(255, 255, 255, 0.2)",
                 boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+                transform: "translateY(0)",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-5px)";
+                e.currentTarget.style.boxShadow = "0 12px 40px rgba(0, 0, 0, 0.2)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.1)";
               }}
             >
               <h3
@@ -149,7 +187,7 @@ const Footer: React.FC = () => {
                 onSubmit={handleSubscribe}
                 className="row g-2 justify-content-center"
               >
-                <div className="col-md-6 col-lg-4">
+                <div className="col-md-6 col-lg-4 position-relative">
                   <input
                     type="email"
                     className="form-control form-control-lg"
@@ -158,18 +196,37 @@ const Footer: React.FC = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     style={{
                       background: "rgba(255, 255, 255, 0.9)",
-                      border: "none",
+                      border: "2px solid transparent",
                       borderRadius: "50px",
                       padding: "0.75rem 1.5rem",
                       fontSize: "1rem",
+                      transition: "all 0.3s ease",
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = "#ffd700";
+                      e.target.style.boxShadow = "0 0 0 0.2rem rgba(255, 215, 0, 0.25)";
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = "transparent";
+                      e.target.style.boxShadow = "none";
                     }}
                     required
+                  />
+                  <MdEmail 
+                    style={{
+                      position: "absolute",
+                      right: "20px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      color: "#1a237e",
+                      fontSize: "1.2rem",
+                    }}
                   />
                 </div>
                 <div className="col-auto">
                   <button
                     type="submit"
-                    className="btn btn-lg px-4"
+                    className="btn btn-lg px-4 d-flex align-items-center"
                     style={{
                       background: "linear-gradient(45deg, #ffd700, #ffed4e)",
                       color: "#1a237e",
@@ -178,25 +235,25 @@ const Footer: React.FC = () => {
                       fontWeight: "600",
                       transition: "all 0.3s ease",
                       boxShadow: "0 4px 15px rgba(255, 215, 0, 0.3)",
+                      gap: "8px",
                     }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.transform = "translateY(-2px)";
-                      e.currentTarget.style.boxShadow =
-                        "0 6px 20px rgba(255, 215, 0, 0.4)";
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = "translateY(-2px) scale(1.02)";
+                      e.currentTarget.style.boxShadow = "0 6px 20px rgba(255, 215, 0, 0.4)";
                     }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.transform = "translateY(0)";
-                      e.currentTarget.style.boxShadow =
-                        "0 4px 15px rgba(255, 215, 0, 0.3)";
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = "translateY(0) scale(1)";
+                      e.currentTarget.style.boxShadow = "0 4px 15px rgba(255, 215, 0, 0.3)";
                     }}
                   >
-                    Subscribe <FaPlane className="ms-2" />
+                    <span>Subscribe</span>
+                    <FaPlane className="subscribe-icon" style={{ transition: "transform 0.3s ease" }} />
                   </button>
                 </div>
               </form>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Main Footer Links */}
         <div className="row g-4">
@@ -519,8 +576,7 @@ const Footer: React.FC = () => {
         >
           <div className="col-md-6 mb-3">
             <p className="mb-1 opacity-75">
-              © 2024 Tripp. All rights reserved. Made with{" "}
-              <FaHeart style={{ color: "#ff4757" }} /> for travelers.
+              © 2024 PlanTrip.com. All rights reserved. Made with ❤️ for travelers.
             </p>
           </div>
           <div className="col-md-6 text-md-end">
@@ -576,6 +632,44 @@ const Footer: React.FC = () => {
             .footer-social-links {
               justify-content: center !important;
             }
+
+            /* Ensure company logo and title are centered together on small screens */
+            .col-lg-4 .mb-4 h2 {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 0.5rem;
+              text-align: center;
+            }
+
+            .col-lg-4 .mb-4 h2 .me-2 {
+              margin-right: 0.5rem;
+            }
+          }
+
+          /* Remove unwanted extra space at the very bottom of the footer */
+          footer {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+          }
+
+          /* Ensure container doesn't add extra bottom padding */
+          .container.py-5 {
+            padding-bottom: 0 !important;
+          }
+
+          /* Tighten the bottom area (bottom row) */
+          .row.mt-5.pt-4 {
+            margin-top: 1rem !important;
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+          }
+
+          /* Limit the height of the decorative wave so it doesn't add extra space */
+          .wave-container {
+            height: 60px;
+            overflow: hidden;
+            top: 0;
           }
         `}
       </style>

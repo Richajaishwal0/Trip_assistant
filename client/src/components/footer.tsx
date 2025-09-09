@@ -8,12 +8,14 @@ import {
   FaEnvelope,
   FaPhone,
   FaPrint,
+  FaHeadset,
 } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
-    <div className="my-5">
+    <div>
       <footer
         className="text-start text-white"
         style={{
@@ -307,36 +309,46 @@ const Footer: React.FC = () => {
               <hr className="w-100 clearfix d-md-none" />
 
               <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3 text-start">
-                <h6
-                  className="text-uppercase mb-4 font-weight-bold"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    textShadow: "0 2px 4px rgba(0,0,0,0.3)",
-                    fontSize: "1.1rem",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  Contact
-                </h6>
-                <p>
-                  <FaHome className="me-2 color-gold" />
-                  Tamilnadu, India
-                </p>
-                <p>
-                  <FaEnvelope className="me-2 color-gold" />
-                  T_M@gmail.com
-                </p>
-                <p>
-                  <FaPhone className="me-2 color-gold" /> +91 01 234 567 88
-                </p>
-                <p>
-                  <FaPrint className="me-2 color-gold" /> +91 01 234 567 89
-                </p>
-              </div>
+    <h6
+        className="text-uppercase mb-4 font-weight-bold"
+        style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+            fontSize: "1.1rem",
+            letterSpacing: "0.5px",
+        }}
+    >
+        Contact
+    </h6>
+
+    {/* Added transition and hover effect classes to each paragraph */}
+    <p className="flex gap-2 transition-transform duration-300 transform hover:scale-105">
+        <FaHome />
+        Tamilnadu, India
+    </p>
+    <p className="flex gap-2 transition-transform duration-300 transform hover:scale-105">
+        <FaEnvelope />
+        T_M@gmail.com
+    </p>
+    <p className="flex gap-2 transition-transform duration-300 transform hover:scale-105">
+        <FaPhone /> +91 01 234 567 88
+    </p>
+    <p className="flex gap-2 transition-transform duration-300 transform hover:scale-105">
+        <FaPrint /> +91 01 234 567 89
+    </p>
+
+    {/* Added transition and hover effect classes to the Link */}
+    <Link
+        to="/help"
+        className="flex gap-2 text-white text-decoration-none text-lg transition-transform duration-300 transform hover:scale-105"
+    >
+        <FaHeadset size={22} />
+        Help Center
+    </Link>
+</div>
             </div>
           </section>
 

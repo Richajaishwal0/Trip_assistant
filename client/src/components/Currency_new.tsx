@@ -1,13 +1,6 @@
-import { useState, useEffect, FormEvent, CSSProperties } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 
 // --- TYPE DEFINITIONS ---
-interface TippingInfo {
-  country: string;
-  restaurant: string;
-  taxi: string;
-  hotel: string;
-}
-
 interface InfoPillProps {
   icon: React.ReactNode;
   text: string;
@@ -16,6 +9,7 @@ interface InfoPillProps {
 interface TippingGuideProps {
   currency: string;
   onClose: () => void;
+  darkMode: boolean;
 }
 
 interface ConversionResult {
@@ -28,61 +22,8 @@ interface CurrencyList {
   [key: string]: string;
 }
 
-// --- DATA FOR TIPPING GUIDE ---
-const tippingData: Record<string, TippingInfo> = {
-  USD: {
-    country: "United States",
-    restaurant: "15-20%",
-    taxi: "10-15%",
-    hotel: "$2-5 per night for housekeeping.",
-  },
-  EUR: {
-    country: "Eurozone Countries",
-    restaurant: '5-10%, often included as "service compris". Check the bill.',
-    taxi: "Round up to the nearest euro or 5-10%.",
-    hotel: "€1-2 for porters and housekeeping.",
-  },
-  GBP: {
-    country: "United Kingdom",
-    restaurant: "10-15%, but check if a service charge is already included.",
-    taxi: "Round up to the nearest pound.",
-    hotel: "Optional, £1-2 for staff.",
-  },
-  JPY: {
-    country: "Japan",
-    restaurant: "Not expected and can be considered rude.",
-    taxi: "Not expected.",
-    hotel: "Not expected.",
-  },
-  CAD: {
-    country: "Canada",
-    restaurant: "15-20%",
-    taxi: "10-15%",
-    hotel: "$2-5 per night for housekeeping.",
-  },
-  AUD: {
-    country: "Australia",
-    restaurant: "10% for good service is common, but not required.",
-    taxi: "Round up to the nearest dollar.",
-    hotel: "Optional.",
-  },
-  CHF: {
-    country: "Switzerland",
-    restaurant:
-      "Service is always included by law. Rounding up is appreciated.",
-    taxi: "Service included, rounding up is common.",
-    hotel: "Service included.",
-  },
-  default: {
-    country: "the selected region",
-    restaurant: "Varies widely. 10-15% is a safe bet in many places.",
-    taxi: "Rounding up the fare is usually appreciated.",
-    hotel: "Small tips for housekeeping and porters are common.",
-  },
-};
 
 // --- HELPER & CHILD COMPONENTS ---
-
 const InfoPill: React.FC<InfoPillProps> = ({ icon, text }) => {
   const pillStyle: CSSProperties = {
     display: "flex",
@@ -103,7 +44,67 @@ const InfoPill: React.FC<InfoPillProps> = ({ icon, text }) => {
   );
 };
 
-const TippingGuide: React.FC<TippingGuideProps> = ({ currency, onClose }) => {
+// TippingGuide component with dark mode support
+const TippingGuide: React.FC<TippingGuideProps> = ({ currency, onClose, darkMode }) => {
+  const tippingData: { [key: string]: { percentage: string; custom: string; country: string; restaurant: string; taxi: string; hotel: string } } = {
+    USD: { 
+      percentage: "15-20%", 
+      custom: "Tip 18-20% at restaurants, $1-2 per drink at bars",
+      country: "United States",
+      restaurant: "15-20% is standard, 20%+ for excellent service",
+      taxi: "10-15% of fare, round up to nearest dollar",
+      hotel: "$1-2 per bag for bellhop, $2-5 per day for housekeeping"
+    },
+    EUR: { 
+      percentage: "5-10%", 
+      custom: "Round up or 5-10% at restaurants, not mandatory",
+      country: "Eurozone",
+      restaurant: "5-10% if satisfied, rounding up is common",
+      taxi: "Round up to nearest euro or 5-10%",
+      hotel: "€1-2 per bag, €1-2 per day for housekeeping"
+    },
+    GBP: { 
+      percentage: "10-15%", 
+      custom: "10-15% at restaurants if service charge not included",
+      country: "United Kingdom",
+      restaurant: "10-15% if no service charge, check your bill",
+      taxi: "10-15% or round up to nearest pound",
+      hotel: "£1-2 per bag, £2-3 per day for housekeeping"
+    },
+    JPY: { 
+      percentage: "0%", 
+      custom: "Tipping not customary and may be considered rude",
+      country: "Japan",
+      restaurant: "No tipping - excellent service is expected",
+      taxi: "No tipping expected",
+      hotel: "No tipping - may cause confusion or offense"
+    },
+    CAD: { 
+      percentage: "15-20%", 
+      custom: "Similar to US - 15-20% at restaurants",
+      country: "Canada",
+      restaurant: "15-20% is standard",
+      taxi: "10-15% of fare",
+      hotel: "$2-3 per bag, $3-5 per day for housekeeping"
+    },
+    AUD: { 
+      percentage: "10%", 
+      custom: "10% at restaurants, not mandatory but appreciated",
+      country: "Australia",
+      restaurant: "10% for good service, not obligatory",
+      taxi: "Round up or 10% for longer trips",
+      hotel: "$2-5 per bag, $5-10 per day for housekeeping"
+    },
+    default: {
+      percentage: "Varies", 
+      custom: "Check local customs",
+      country: "Various",
+      restaurant: "Varies by country - research local customs",
+      taxi: "Varies by country - research local customs", 
+      hotel: "Varies by country - research local customs"
+    }
+  };
+
   const guide = tippingData[currency] || tippingData["default"];
 
   const styles: Record<string, CSSProperties> = {
@@ -113,49 +114,73 @@ const TippingGuide: React.FC<TippingGuideProps> = ({ currency, onClose }) => {
       left: 0,
       width: "100%",
       height: "100%",
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      backgroundColor: darkMode ? "rgba(0, 0, 0, 0.8)" : "rgba(0, 0, 0, 0.5)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       zIndex: 20,
+      transition: "background-color 0.3s ease",
     },
     modal: {
-      backgroundColor: "white",
+      backgroundColor: darkMode ? "#1e293b" : "white",
       padding: "2rem",
       borderRadius: "1rem",
       width: "90%",
       maxWidth: "32rem",
-      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+      boxShadow: darkMode 
+        ? "0 25px 50px -12px rgba(0, 0, 0, 0.6)" 
+        : "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+      border: darkMode ? "1px solid #334155" : "none",
+      transition: "background-color 0.3s ease, border-color 0.3s ease",
     },
     header: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      borderBottom: "1px solid #e5e7eb",
+      borderBottom: `1px solid ${darkMode ? "#475569" : "#e5e7eb"}`,
       paddingBottom: "1rem",
+      transition: "border-color 0.3s ease",
     },
     title: {
       fontSize: "1.25rem",
       fontWeight: "600",
-      color: "#1f2937",
+      color: darkMode ? "#f1f5f9" : "#1f2937",
+      transition: "color 0.3s ease",
     },
     closeButton: {
       background: "none",
       border: "none",
       fontSize: "1.5rem",
       cursor: "pointer",
-      color: "#9ca3af",
+      color: darkMode ? "#94a3b8" : "#9ca3af",
+      transition: "color 0.3s ease",
+      borderRadius: "50%",
+      width: "2rem",
+      height: "2rem",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     },
     content: {
       marginTop: "1rem",
-      color: "#374151",
+      color: darkMode ? "#cbd5e1" : "#374151",
+      transition: "color 0.3s ease",
     },
     listItem: {
       marginBottom: "0.75rem",
+      lineHeight: "1.5",
     },
     strong: {
       fontWeight: "600",
-      color: "#111827",
+      color: darkMode ? "#f1f5f9" : "#111827",
+      transition: "color 0.3s ease",
+    },
+    disclaimer: {
+      marginTop: "1rem",
+      fontSize: "0.875rem",
+      color: darkMode ? "#94a3b8" : "#6b7280",
+      fontStyle: "italic",
+      transition: "color 0.3s ease",
     },
   };
 
@@ -166,12 +191,21 @@ const TippingGuide: React.FC<TippingGuideProps> = ({ currency, onClose }) => {
           <h2 style={styles.title}>
             Tipping Guide for {guide.country} ({currency})
           </h2>
-          <button onClick={onClose} style={styles.closeButton}>
-            &times;
+          <button 
+            onClick={onClose} 
+            style={styles.closeButton}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = darkMode ? "#475569" : "#f3f4f6";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
+          >
+            ×
           </button>
         </div>
         <div style={styles.content}>
-          <ul>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <li style={styles.listItem}>
               <strong style={styles.strong}>Restaurants:</strong>{" "}
               {guide.restaurant}
@@ -183,13 +217,7 @@ const TippingGuide: React.FC<TippingGuideProps> = ({ currency, onClose }) => {
               <strong style={styles.strong}>Hotels:</strong> {guide.hotel}
             </li>
           </ul>
-          <p
-            style={{
-              marginTop: "1rem",
-              fontSize: "0.875rem",
-              color: "#6b7280",
-            }}
-          >
+          <p style={styles.disclaimer}>
             *This is a general guide. Tipping customs can vary by location and
             establishment.
           </p>
@@ -217,6 +245,9 @@ const Currency: React.FC = () => {
   const [isResultVisible, setIsResultVisible] = useState<boolean>(false);
   const [showTippingGuide, setShowTippingGuide] = useState<boolean>(false);
 
+  // Dark mode state
+  const [darkMode, setDarkMode] = useState(false);
+
   // useEffect hook to fetch the list of available currencies
   useEffect(() => {
     const fetchCurrencies = async () => {
@@ -233,9 +264,21 @@ const Currency: React.FC = () => {
     fetchCurrencies();
   }, []);
 
+  // Dark mode observer
+  useEffect(() => {
+    const checkDark = () =>
+      setDarkMode(document.body.classList.contains("dark-mode"));
+    checkDark();
+    const observer = new MutationObserver(checkDark);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => observer.disconnect();
+  }, []);
+
   // Function to handle the currency conversion logic
-  const handleConvert = async (e?: FormEvent) => {
-    if (e) e.preventDefault();
+  const handleConvert = async () => {
     setIsLoading(true);
     setError(null);
     setIsResultVisible(false);
@@ -286,11 +329,11 @@ const Currency: React.FC = () => {
     setToCurrency(fromCurrency);
   };
 
-  // --- STYLES ---
+  // --- STYLES WITH DARK MODE SUPPORT ---
   const styles: Record<string, CSSProperties> = {
     mainContainer: {
       fontFamily: "sans-serif",
-      backgroundColor: "#f9fafb",
+      backgroundColor: darkMode ? "#0f172a" : "#f9fafb",
       minHeight: "100vh",
       display: "flex",
       alignItems: "center",
@@ -298,28 +341,53 @@ const Currency: React.FC = () => {
       padding: "1rem",
       overflow: "hidden",
       position: "relative",
+      transition: "background-color 0.3s ease",
     },
     card: {
       width: "100%",
       maxWidth: "28rem",
-      backgroundColor: "white",
+      backgroundColor: darkMode ? "#1e293b" : "white",
       borderRadius: "1rem",
-      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+      boxShadow: darkMode 
+        ? "0 25px 50px -12px rgba(0, 0, 0, 0.5)" 
+        : "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
       padding: "2rem",
       zIndex: 10,
+      border: darkMode ? "1px solid #334155" : "none",
+      transition: "background-color 0.3s ease, border-color 0.3s ease",
     },
     header: {
       textAlign: "center",
       marginBottom: "2rem",
+      position: "relative",
+    },
+    darkModeToggle: {
+      position: "absolute",
+      top: "-0.5rem",
+      right: "-0.5rem",
+      background: darkMode ? "#475569" : "#e5e7eb",
+      border: "none",
+      borderRadius: "50%",
+      width: "2.5rem",
+      height: "2.5rem",
+      cursor: "pointer",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "1.25rem",
+      transition: "background-color 0.3s ease, transform 0.2s ease",
+      color: darkMode ? "#f1f5f9" : "#374151",
     },
     h1: {
       fontSize: "1.875rem",
       fontWeight: "bold",
-      color: "#1f2937",
+      color: darkMode ? "#f1f5f9" : "#1f2937",
+      transition: "color 0.3s ease",
     },
     p: {
-      color: "#6b7280",
+      color: darkMode ? "#94a3b8" : "#6b7280",
       marginTop: "0.5rem",
+      transition: "color 0.3s ease",
     },
     form: {
       display: "flex",
@@ -330,8 +398,9 @@ const Currency: React.FC = () => {
       display: "block",
       fontSize: "0.875rem",
       fontWeight: 500,
-      color: "#374151",
+      color: darkMode ? "#cbd5e1" : "#374151",
       marginBottom: "0.25rem",
+      transition: "color 0.3s ease",
     },
     inputGroup: {
       position: "relative",
@@ -341,28 +410,30 @@ const Currency: React.FC = () => {
       top: "50%",
       transform: "translateY(-50%)",
       left: "0.75rem",
-      color: "#6b7280",
+      color: darkMode ? "#94a3b8" : "#6b7280",
       pointerEvents: "none",
+      transition: "color 0.3s ease",
     },
     input: {
       width: "100%",
       padding: "0.75rem",
       paddingLeft: "1.75rem",
-      backgroundColor: "#f9fafb",
-      border: "1px solid #d1d5db",
+      backgroundColor: darkMode ? "#334155" : "#f9fafb",
+      border: `1px solid ${darkMode ? "#475569" : "#d1d5db"}`,
       borderRadius: "0.5rem",
-      color: "#111827",
-      transition: "border-color 0.2s, box-shadow 0.2s",
+      color: darkMode ? "#f1f5f9" : "#111827",
+      transition: "border-color 0.2s, box-shadow 0.2s, background-color 0.3s ease, color 0.3s ease",
       boxSizing: "border-box",
     },
     select: {
       width: "100%",
       padding: "0.75rem",
-      backgroundColor: "#f9fafb",
-      border: "1px solid #d1d5db",
+      backgroundColor: darkMode ? "#334155" : "#f9fafb",
+      border: `1px solid ${darkMode ? "#475569" : "#d1d5db"}`,
       borderRadius: "0.5rem",
-      color: "#111827",
+      color: darkMode ? "#f1f5f9" : "#111827",
       boxSizing: "border-box",
+      transition: "background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease",
     },
     currencyRow: {
       display: "flex",
@@ -372,17 +443,19 @@ const Currency: React.FC = () => {
     swapButton: {
       padding: "0.75rem",
       borderRadius: "9999px",
-      backgroundColor: "#e5e7eb",
-      color: "#4b5563",
+      backgroundColor: darkMode ? "#475569" : "#e5e7eb",
+      color: darkMode ? "#f1f5f9" : "#4b5563",
       border: "none",
       cursor: "pointer",
       marginBottom: "0.25rem",
-      transition: "background-color 0.2s, transform 0.3s",
+      transition: "background-color 0.3s ease, transform 0.3s, color 0.3s ease",
     },
     submitButton: {
       width: "100%",
       padding: "0.875rem 1rem",
-      backgroundColor: isLoading ? "#93c5fd" : "#2563eb",
+      backgroundColor: isLoading 
+        ? (darkMode ? "#1e40af" : "#93c5fd")
+        : (darkMode ? "#1d4ed8" : "#2563eb"),
       color: "white",
       fontWeight: "600",
       borderRadius: "0.5rem",
@@ -392,7 +465,7 @@ const Currency: React.FC = () => {
       alignItems: "center",
       justifyContent: "center",
       gap: "0.5rem",
-      transition: "background-color 0.2s, transform 0.2s",
+      transition: "background-color 0.3s ease, transform 0.2s",
     },
     resultsContainer: {
       marginTop: "1.5rem",
@@ -400,60 +473,109 @@ const Currency: React.FC = () => {
       minHeight: "9rem",
     },
     errorBox: {
-      backgroundColor: "#fee2e2",
-      border: "1px solid #fca5a5",
-      color: "#b91c1c",
+      backgroundColor: darkMode ? "#450a0a" : "#fee2e2",
+      border: `1px solid ${darkMode ? "#7f1d1d" : "#fca5a5"}`,
+      color: darkMode ? "#fca5a5" : "#b91c1c",
       padding: "0.75rem",
       borderRadius: "0.5rem",
+      transition: "background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease",
     },
     resultBox: {
-      backgroundColor: "#dcfce7",
-      border: "1px solid #86efac",
-      color: "#166534",
+      backgroundColor: darkMode ? "#064e3b" : "#dcfce7",
+      border: `1px solid ${darkMode ? "#059669" : "#86efac"}`,
+      color: darkMode ? "#6ee7b7" : "#166534",
       padding: "1rem",
       borderRadius: "0.5rem",
-      boxShadow:
-        "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-      transition: "opacity 0.5s, transform 0.5s",
+      boxShadow: darkMode
+        ? "0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1)"
+        : "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      transition: "opacity 0.5s, transform 0.5s, background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease",
       opacity: isResultVisible ? 1 : 0,
       transform: isResultVisible ? "translateY(0)" : "translateY(1rem)",
     },
     resultText: {
       fontSize: "1.125rem",
-      color: "#4b5563",
+      color: darkMode ? "#cbd5e1" : "#4b5563",
+      transition: "color 0.3s ease",
     },
     resultAmount: {
       fontWeight: "bold",
       fontSize: "1.5rem",
-      color: "#1f2937",
+      color: darkMode ? "#f1f5f9" : "#1f2937",
+      transition: "color 0.3s ease",
     },
     resultConverted: {
       fontSize: "2.25rem",
       fontWeight: "800",
-      color: "#15803d",
+      color: darkMode ? "#10b981" : "#15803d",
+      transition: "color 0.3s ease",
     },
     tippingButton: {
       background: "none",
       border: "none",
-      color: "#2563eb",
+      color: darkMode ? "#60a5fa" : "#2563eb",
       textDecoration: "underline",
       cursor: "pointer",
       marginTop: "1rem",
+      transition: "color 0.3s ease",
     },
   };
+
+  // Dynamic blob colors based on dark mode
+  const blobStyles = darkMode ? `
+    .blob-1 { background: linear-gradient(45deg, #1e40af, #3730a3); }
+    .blob-2 { background: linear-gradient(45deg, #7c3aed, #5b21b6); }
+    .blob-3 { background: linear-gradient(45deg, #be185d, #831843); }
+  ` : `
+    .blob-1 { background: #bfdbfe; }
+    .blob-2 { background: #e9d5ff; }
+    .blob-3 { background: #fbcfe8; }
+  `;
 
   return (
     <div style={styles.mainContainer}>
       <style>{`
-        @keyframes blob { 0% { transform: translate(0px, 0px) scale(1); } 33% { transform: translate(30px, -50px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } 100% { transform: translate(0px, 0px) scale(1); } }
-        .animate-blob { animation: blob 7s infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
+        @keyframes blob { 
+          0% { transform: translate(0px, 0px) scale(1); } 
+          33% { transform: translate(30px, -50px) scale(1.1); } 
+          66% { transform: translate(-20px, 20px) scale(0.9); } 
+          100% { transform: translate(0px, 0px) scale(1); } 
+        }
+        .animate-blob { 
+          animation: blob 7s infinite; 
+        }
+        .animation-delay-2000 { 
+          animation-delay: 2s; 
+        }
+        .animation-delay-4000 { 
+          animation-delay: 4s; 
+        }
+        ${blobStyles}
+        
+        /* Input focus styles for dark mode */
+        input:focus, select:focus {
+          outline: none;
+          border-color: ${darkMode ? "#60a5fa" : "#3b82f6"};
+          box-shadow: 0 0 0 3px ${darkMode ? "rgba(96, 165, 250, 0.2)" : "rgba(59, 130, 246, 0.1)"};
+        }
+        
+        /* Hover effects */
+        button:hover:not(:disabled) {
+          transform: translateY(-1px);
+        }
       `}</style>
-      <div className="absolute top-0 left-0 w-full h-full z-0">
-        <div className="animate-blob absolute -top-40 -left-40 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-        <div className="animate-blob animation-delay-2000 absolute -bottom-40 -right-20 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
-        <div className="animate-blob animation-delay-4000 absolute -bottom-40 left-20 w-80 h-80 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+      
+      <div style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 0,
+      }}>
+        <div className="animate-blob blob-1 absolute -top-40 -left-40 w-96 h-96 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+        <div className="animate-blob animation-delay-2000 blob-2 absolute -bottom-40 -right-20 w-96 h-96 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
+        <div className="animate-blob animation-delay-4000 blob-3 absolute -bottom-40 left-20 w-80 h-80 rounded-full mix-blend-multiply filter blur-xl opacity-70"></div>
       </div>
 
       <div style={styles.card}>
@@ -462,7 +584,7 @@ const Currency: React.FC = () => {
           <p style={styles.p}>Get real-time currency exchange rates</p>
         </div>
 
-        <form onSubmit={handleConvert} style={styles.form}>
+        <div style={styles.form}>
           <div>
             <label htmlFor="amount" style={styles.label}>
               Amount
@@ -543,13 +665,14 @@ const Currency: React.FC = () => {
           </div>
 
           <button
-            type="submit"
+            type="button"
+            onClick={handleConvert}
             style={styles.submitButton}
             disabled={isLoading}
           >
             {isLoading ? "Converting..." : "Convert"}
           </button>
-        </form>
+        </div>
 
         <div style={styles.resultsContainer}>
           {error && (
@@ -561,14 +684,12 @@ const Currency: React.FC = () => {
           {baseInfo && convertedAmount !== null && !error && (
             <div style={styles.resultBox}>
               <p style={styles.resultText}>
-                {" "}
                 <span style={styles.resultAmount}>
                   {baseInfo.amount.toLocaleString()} {baseInfo.base}
                 </span>{" "}
                 is equal to{" "}
               </p>
               <p style={styles.resultConverted}>
-                {" "}
                 {convertedAmount.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 4,
@@ -641,6 +762,7 @@ const Currency: React.FC = () => {
         <TippingGuide
           currency={toCurrency}
           onClose={() => setShowTippingGuide(false)}
+          darkMode={darkMode}
         />
       )}
     </div>

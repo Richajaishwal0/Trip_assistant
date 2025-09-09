@@ -4,12 +4,13 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import { Toaster } from "sonner";
 
 // Core component imports
 import Navbar from "./components/Navigation";
-import Footer from "./components/footer";
+import Footer from "./components/footer_new";
 import NetworkStatusBar from "./components/NetworkStatusBar";
 import LoadingState from "./components/LoadingState";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -100,7 +101,7 @@ const AppContent = () => {
                 <Route
                   key={route.path}
                   path={route.path}
-                  element={<route.component />}
+                  element={ <route.component />}
                 />
               ))}
             </Routes>

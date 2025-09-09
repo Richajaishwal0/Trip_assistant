@@ -6,6 +6,7 @@ import "./index.css";
 // Other bootstrap components will be loaded when needed
 import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
+import TokenProvider  from "./context/TokenProvider";
 
 // Preload critical resources
 const preloadStylesheets = () => {
@@ -23,6 +24,8 @@ preloadStylesheets();
 // Create root and render app
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <TokenProvider>
+      <App />
+    </TokenProvider>
   </StrictMode>
 );
