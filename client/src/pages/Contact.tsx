@@ -9,16 +9,23 @@ const Contact = () => {
         </p>
         <ul className="list-group list-group-flush mt-3">
           <li className="list-group-item">
-            <strong>Email:</strong><br />
-            support@tripassistant.com
+           <a
+              href="mailto:support@tripassistant.com?subject=Trip%20Assistant%20Inquiry"
+              className="contact-link"
+              aria-label="Email support at support@tripassistant.com"
+            >
+              support@tripassistant.com
+            </a>
           </li>
           <li className="list-group-item">
             <strong>Phone:</strong><br />
-            +1-800-TRIP-HELP
-          </li>
-          <li className="list-group-item">
-            <strong>Address:</strong><br />
-            123 Travel Lane, Wanderlust City, WW 12345
+           <a
+              href="tel:+18008747435"
+              className="contact-link"
+              aria-label="Call Trip Assistant support"
+            >
+              +1-800-TRIP-HELP
+            </a>
           </li>
         </ul>
         <p className="card-text mt-3 text-muted">

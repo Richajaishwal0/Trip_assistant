@@ -35,7 +35,7 @@ export default function LoginForm() {
     if(user_id && auth_token){
       navigate("/places");
     }
-  })
+  }, [])
 
   const onSubmit = async (data: LoginFormInputs) => {
     
