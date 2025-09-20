@@ -16,3 +16,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* Contact links hover/focus styles */
+.contact-link {
+  color: #0d6efd;
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.contact-link:hover,
+.contact-link:focus {
+  color: #0a58ca;
+  text-decoration: underline;
+  outline: none;
+}

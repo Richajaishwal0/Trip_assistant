@@ -43,7 +43,7 @@ const TokenProvider = ({ children }: { children: React.ReactNode }) => {
                     SetisLoggedin(false);
                 });
         }
-    });
+    }, []);
 
     const login = ()=>{
         SetisLoggedin(true);
